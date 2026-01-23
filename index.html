@@ -29,35 +29,34 @@
         .top-header {
             background-color: #ff6f61;
             color: white;
-            padding: 8px 0;
+            padding: 10px 0;
             text-align: center;
             font-size: 14px;
         }
 
         .main-header {
-            padding: 15px 50px;
+            background-color: white;
+            padding: 6px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: black;
-            text-decoration: none;
+        .logo img {
+            height: 45px;
+            width: auto;
         }
 
         .nav-menu {
             display: flex;
-            gap: 30px;
+            gap: 40px;
             list-style: none;
         }
 
         .nav-menu a {
             text-decoration: none;
             color: #333;
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 500;
             transition: color 0.3s;
         }
@@ -95,7 +94,7 @@
         }
 
         .hero h1 {
-            font-size: 42px;
+            font-size: 45px;
             margin-bottom: 20px;
         }
 
@@ -137,22 +136,24 @@
             background-color: #e55a4e;
         }
 
-        /* Quick Action Cards */
+        /* Quick Action Cards - New Design */
         .quick-actions {
-            max-width: 900px;
-            margin: -40px auto 50px;
+            max-width: 1000px;
+            margin: -40px auto 40px;
             padding: 0 50px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 20px;
         }
 
         .action-card {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            text-align: center;
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
@@ -160,41 +161,81 @@
         }
 
         .action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
         }
 
-        .action-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
+        /* Phone Card - Light Blue */
+        .phone-card {
+            background-color: #E8F4FD;
+        }
+
+        /* Quick Order Card - Light Pink */
+        .order-card {
+            background-color: #FFF0F5;
+        }
+
+        /* WhatsApp Card - Light Green */
+        .whatsapp-card {
+            background-color: #E8F8F0;
+        }
+
+        .action-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .phone-card .action-icon-wrapper {
+            background-color: #2196F3;
+        }
+
+        .order-card .action-icon-wrapper {
+            background-color: #FF6B9D;
+        }
+
+        .whatsapp-card .action-icon-wrapper {
+            background-color: #25D366;
+        }
+
+        .action-icon-wrapper svg,
+        .action-icon-wrapper img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .action-content {
+            flex: 1;
+            text-align: left;
         }
 
         .action-card h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
             color: #333;
         }
 
+        .phone-card h3 {
+            color: #2196F3;
+        }
+
+        .order-card h3 {
+            color: #FF6B9D;
+        }
+
+        .whatsapp-card h3 {
+            color: #25D366;
+        }
+
         .action-card p {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
-        }
-
-        /* WhatsApp Card Styling */
-        .whatsapp-card {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-        }
-
-        .whatsapp-card h3,
-        .whatsapp-card p {
-            color: white;
-        }
-
-        .whatsapp-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 12px;
+            margin: 0;
         }
 
         /* Categories Section */
@@ -234,11 +275,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
-        .category-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
-        }
-
         .category-img {
             width: 100%;
             height: 120px;
@@ -275,6 +311,10 @@
 
         .test-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .test-card.hidden {
+            display: none;
         }
 
         .test-card h4 {
@@ -336,6 +376,18 @@
             background-color: #e55a4e;
         }
 
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 18px;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
         /* Features Section */
         .features {
             background-color: white;
@@ -357,12 +409,6 @@
 
         .feature-item {
             text-align: center;
-        }
-
-        .feature-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            color: #ff6f61;
         }
 
         .feature-img {
@@ -439,19 +485,78 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
+            .main-header {
+                padding: 15px 30px;
+            }
+
+            .hero {
+                padding: 50px 30px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .quick-actions {
+                padding: 0 30px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .categories,
+            .popular-tests {
+                padding: 0 30px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .test-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                padding: 50px 30px;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer {
+                padding: 40px 30px 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 767px) {
             .main-header {
                 padding: 15px 20px;
                 flex-direction: column;
                 gap: 15px;
             }
 
-            .quick-actions,
-            .category-grid,
-            .test-grid,
-            .features-grid,
-            .footer-content {
-                grid-template-columns: 1fr;
+            .nav-menu {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+                width: 100%;
+            }
+
+            .nav-menu a {
+                display: block;
+                padding: 8px;
+            }
+
+            .login-btn {
+                width: 100%;
             }
 
             .hero {
@@ -460,11 +565,140 @@
 
             .hero h1 {
                 font-size: 28px;
+                line-height: 1.3;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                max-width: 100%;
+            }
+
+            .search-bar input {
+                padding: 15px;
+            }
+
+            .search-bar button {
+                padding: 15px;
+                width: 100%;
+            }
+
+            .quick-actions {
+                margin: -30px auto 30px;
+                padding: 0 20px;
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
 
             .categories,
             .popular-tests {
                 padding: 0 20px;
+                margin: 30px auto;
+            }
+
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .features {
+                padding: 40px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .footer {
+                padding: 30px 20px 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer h4 {
+                font-size: 15px;
+            }
+
+            .footer a {
+                font-size: 13px;
+            }
+
+            .footer-bottom {
+                font-size: 12px;
+                padding-top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-header {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+
+            .logo img {
+                height: 35px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .action-card h3 {
+                font-size: 14px;
+            }
+
+            .action-card p {
+                font-size: 11px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .current-price {
+                font-size: 18px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .main-header,
+            .hero-content,
+            .categories,
+            .popular-tests,
+            .features-content,
+            .footer-content {
+                max-width: 1400px;
+            }
+
+            .quick-actions {
+                max-width: 1400px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
             }
         }
     </style>
@@ -473,14 +707,18 @@
     <!-- Header -->
     <header class="header">
         <div class="top-header">
-            📞 Need help? Call us: 7042518999
+            📞 Need help? Call us: +91-7042518999
         </div>
         <div class="main-header">
-            <a href="#" class="logo">TATA1mg Labs</a>
+            <a href="#" class="logo">
+                <img src="tata-logo.png" alt="TATA1mg Labs Logo">
+            </a>
             <nav>
                 <ul class="nav-menu">
                     <li><a href="#">Lab Tests</a></li>
                     <li><a href="#">Health Packages</a></li>
+                    <li><a href="#">Medicines</a></li>
+                    <li><a href="#">Doctor Consultations</a></li>
                     <li><a href="#">Radiology</a></li>
                     <li><a href="#">My Orders</a></li>
                 </ul>
@@ -495,28 +733,46 @@
             <h1>Book lab tests online from trusted and certified labs</h1>
             <p>Get tested by certified labs from the comfort of your home. Compare prices, read reviews, and book your tests today.</p>
             <div class="search-bar">
-                <input type="text" placeholder="Search for tests, packages, or health concerns...">
-                <button>Search</button>
+                <input type="text" id="searchInput" placeholder="Search for tests, packages, or health concerns...">
+                <button onclick="searchTests()">Search</button>
             </div>
         </div>
     </section>
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-        <a href="tel:7042518999" class="action-card">
-            <div class="action-icon">📞</div>
-            <h3>Book via Phone Call</h3>
-            <p>Speak to our experts now</p>
+        <a href="tel:7042518999" class="action-card phone-card">
+            <div class="action-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+            </div>
+            <div class="action-content">
+                <h3>Book via Phone Call</h3>
+                <p>Speak to our experts</p>
+            </div>
         </a>
+
+        <a href="https://wa.me/917042518999" class="action-card order-card" target="_blank">
+            <div class="action-icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
+            </div>
+            <div class="action-content">
+                <h3>Quick Order</h3>
+                <p>Order in 2 minutes</p>
+            </div>
+        </a>
+
         <a href="https://wa.me/917042518999" class="action-card whatsapp-card" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
-            <h3>Book via WhatsApp</h3>
-            <p>Quick and convenient</p>
-        </a>
-        <a href="https://wa.me/917042518999" class="action-card" target="_blank">
-            <div class="action-icon">⚡</div>
-            <h3>Quick Order</h3>
-            <p>Order in 2 minutes</p>
+            <div class="action-icon-wrapper">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </div>
+            <div class="action-content">
+                <h3>Book via Whatsapp</h3>
+                <p>Quick and convenient</p>
+            </div>
         </a>
     </div>
 
@@ -546,8 +802,8 @@
     <!-- Popular Tests -->
     <section class="popular-tests">
         <h2 class="section-title">Most Booked Health Checkups</h2>
-        <div class="test-grid">
-            <div class="test-card">
+        <div class="test-grid" id="testGrid">
+            <div class="test-card" data-test="comprehensive gold full body checkup">
                 <h4>Comprehensive Gold Full Body Checkup</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 86 tests</span>
@@ -560,7 +816,7 @@
                 <button class="book-btn">BOOK NOW</button>
             </div>
 
-            <div class="test-card">
+            <div class="test-card" data-test="cbc complete blood count">
                 <h4>CBC (Complete Blood Count)</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 21 tests</span>
@@ -574,8 +830,8 @@
                 <button class="book-btn">BOOK NOW</button>
             </div>
 
-            <div class="test-card">
-                <h4>Thyroid Profile Total</h4>
+            <div class="test-card" data-test="thyroid profile total t3 t4 tsh">
+                <h4>Thyroid Profile Total (T3, T4 & TSH)</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 3 tests</span>
                     <span>• Report in 6 hrs</span>
@@ -588,7 +844,7 @@
                 <button class="book-btn">BOOK NOW</button>
             </div>
 
-            <div class="test-card">
+            <div class="test-card" data-test="lipid profile cholesterol">
                 <h4>Lipid Profile</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 8 tests</span>
@@ -600,7 +856,7 @@
                 <button class="book-btn">BOOK NOW</button>
             </div>
 
-            <div class="test-card">
+            <div class="test-card" data-test="lft liver function test">
                 <h4>LFT (Liver Function Test)</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 11 tests</span>
@@ -614,7 +870,7 @@
                 <button class="book-btn">BOOK NOW</button>
             </div>
 
-            <div class="test-card">
+            <div class="test-card" data-test="hba1c glycosylated hemoglobin diabetes">
                 <h4>HbA1c (Glycosylated Hemoglobin)</h4>
                 <div class="test-info">
                     <span>⏱️ Contains 1 test</span>
@@ -627,6 +883,105 @@
                 </div>
                 <button class="book-btn">BOOK NOW</button>
             </div>
+
+            <div class="test-card" data-test="kidney function test kft rft renal">
+                <h4>Kidney Function Test (KFT/RFT)</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 10 tests</span>
+                    <span>• Report in 6 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹449</span>
+                    <span class="original-price">₹650</span>
+                    <span class="discount-badge">31% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="vitamin d 25-hydroxy d3">
+                <h4>Vitamin D (25-Hydroxy)</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 1 test</span>
+                    <span>• Report in 24 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹799</span>
+                    <span class="original-price">₹1,200</span>
+                    <span class="discount-badge">33% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="vitamin b12 cobalamin">
+                <h4>Vitamin B12</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 1 test</span>
+                    <span>• Report in 24 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹599</span>
+                    <span class="original-price">₹900</span>
+                    <span class="discount-badge">33% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="fasting blood sugar fbs glucose diabetes">
+                <h4>FBS (Fasting Blood Sugar)</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 1 test</span>
+                    <span>• Report in 6 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹79</span>
+                    <span class="original-price">₹120</span>
+                    <span class="discount-badge">34% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="urine routine microscopy urinalysis">
+                <h4>Urine R/M (Routine & Microscopy)</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 19 tests</span>
+                    <span>• Report in 6 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹119</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="iron deficiency profile ferritin">
+                <h4>Iron Deficiency Profile</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 4 tests</span>
+                    <span>• Report in 24 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹849</span>
+                    <span class="original-price">₹1,200</span>
+                    <span class="discount-badge">29% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+
+            <div class="test-card" data-test="dengue fever test ns1 antigen">
+                <h4>Dengue Test (NS1 Antigen)</h4>
+                <div class="test-info">
+                    <span>⏱️ Contains 1 test</span>
+                    <span>• Report in 6 hrs</span>
+                </div>
+                <div class="price-section">
+                    <span class="current-price">₹549</span>
+                    <span class="original-price">₹800</span>
+                    <span class="discount-badge">31% OFF</span>
+                </div>
+                <button class="book-btn">BOOK NOW</button>
+            </div>
+        </div>
+        <div class="no-results" id="noResults">
+            No tests found matching your search. Please try different keywords.
         </div>
     </section>
 
@@ -636,12 +991,12 @@
             <h2 class="section-title">Why Choose Us?</h2>
             <div class="features-grid">
                 <div class="feature-item">
-                    <img src="home.jpg" alt="Home Sample Collection" class="feature-img">
+                    <img src="hm.jpg" alt="Home Sample Collection" class="feature-img">
                     <h4>Home Sample Collection</h4>
                     <p>Trained phlebotomists collect samples from your doorstep</p>
                 </div>
                 <div class="feature-item">
-                    <img src="Certificate-NABL.jpg" alt="Certified Labs" class="feature-img">
+                    <img src="nabl.avif" alt="Certified Labs" class="feature-img">
                     <h4>Certified Labs</h4>
                     <p>Partner with NABL, CAP & ISO certified labs</p>
                 </div>
@@ -651,7 +1006,7 @@
                     <p>Receive reports via email and WhatsApp</p>
                 </div>
                 <div class="feature-item">
-                    <img src="bp.png" alt="Best Prices" class="feature-img">
+                    <img src="hh.jpg" alt="Best Prices" class="feature-img">
                     <h4>Best Prices</h4>
                     <p>Get up to 50% discount on all tests</p>
                 </div>
@@ -704,6 +1059,56 @@
     </footer>
 
     <script>
+        // Search functionality
+        function searchTests() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const testCards = document.querySelectorAll('.test-card');
+            const noResults = document.getElementById('noResults');
+            let foundCount = 0;
+
+            if (searchTerm === '') {
+                // Show all tests if search is empty
+                testCards.forEach(card => {
+                    card.classList.remove('hidden');
+                });
+                noResults.classList.remove('show');
+                return;
+            }
+
+            // Search through test cards
+            testCards.forEach(card => {
+                const testName = card.getAttribute('data-test');
+                if (testName.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                    foundCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Show/hide no results message
+            if (foundCount === 0) {
+                noResults.classList.add('show');
+            } else {
+                noResults.classList.remove('show');
+            }
+        }
+
+        // Allow search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchTests();
+            }
+        });
+
+        // Clear search on input change
+        document.getElementById('searchInput').addEventListener('input', function() {
+            if (this.value === '') {
+                searchTests();
+            }
+        });
+
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
