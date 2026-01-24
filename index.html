@@ -80,64 +80,61 @@
         }
 
         /* Hero Section - Split Design */
-.hero {
-    background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
-    display: flex;
-    align-items: center;
-    min-height: 100px;
-}
+        .hero {
+            background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
+            display: flex;
+            align-items: center;
+            min-height: 100px;
+        }
 
-/* LEFT CONTENT */
-.hero-content {
-    flex: 0 0 45%;
-    padding: 40px 40px 40px 50px;
-    color: black;
-}
+        /* LEFT CONTENT */
+        .hero-content {
+            flex: 0 0 45%;
+            padding: 40px 40px 40px 50px;
+            color: black;
+        }
 
-/* RIGHT IMAGE */
-.hero-image {
-    flex: 0 0 63%;
-    height: 400px;
-    overflow: hidden;
-}
+        /* RIGHT IMAGE */
+        .hero-image {
+            flex: 0 0 63%;
+            height: 400px;
+            overflow: hidden;
+        }
 
-/* IMAGE ITSELF */
-.hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    object-position: center right; /* or center */  /* 🔥 key fix */
-    display: block;
-}
-
+        /* IMAGE ITSELF */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center right;
+            display: block;
+        }
 
         .hero h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: 39px;
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.7px;
-    margin-top: 27px;
-    margin-bottom: 20px;
-}
+            font-family: 'Inter', sans-serif;
+            font-size: 39px;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.7px;
+            margin-top: 27px;
+            margin-bottom: 20px;
+        }
 
-
-
-.hero p {
-    font-size: 16px;
-    margin-bottom: 15px;
-    opacity: 0.9;
-    line-height: 1.5;
-}
+        .hero p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
 
         .search-bar {
-    display: flex;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    max-width: 100%;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
         .search-bar input {
             flex: 1;
@@ -194,13 +191,13 @@
 
         /* Quick Action Cards - New Design */
         .quick-actions {
-    max-width: 1000px;
-    margin: -30px auto 40px;
-    padding: 0 50px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
+            max-width: 1000px;
+            margin: -30px auto 40px;
+            padding: 0 50px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
 
         .action-card {
             background: white;
@@ -555,6 +552,136 @@
             color: #bdc3c7;
         }
 
+        /* Popup Modal Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .popup-overlay.hidden {
+            display: none;
+        }
+
+        .popup-modal {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: popupFadeIn 0.3s ease-out;
+        }
+
+        @keyframes popupFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 24px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+
+        .popup-close:hover {
+            color: #333;
+        }
+
+        .popup-content {
+            padding: 40px 30px 30px;
+        }
+
+        .popup-content h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .popup-content p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 25px;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup-input {
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .popup-input:focus {
+            border-color: #ff6f61;
+        }
+
+        .popup-input::placeholder {
+            color: #aaa;
+        }
+
+        .popup-submit {
+            padding: 14px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .popup-submit:hover {
+            background-color: #e55a4e;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .main-header {
@@ -615,29 +742,36 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 25px;
             }
+
+            /* Hide nav menu and login button on tablets */
+            .nav-menu {
+                display: none;
+            }
+
+            .login-btn {
+                display: none;
+            }
+
+            .main-header {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 767px) {
             .main-header {
                 padding: 15px 20px;
                 flex-direction: column;
-                gap: 15px;
+                gap: 0;
+                justify-content: center;
             }
 
+            /* Hide nav menu and login button on mobile */
             .nav-menu {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-                width: 100%;
-            }
-
-            .nav-menu a {
-                display: block;
-                padding: 8px;
+                display: none;
             }
 
             .login-btn {
-                width: 100%;
+                display: none;
             }
 
             .hero-content {
@@ -741,6 +875,22 @@
                 width: 25px;
                 height: 25px;
             }
+
+            .popup-content {
+                padding: 35px 20px 25px;
+            }
+
+            .popup-content h2 {
+                font-size: 20px;
+            }
+
+            .popup-content h3 {
+                font-size: 18px;
+            }
+
+            .popup-content p {
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -780,6 +930,14 @@
             .current-price {
                 font-size: 18px;
             }
+
+            .popup-content h2 {
+                font-size: 18px;
+            }
+
+            .popup-content h3 {
+                font-size: 16px;
+            }
         }
 
         @media (min-width: 1400px) {
@@ -801,11 +959,86 @@
                 gap: 30px;
             }
         }
+
+        @media (min-width: 1025px) {
+            /* Show nav menu and login button only on desktop */
+            .nav-menu {
+                display: flex;
+            }
+
+            .login-btn {
+                display: block;
+            }
+        }
     </style>
 </head>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
 
 <body>
+    <!-- Popup Modal -->
+    <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-modal">
+        <button class="popup-close" id="popupClose">✕</button>
+        <div class="popup-content">
+            <h2>How can we help?</h2>
+            <h3>Get assistance in booking a lab test!</h3>
+            <p>Our health advisors will connect to understand your needs.</p>
+            <form class="popup-form" id="popupForm">
+                <input type="text" class="popup-input" id="popupName" placeholder="Name" required>
+                <input type="tel" class="popup-input" id="popupPhone" placeholder="Phone No.*" required pattern="[0-9]{10}">
+                <button type="submit" class="popup-submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Popup Modal Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupClose = document.getElementById('popupClose');
+        const popupForm = document.getElementById('popupForm');
+
+        // Show popup on page load
+        popupOverlay.classList.remove('hidden');
+
+        // Close popup when clicking the X button
+        popupClose.addEventListener('click', function() {
+            popupOverlay.classList.add('hidden');
+        });
+
+        // Prevent closing when clicking inside the modal
+        document.querySelector('.popup-modal').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Close popup when clicking outside the modal
+        popupOverlay.addEventListener('click', function() {
+            popupOverlay.classList.add('hidden');
+        });
+
+        // Handle form submission
+        popupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('popupName').value;
+            const phone = document.getElementById('popupPhone').value;
+            
+            // Create WhatsApp message
+            const message = encodeURIComponent(`Hi, I need assistance in booking a lab test.\nName: ${name}\nPhone: ${phone}`);
+            
+            // Redirect to WhatsApp
+            window.open(`https://wa.me/917042518999?text=${message}`, '_blank');
+            
+            // Close popup
+            popupOverlay.classList.add('hidden');
+            
+            // Reset form
+            popupForm.reset();
+        });
+    });
+</script>
+
     <!-- Header -->
     <header class="header">
         <div class="top-header">
@@ -899,396 +1132,438 @@
             </a>
             <a href="#" class="category-card">
                 <img src="ecg.jpg" alt="ECG" class="category-img">
-                <h4>ECG</h4>
+                <h4>ECGContinue3:34 pm</h4>
             </a>
         </div>
     </section>
-
-    <!-- Popular Tests -->
-    <section class="popular-tests">
-        <h2 class="section-title">Most Booked Health Checkups</h2>
-        <div class="test-grid" id="testGrid">
-            <div class="test-card" data-test="comprehensive gold full body checkup">
-                <h4>Comprehensive Gold Full Body Checkup</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 86 tests</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹2,249</span>
-                    <span class="original-price">₹4,498</span>
-                    <span class="discount-badge">50% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+<!-- Popular Tests -->
+<section class="popular-tests">
+    <h2 class="section-title">Most Booked Health Checkups</h2>
+    <div class="test-grid" id="testGrid">
+        <div class="test-card" data-test="comprehensive gold full body checkup">
+            <h4>Comprehensive Gold Full Body Checkup</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 86 tests</span>
             </div>
-
-            <div class="test-card" data-test="cbc complete blood count">
-                <h4>CBC (Complete Blood Count)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 21 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹319</span>
-                    <span class="original-price">₹350</span>
-                    <span class="discount-badge">9% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹2,249</span>
+                <span class="original-price">₹4,498</span>
+                <span class="discount-badge">50% OFF</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="thyroid profile total t3 t4 tsh">
-                <h4>Thyroid Profile Total (T3, T4 & TSH)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 3 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹490</span>
-                    <span class="original-price">₹550</span>
-                    <span class="discount-badge">11% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="cbc complete blood count">
+            <h4>CBC (Complete Blood Count)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 21 tests</span>
+                <span>• Report in 6 hrs</span>
             </div>
-
-            <div class="test-card" data-test="lipid profile cholesterol">
-                <h4>Lipid Profile</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 8 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹399</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹319</span>
+                <span class="original-price">₹350</span>
+                <span class="discount-badge">9% OFF</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="lft liver function test">
-                <h4>LFT (Liver Function Test)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 11 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹399</span>
-                    <span class="original-price">₹710</span>
-                    <span class="discount-badge">44% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="thyroid profile total t3 t4 tsh">
+            <h4>Thyroid Profile Total (T3, T4 & TSH)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 3 tests</span>
+                <span>• Report in 6 hrs</span>
             </div>
-
-            <div class="test-card" data-test="hba1c glycosylated hemoglobin diabetes">
-                <h4>HbA1c (Glycosylated Hemoglobin)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 1 test</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹379</span>
-                    <span class="original-price">₹440</span>
-                    <span class="discount-badge">14% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹490</span>
+                <span class="original-price">₹550</span>
+                <span class="discount-badge">11% OFF</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="kidney function test kft rft renal">
-                <h4>Kidney Function Test (KFT/RFT)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 10 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹449</span>
-                    <span class="original-price">₹650</span>
-                    <span class="discount-badge">31% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="lipid profile cholesterol">
+            <h4>Lipid Profile</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 8 tests</span>
+                <span>• Report in 6 hrs</span>
             </div>
-
-            <div class="test-card" data-test="vitamin d 25-hydroxy d3">
-                <h4>Vitamin D (25-Hydroxy)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 1 test</span>
-                    <span>• Report in 24 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹799</span>
-                    <span class="original-price">₹1,200</span>
-                    <span class="discount-badge">33% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹399</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="vitamin b12 cobalamin">
-                <h4>Vitamin B12</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 1 test</span>
-                    <span>• Report in 24 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹599</span>
-                    <span class="original-price">₹900</span>
-                    <span class="discount-badge">33% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="lft liver function test">
+            <h4>LFT (Liver Function Test)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 11 tests</span>
+                <span>• Report in 6 hrs</span>
             </div>
-
-            <div class="test-card" data-test="fasting blood sugar fbs glucose diabetes">
-                <h4>FBS (Fasting Blood Sugar)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 1 test</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹79</span>
-                    <span class="original-price">₹120</span>
-                    <span class="discount-badge">34% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹399</span>
+                <span class="original-price">₹710</span>
+                <span class="discount-badge">44% OFF</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="urine routine microscopy urinalysis">
-                <h4>Urine R/M (Routine & Microscopy)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 19 tests</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹119</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="hba1c glycosylated hemoglobin diabetes">
+            <h4>HbA1c (Glycosylated Hemoglobin)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 1 test</span>
+                <span>• Report in 6 hrs</span>
             </div>
-
-            <div class="test-card" data-test="iron deficiency profile ferritin">
-                <h4>Iron Deficiency Profile</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 4 tests</span>
-                    <span>• Report in 24 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹849</span>
-                    <span class="original-price">₹1,200</span>
-                    <span class="discount-badge">29% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+            <div class="price-section">
+                <span class="current-price">₹379</span>
+                <span class="original-price">₹440</span>
+                <span class="discount-badge">14% OFF</span>
             </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
 
-            <div class="test-card" data-test="dengue fever test ns1 antigen">
-                <h4>Dengue Test (NS1 Antigen)</h4>
-                <div class="test-info">
-                    <span>⏱️ Contains 1 test</span>
-                    <span>• Report in 6 hrs</span>
-                </div>
-                <div class="price-section">
-                    <span class="current-price">₹549</span>
-                    <span class="original-price">₹800</span>
-                    <span class="discount-badge">31% OFF</span>
-                </div>
-                <button class="book-btn">BOOK NOW</button>
+        <div class="test-card" data-test="kidney function test kft rft renal">
+            <h4>Kidney Function Test (KFT/RFT)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 10 tests</span>
+                <span>• Report in 6 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹449</span>
+                <span class="original-price">₹650</span>
+                <span class="discount-badge">31% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="vitamin d 25-hydroxy d3">
+            <h4>Vitamin D (25-Hydroxy)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 1 test</span>
+                <span>• Report in 24 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹799</span>
+                <span class="original-price">₹1,200</span>
+                <span class="discount-badge">33% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="vitamin b12 cobalamin">
+            <h4>Vitamin B12</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 1 test</span>
+                <span>• Report in 24 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹599</span>
+                <span class="original-price">₹900</span>
+                <span class="discount-badge">33% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="fasting blood sugar fbs glucose diabetes">
+            <h4>FBS (Fasting Blood Sugar)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 1 test</span>
+                <span>• Report in 6 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹79</span>
+                <span class="original-price">₹120</span>
+                <span class="discount-badge">34% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="urine routine microscopy urinalysis">
+            <h4>Urine R/M (Routine & Microscopy)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 19 tests</span>
+                <span>• Report in 6 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹119</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="iron deficiency profile ferritin">
+            <h4>Iron Deficiency Profile</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 4 tests</span>
+                <span>• Report in 24 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹849</span>
+                <span class="original-price">₹1,200</span>
+                <span class="discount-badge">29% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+
+        <div class="test-card" data-test="dengue fever test ns1 antigen">
+            <h4>Dengue Test (NS1 Antigen)</h4>
+            <div class="test-info">
+                <span>⏱️ Contains 1 test</span>
+                <span>• Report in 6 hrs</span>
+            </div>
+            <div class="price-section">
+                <span class="current-price">₹549</span>
+                <span class="original-price">₹800</span>
+                <span class="discount-badge">31% OFF</span>
+            </div>
+            <button class="book-btn">BOOK NOW</button>
+        </div>
+    </div>
+    <div class="no-results" id="noResults">
+        No tests found matching your search. Please try different keywords.
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+    <div class="features-content">
+        <h2 class="section-title">Why Choose Us?</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <img src="hm.jpg" alt="Home Sample Collection" class="feature-img">
+                <h4>Home Sample Collection</h4>
+                <p>Trained phlebotomists collect samples from your doorstep</p>
+            </div>
+            <div class="feature-item">
+                <img src="nabl.avif" alt="Certified Labs" class="feature-img">
+                <h4>Certified Labs</h4>
+                <p>Partner with NABL, CAP & ISO certified labs</p>
+            </div>
+            <div class="feature-item">
+                <img src="dj.webp" alt="Digital Reports" class="feature-img">
+                <h4>Digital Reports</h4>
+                <p>Receive reports via email and WhatsApp</p>
+            </div>
+            <div class="feature-item">
+                <img src="hh.jpg" alt="Best Prices" class="feature-img">
+                <h4>Best Prices</h4>
+                <p>Get up to 50% discount on all tests</p>
             </div>
         </div>
-        <div class="no-results" id="noResults">
-            No tests found matching your search. Please try different keywords.
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div>
+            <h4>About Us</h4>
+            <ul>
+                <li><a href="#">About 1mg</a></li>
+                <li><a href="#">Our Team</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press</a></li>
+            </ul>
         </div>
-    </section>
-
-    <!-- Features -->
-    <section class="features">
-        <div class="features-content">
-            <h2 class="section-title">Why Choose Us?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <img src="hm.jpg" alt="Home Sample Collection" class="feature-img">
-                    <h4>Home Sample Collection</h4>
-                    <p>Trained phlebotomists collect samples from your doorstep</p>
-                </div>
-                <div class="feature-item">
-                    <img src="nabl.avif" alt="Certified Labs" class="feature-img">
-                    <h4>Certified Labs</h4>
-                    <p>Partner with NABL, CAP & ISO certified labs</p>
-                </div>
-                <div class="feature-item">
-                    <img src="dj.webp" alt="Digital Reports" class="feature-img">
-                    <h4>Digital Reports</h4>
-                    <p>Receive reports via email and WhatsApp</p>
-                </div>
-                <div class="feature-item">
-                    <img src="hh.jpg" alt="Best Prices" class="feature-img">
-                    <h4>Best Prices</h4>
-                    <p>Get up to 50% discount on all tests</p>
-                </div>
-            </div>
+        <div>
+            <h4>Our Services</h4>
+            <ul>
+                <li><a href="#">Lab Tests</a></li>
+                <li><a href="#">Health Packages</a></li>
+                <li><a href="#">Radiology</a></li>
+                <li><a href="#">Doctor Consultation</a></li>
+            </ul>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h4>About Us</h4>
-                <ul>
-                    <li><a href="#">About 1mg</a></li>
-                    <li><a href="#">Our Team</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Our Services</h4>
-                <ul>
-                    <li><a href="#">Lab Tests</a></li>
-                    <li><a href="#">Health Packages</a></li>
-                    <li><a href="#">Radiology</a></li>
-                    <li><a href="#">Doctor Consultation</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="tel:7042518999">📞 7042518999</a></li>
-                    <li><a href="https://wa.me/917042518999" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="footer-whatsapp-icon">WhatsApp</a></li>
-                    <li><a href="mailto:support@1mg.com">📧 support@1mg.com</a></li>
-                </ul>
-            </div>
+        <div>
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 1mg Labs. All rights reserved. | Making healthcare accessible and affordable.</p>
+        <div>
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="tel:7042518999">📞 7042518999</a></li>
+                <li><a href="https://wa.me/917042518999" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="footer-whatsapp-icon">WhatsApp</a></li>
+                <li><a href="mailto:support@1mg.com">📧 support@1mg.com</a></li>
+            </ul>
         </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 1mg Labs. All rights reserved. | Making healthcare accessible and affordable.</p>
+    </div>
+</footer>
 
-    <!-- Floating Contact Button -->
-    <a href="tel:7042518999" class="floating-contact" title="Contact Us">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-        </svg>
-    </a>
+<!-- Floating Contact Button -->
+<a href="tel:7042518999" class="floating-contact" title="Contact Us">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+    </svg>
+</a>
 
-    <script>
-        // Search functionality with auto-scroll
-        function searchTests() {
-            const searchInput = document.getElementById('searchInput');
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            const testCards = document.querySelectorAll('.test-card');
-            const noResults = document.getElementById('noResults');
-            let foundCount = 0;
-            let firstVisibleCard = null;
+<script>
+    // Popup Modal Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupClose = document.getElementById('popupClose');
+        const popupForm = document.getElementById('popupForm');
 
-            if (searchTerm === '') {
-                testCards.forEach(card => {
-                    card.classList.remove('hidden');
-                    card.classList.remove('highlight');
-                });
-                noResults.classList.remove('show');
-                return;
-            }
+        // Show popup on page load
+        popupOverlay.classList.remove('hidden');
 
-            // Search through test cards
+        // Close popup when clicking the X button
+        popupClose.addEventListener('click', function() {
+            popupOverlay.classList.add('hidden');
+        });
+
+        // Prevent closing when clicking inside the modal
+        document.querySelector('.popup-modal').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Close popup when clicking outside the modal
+        popupOverlay.addEventListener('click', function() {
+            popupOverlay.classList.add('hidden');
+        });
+
+        // Handle form submission
+        popupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('popupName').value;
+            const phone = document.getElementById('popupPhone').value;
+            
+            // Create WhatsApp message
+            const message = encodeURIComponent(`Hi, I need assistance in booking a lab test.\nName: ${name}\nPhone: ${phone}`);
+            
+            // Redirect to WhatsApp
+            window.open(`https://wa.me/917042518999?text=${message}`, '_blank');
+            
+            // Close popup
+            popupOverlay.classList.add('hidden');
+            
+            // Reset form
+            popupForm.reset();
+        });
+    });
+
+    // Search functionality with auto-scroll
+    function searchTests() {
+        const searchInput = document.getElementById('searchInput');
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const testCards = document.querySelectorAll('.test-card');
+        const noResults = document.getElementById('noResults');
+        let foundCount = 0;
+        let firstVisibleCard = null;
+
+        if (searchTerm === '') {
             testCards.forEach(card => {
-                const testName = card.getAttribute('data-test');
+                card.classList.remove('hidden');
                 card.classList.remove('highlight');
-                
-                if (testName.includes(searchTerm)) {
-                    card.classList.remove('hidden');
-                    foundCount++;
-                    
-                    // Store first visible card
-                    if (!firstVisibleCard) {
-                        firstVisibleCard = card;
-                    }
-                } else {
-                    card.classList.add('hidden');
-                }
             });
-
-            // Show/hide no results message
-            if (foundCount === 0) {
-                noResults.classList.add('show');
-            } else {
-                noResults.classList.remove('show');
-                
-                // Scroll to first visible card and highlight it
-                if (firstVisibleCard) {
-                    setTimeout(() => {
-                        firstVisibleCard.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center'
-                        });
-                        firstVisibleCard.classList.add('highlight');
-                        
-                        // Remove highlight after animation
-                        setTimeout(() => {
-                            firstVisibleCard.classList.remove('highlight');
-                        }, 1000);
-                    }, 100);
-                }
-            }
+            noResults.classList.remove('show');
+            return;
         }
 
-        // Allow search on Enter key
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchTests();
+        // Search through test cards
+        testCards.forEach(card => {
+            const testName = card.getAttribute('data-test');
+            card.classList.remove('highlight');
+            
+            if (testName.includes(searchTerm)) {
+                card.classList.remove('hidden');
+                foundCount++;
+                
+                // Store first visible card
+                if (!firstVisibleCard) {
+                    firstVisibleCard = card;
+                }
+            } else {
+                card.classList.add('hidden');
             }
         });
 
-        // Clear search on input change
-        document.getElementById('searchInput').addEventListener('input', function() {
-            if (this.value === '') {
-                searchTests();
-            }
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
+        // Show/hide no results message
+        if (foundCount === 0) {
+            noResults.classList.add('show');
+        } else {
+            noResults.classList.remove('show');
+            
+            // Scroll to first visible card and highlight it
+            if (firstVisibleCard) {
+                setTimeout(() => {
+                    firstVisibleCard.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center'
                     });
-                }
-            });
+                    firstVisibleCard.classList.add('highlight');
+                    
+                    // Remove highlight after animation
+                    setTimeout(() => {
+                        firstVisibleCard.classList.remove('highlight');
+                    }, 1000);
+                }, 100);
+            }
+        }
+    }
+
+    // Allow search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchTests();
+        }
+    });
+
+    // Clear search on input change
+    document.getElementById('searchInput').addEventListener('input', function() {
+        if (this.value === '') {
+            searchTests();
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
+    });
 
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+    // Add animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.test-card, .category-card, .feature-item').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.5s, transform 0.5s';
-            observer.observe(el);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
         });
+    }, observerOptions);
 
-        // Book button functionality - Redirect to WhatsApp
-        document.querySelectorAll('.book-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const testName = this.closest('.test-card').querySelector('h4').textContent;
-                const whatsappMessage = encodeURIComponent(`Hi, I want to book ${testName}`);
-                window.open(`https://wa.me/917042518999?text=${whatsappMessage}`, '_blank');
-            });
+    // Observe all cards
+    document.querySelectorAll('.test-card, .category-card, .feature-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s, transform 0.5s';
+        observer.observe(el);
+    });
+
+    // Book button functionality - Redirect to WhatsApp
+    document.querySelectorAll('.book-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const testName = this.closest('.test-card').querySelector('h4').textContent;
+            const whatsappMessage = encodeURIComponent(`Hi, I want to book ${testName}`);
+            window.open(`https://wa.me/917042518999?text=${whatsappMessage}`, '_blank');
         });
-    </script>
-</body>
-</html>
+    });
+</script>
