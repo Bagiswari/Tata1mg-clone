@@ -21,8 +21,6 @@
         .header {
             background-color: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
             z-index: 1000;
         }
 
@@ -81,37 +79,65 @@
             color: white;
         }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
-            padding: 60px 50px;
-            color: black;
-        }
+        /* Hero Section - Split Design */
+.hero {
+    background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
+    display: flex;
+    align-items: center;
+    min-height: 100px;
+}
 
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+/* LEFT CONTENT */
+.hero-content {
+    flex: 0 0 45%;
+    padding: 40px 40px 40px 50px;
+    color: black;
+}
+
+/* RIGHT IMAGE */
+.hero-image {
+    flex: 0 0 63%;
+    height: 400px;
+    overflow: hidden;
+}
+
+/* IMAGE ITSELF */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center right; /* or center */  /* 🔥 key fix */
+    display: block;
+}
+
 
         .hero h1 {
-            font-size: 45px;
-            margin-bottom: 20px;
-        }
+    font-family: 'Inter', sans-serif;
+    font-size: 39px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.7px;
+    margin-top: 27px;
+    margin-bottom: 20px;
+}
 
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
+
+
+.hero p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+    line-height: 1.5;
+}
 
         .search-bar {
-            display: flex;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            max-width: 600px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 
         .search-bar input {
             flex: 1;
@@ -136,15 +162,45 @@
             background-color: #e55a4e;
         }
 
+        /* Floating Contact Button */
+        .floating-contact {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff6f61;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .floating-contact:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .floating-contact svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
         /* Quick Action Cards - New Design */
         .quick-actions {
-            max-width: 1000px;
-            margin: -40px auto 40px;
-            padding: 0 50px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
+    max-width: 1000px;
+    margin: -30px auto 40px;
+    padding: 0 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
 
         .action-card {
             background: white;
@@ -307,6 +363,7 @@
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s;
+            scroll-margin-top: 100px;
         }
 
         .test-card:hover {
@@ -315,6 +372,20 @@
 
         .test-card.hidden {
             display: none;
+        }
+
+        .test-card.highlight {
+            animation: highlightPulse 1s ease-in-out;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% {
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 111, 97, 0.6);
+                transform: scale(1.02);
+            }
         }
 
         .test-card h4 {
@@ -491,7 +562,17 @@
             }
 
             .hero {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .hero-content {
                 padding: 50px 30px;
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 300px;
             }
 
             .hero h1 {
@@ -559,8 +640,12 @@
                 width: 100%;
             }
 
-            .hero {
+            .hero-content {
                 padding: 40px 20px;
+            }
+
+            .hero-image {
+                height: 250px;
             }
 
             .hero h1 {
@@ -644,6 +729,18 @@
                 font-size: 12px;
                 padding-top: 15px;
             }
+
+            .floating-contact {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .floating-contact svg {
+                width: 25px;
+                height: 25px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -686,8 +783,11 @@
         }
 
         @media (min-width: 1400px) {
-            .main-header,
-            .hero-content,
+            .hero-content {
+                max-width: 700px;
+                padding-left: calc((100% - 1400px) / 2 + 50px);
+            }
+
             .categories,
             .popular-tests,
             .features-content,
@@ -703,6 +803,8 @@
         }
     </style>
 </head>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -711,7 +813,7 @@
         </div>
         <div class="main-header">
             <a href="#" class="logo">
-                <img src="tata-logo.png" alt="TATA1mg Labs Logo">
+                <img src="final-logo.png" alt="TATA1mg Labs Logo">
             </a>
             <nav>
                 <ul class="nav-menu">
@@ -730,12 +832,15 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Book lab tests online from trusted and certified labs</h1>
+            <h1>Book Lab Tests Online from the Comfort of your Home</h1>
             <p>Get tested by certified labs from the comfort of your home. Compare prices, read reviews, and book your tests today.</p>
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search for tests, packages, or health concerns...">
                 <button onclick="searchTests()">Search</button>
             </div>
+        </div>
+        <div class="hero-image">
+            <img src="tata-banner.png" alt="Lab Testing Banner">
         </div>
     </section>
 
@@ -1058,19 +1163,27 @@
         </div>
     </footer>
 
+    <!-- Floating Contact Button -->
+    <a href="tel:7042518999" class="floating-contact" title="Contact Us">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+    </a>
+
     <script>
-        // Search functionality
+        // Search functionality with auto-scroll
         function searchTests() {
             const searchInput = document.getElementById('searchInput');
             const searchTerm = searchInput.value.toLowerCase().trim();
             const testCards = document.querySelectorAll('.test-card');
             const noResults = document.getElementById('noResults');
             let foundCount = 0;
+            let firstVisibleCard = null;
 
             if (searchTerm === '') {
-                // Show all tests if search is empty
                 testCards.forEach(card => {
                     card.classList.remove('hidden');
+                    card.classList.remove('highlight');
                 });
                 noResults.classList.remove('show');
                 return;
@@ -1079,9 +1192,16 @@
             // Search through test cards
             testCards.forEach(card => {
                 const testName = card.getAttribute('data-test');
+                card.classList.remove('highlight');
+                
                 if (testName.includes(searchTerm)) {
                     card.classList.remove('hidden');
                     foundCount++;
+                    
+                    // Store first visible card
+                    if (!firstVisibleCard) {
+                        firstVisibleCard = card;
+                    }
                 } else {
                     card.classList.add('hidden');
                 }
@@ -1092,6 +1212,22 @@
                 noResults.classList.add('show');
             } else {
                 noResults.classList.remove('show');
+                
+                // Scroll to first visible card and highlight it
+                if (firstVisibleCard) {
+                    setTimeout(() => {
+                        firstVisibleCard.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center'
+                        });
+                        firstVisibleCard.classList.add('highlight');
+                        
+                        // Remove highlight after animation
+                        setTimeout(() => {
+                            firstVisibleCard.classList.remove('highlight');
+                        }, 1000);
+                    }, 100);
+                }
             }
         }
 
