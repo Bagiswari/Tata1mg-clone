@@ -80,39 +80,47 @@
         }
 
         /* Hero Section - Split Design */
-        .hero {
-            background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
-            display: flex;
-            align-items: center;
-            min-height: 100px;
-        }
-
-        /* LEFT CONTENT */
-        .hero-content {
-            flex: 0 0 45%;
-            padding: 40px 40px 40px 50px;
-            color: black;
-        }
-
-        /* RIGHT IMAGE */
-        .hero-image {
-    flex: 0 0 55%;
-    max-width: 55%;
-    height: 500px;
-    overflow: hidden;
+.hero {
+    background: linear-gradient(135deg, #ff6f61 0%, #ff6f61 100%);
     display: flex;
     align-items: center;
-    justify-content: center;
+    min-height: 100px;
 }
 
-        /* IMAGE ITSELF */
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            object-position: center center;
-            display: block;
-        }
+/* LEFT CONTENT */
+.hero-content {
+    flex: 0 0 45%;
+    padding: 40px 40px 40px 50px;
+    color: black;
+}
+
+/* RIGHT IMAGE */
+.hero-image {
+    flex: 0 0 63%;
+    height: 400px;
+    overflow: hidden;
+}
+
+/* IMAGE ITSELF */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center right; /* or center */  /* 🔥 key fix */
+    display: block;
+}
+
+
+        .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 39px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.7px;
+    margin-top: 27px;
+    margin-bottom: 20px;
+}
+
 
         .hero p {
             font-size: 16px;
@@ -774,19 +782,8 @@
 
             .hero-image {
                 height: 250px;
-                width: 100%;
-        max-width: 100%;
-        flex: 1;
+                
             }
-
-            .hero-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
 
             .hero h1 {
                 font-size: 28px;
