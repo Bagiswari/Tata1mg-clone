@@ -102,13 +102,19 @@
         }
 
         /* IMAGE ITSELF */
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            object-position: center right;
-            display: block;
-        }
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center center; /* Changed from 'center right' to 'center center' */
+    display: block;
+}
+        @media (max-width: 767px) {
+    .hero-image img {
+        object-fit: cover;
+        object-position: center center;
+    }
+}
 
         .hero h1 {
             font-family: 'Inter', sans-serif;
