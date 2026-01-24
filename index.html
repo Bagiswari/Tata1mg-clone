@@ -96,24 +96,47 @@
 
         /* RIGHT IMAGE */
         .hero-image {
-            flex: 0 0 63%;
+            flex: 0 0 55%;
             height: 400px;
             overflow: hidden;
         }
 
         /* IMAGE ITSELF */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center right;
+            display: block;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+    .hero-image img {
+        object-position: 70% center;
+    }
+}
+
+/* LEFT CONTENT */
+.hero-content {
+    flex: 0 0 45%;
+    padding: 40px 40px 40px 50px;
+    color: black;
+}
+
+/* RIGHT IMAGE */
+.hero-image {
+    flex: 0 0 63%;
+    height: 400px;
+    overflow: hidden;
+}
+
+/* IMAGE ITSELF */
 .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    object-position: center center; /* Changed from 'center right' to 'center center' */
+    object-position: center right; /* or center */  /* 🔥 key fix */
     display: block;
-}
-        @media (max-width: 767px) {
-    .hero-image img {
-        object-fit: cover;
-        object-position: center center;
-    }
 }
 
         .hero h1 {
@@ -152,7 +175,7 @@
 
         .search-bar button {
             padding: 18px 30px;
-            background-color: #ff6f61;
+            background-color: #080808;
             border: none;
             color: white;
             cursor: pointer;
