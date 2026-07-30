@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Redirect index.html to the homepage
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^index\.html$ https://tata1mglabs.com/ [R=301,L]
