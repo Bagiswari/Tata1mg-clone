@@ -141,18 +141,6 @@ body {
     background-color: #e55a4e;
 }
 
-/* Hero Quick CTA (Call / WhatsApp) */
-.hero-quick-cta {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.hero-quick-cta .cta-btn {
-    padding: 12px 22px;
-    font-size: 14px;
-}
-
 /* Floating Contact Button */
 .floating-contact {
     position: fixed;
@@ -917,8 +905,6 @@ display: block;
     .search-bar { flex-direction: column; }
     .search-bar input { padding: 15px; }
     .search-bar button { padding: 15px; width: 100%; }
-    .hero-quick-cta { flex-direction: column; }
-    .hero-quick-cta .cta-btn { width: 100%; justify-content: center; }
     .quick-actions { margin: -30px auto 30px; padding: 0 20px; grid-template-columns: 1fr; gap: 15px; }
     .popular-tests { padding: 0 20px; margin: 30px auto; }
     .section-title { font-size: 24px; margin-bottom: 20px; }

@@ -72,12 +72,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Hero WhatsApp CTA → prefill message with city name
-    document.querySelectorAll('.hero-whatsapp-cta').forEach(function(btn) {
-        var city = btn.getAttribute('data-city');
-        if (city) {
-            btn.href = 'https://wa.me/919650461818?text=' + encodeURIComponent('Hi, I want to book a lab test in ' + city);
-        }
-    });
-
 });
