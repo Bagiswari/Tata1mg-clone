@@ -26,8 +26,6 @@ var RADIOLOGY_WORDS = ['radiology', 'x ray', 'xray', 'ultrasound', 'usg', 'sonog
 // Whole-query intents → destination. First match wins.
 var SEARCH_INTENTS = [
     { go: { contact: 'contact' },   words: ['contact', 'contact us', 'call', 'call us', 'phone', 'phone number', 'customer care', 'support', 'help', 'help center', 'help centre'] },
-    { go: { contact: 'medicines' }, words: ['medicine', 'medicines', 'pharmacy', 'buy medicine', 'buy medicines'] },
-    { go: { contact: 'doctor' },    words: ['doctor', 'doctors', 'doctor consultation', 'doctor consultations', 'consultation', 'consult', 'consult doctor'] },
     { go: { url: '/radiology/' },   words: RADIOLOGY_WORDS },
     { go: { url: '/blog/' },        words: ['blog', 'blogs', 'article', 'articles', 'health blog'] },
     { go: { url: '/diagnostic-centre/' }, words: ['location', 'locations', 'diagnostic centre', 'diagnostic center', 'centre', 'center', 'lab near me', 'near me', 'cities', 'city'] },
@@ -42,12 +40,10 @@ function normalizeText(s) {
     return (s || '').toLowerCase().replace(/x-ray/g, 'x ray').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
-// ── Contact modal (shared by nav links, footer links, lab tests & search) ──
+// ── Contact modal (Contact Us / Help Center links and search with no results) ──
 var CONTACT_TOPICS = {
     contact:   { title: 'Contact Us',            text: 'Speak to our health advisors to book a test or get help with a booking.', wa: 'Hi, I need help with booking a lab test.' },
     help:      { title: 'Help Center',           text: 'Need help? Speak to our health advisors for assistance with tests, bookings and reports.', wa: 'Hi, I need help.' },
-    medicines: { title: 'Medicines',             text: 'Please contact us for more info on medicines.', wa: 'Hi, I have a query about medicines.' },
-    doctor:    { title: 'Doctor Consultations',  text: 'Please contact us for more info on doctor consultations.', wa: 'Hi, I have a query about doctor consultations.' },
     noresults: { title: 'Please contact us for more info', text: '', wa: 'Hi, I was looking for information on your website.' }
 };
 
@@ -98,12 +94,9 @@ function closeContactModal() {
     if (contactModalReturnFocus && contactModalReturnFocus.focus) contactModalReturnFocus.focus();
 }
 
-function openTestBooking(testName) {
-    openContactModal('contact', {
-        title: 'Book ' + testName,
-        text: 'Call us to book this test or to check availability, price and home sample collection in your area.',
-        wa: 'Hi, I want to book ' + testName
-    });
+// Lab tests are booked by phone: start the call straight away.
+function callUs() {
+    window.location.href = SITE.phoneTel;
 }
 
 // Touch devices can dial directly; elsewhere show the number in a modal.
@@ -129,15 +122,17 @@ function containsAllWords(text, query) {
     });
 }
 
+// 'test' if the query names a lab test, 'category' if it names a category, else null.
 function findLabTest(categories, query) {
+    var result = null;
     for (var i = 0; i < categories.length; i++) {
         var c = categories[i];
-        if (containsAllWords(c.name, query)) return true;
         for (var j = 0; j < c.tests.length; j++) {
-            if (containsAllWords(c.tests[j], query)) return true;
+            if (containsAllWords(c.tests[j], query)) return 'test';
         }
+        if (containsAllWords(c.name, query)) result = 'category';
     }
-    return false;
+    return result;
 }
 
 // ── Search (global so onclick= can find it) ──────────────────────────
@@ -227,16 +222,16 @@ function searchTests() {
     var city = matchCity(q);
     if (city) { window.location.href = city; return; }
 
-    // 3. Tests & packages shown on this page (existing behaviour)
     var core = q.split(' ').filter(function(w) { return FILLER_WORDS.indexOf(w) === -1; }).join(' ') || q;
-    if (filterTestCards(raw.toLowerCase(), core)) return;
-
-    // 4. Our lab test list, radiology words, blog posts
     withLabTests(function(categories) {
-        if (core.length >= 2 && findLabTest(categories, core)) {
-            window.location.href = '/lab-tests/?q=' + encodeURIComponent(core);
-            return;
-        }
+        // 3. An individual lab test → call us; a test category → the filtered Lab Tests page
+        var labMatch = core.length >= 2 ? findLabTest(categories, core) : null;
+        if (labMatch === 'test') return callUs();
+        if (labMatch === 'category') { window.location.href = '/lab-tests/?q=' + encodeURIComponent(core); return; }
+
+        // 4. Packages shown on this page (existing behaviour), radiology words, blog posts
+        if (filterTestCards(raw.toLowerCase(), core)) return;
+
         var radiology = RADIOLOGY_WORDS.some(function(w) { return (' ' + q + ' ').indexOf(' ' + w + ' ') !== -1; });
         if (radiology) { window.location.href = '/radiology/'; return; }
 
@@ -276,14 +271,15 @@ function initLabTestsPage() {
         var grid = document.createElement('div');
         grid.className = 'city-link-grid';
         cat.tests.forEach(function(name) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'city-link-card lab-test-item';
-            btn.dataset.search = normalizeText(name + ' ' + cat.name);
-            btn.innerHTML = '<span class="lab-test-name"></span><span class="lab-test-book">Book &rarr;</span>';
-            btn.querySelector('.lab-test-name').textContent = name;
-            btn.addEventListener('click', function() { openTestBooking(name); });
-            grid.appendChild(btn);
+            // Each test is a direct call link.
+            var link = document.createElement('a');
+            link.href = SITE.phoneTel;
+            link.className = 'city-link-card lab-test-item';
+            link.dataset.search = normalizeText(name + ' ' + cat.name);
+            link.setAttribute('aria-label', 'Call ' + SITE.phoneDisplay + ' to book ' + name);
+            link.innerHTML = '<span class="lab-test-name"></span><span class="lab-test-book">Book &rarr;</span>';
+            link.querySelector('.lab-test-name').textContent = name;
+            grid.appendChild(link);
         });
         block.appendChild(heading);
         block.appendChild(grid);
