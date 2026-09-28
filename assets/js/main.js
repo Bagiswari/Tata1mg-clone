@@ -25,7 +25,7 @@ var RADIOLOGY_WORDS = ['radiology', 'x ray', 'xray', 'ultrasound', 'usg', 'sonog
 
 // Whole-query intents → destination. First match wins.
 var SEARCH_INTENTS = [
-    { go: { contact: 'contact' },   words: ['contact', 'contact us', 'call', 'call us', 'phone', 'phone number', 'customer care', 'support', 'help', 'help center', 'help centre'] },
+    { go: { call: true },           words: ['contact', 'contact us', 'call', 'call us', 'phone', 'phone number', 'customer care', 'support', 'help', 'help center', 'help centre'] },
     { go: { url: '/radiology/' },   words: RADIOLOGY_WORDS },
     { go: { url: '/blog/' },        words: ['blog', 'blogs', 'article', 'articles', 'health blog'] },
     { go: { url: '/diagnostic-centre/' }, words: ['location', 'locations', 'diagnostic centre', 'diagnostic center', 'centre', 'center', 'lab near me', 'near me', 'cities', 'city'] },
@@ -40,68 +40,49 @@ function normalizeText(s) {
     return (s || '').toLowerCase().replace(/x-ray/g, 'x ray').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
-// ── Contact modal (Contact Us / Help Center links and search with no results) ──
-var CONTACT_TOPICS = {
-    contact:   { title: 'Contact Us',            text: 'Speak to our health advisors to book a test or get help with a booking.', wa: 'Hi, I need help with booking a lab test.' },
-    help:      { title: 'Help Center',           text: 'Need help? Speak to our health advisors for assistance with tests, bookings and reports.', wa: 'Hi, I need help.' },
-    noresults: { title: 'Please contact us for more info', text: '', wa: 'Hi, I was looking for information on your website.' }
-};
-
-var contactModal = null;
-var contactModalReturnFocus = null;
-
-function buildContactModal() {
-    var overlay = document.createElement('div');
-    overlay.className = 'popup-overlay hidden';
-    overlay.id = 'contactModal';
-    overlay.innerHTML =
-        '<div class="popup-modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">' +
-            '<button type="button" class="popup-close" aria-label="Close">✕</button>' +
-            '<div class="popup-content contact-modal">' +
-                '<h2 id="contactModalTitle"></h2>' +
-                '<p class="contact-modal-text"></p>' +
-                '<a class="contact-modal-call" href="' + SITE.phoneTel + '">📞 Call ' + SITE.phoneDisplay + '</a>' +
-                '<a class="contact-modal-whatsapp" target="_blank" rel="noopener">Chat on WhatsApp</a>' +
-            '</div>' +
-        '</div>';
-    document.body.appendChild(overlay);
-
-    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeContactModal(); });
-    overlay.querySelector('.popup-close').addEventListener('click', closeContactModal);
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeContactModal();
-    });
-    return overlay;
-}
-
-// topic: key of CONTACT_TOPICS. opts: { title, text, wa } overrides.
-function openContactModal(topic, opts) {
-    if (!contactModal) contactModal = buildContactModal();
-    var t = Object.assign({}, CONTACT_TOPICS[topic] || CONTACT_TOPICS.contact, opts || {});
-    contactModal.querySelector('#contactModalTitle').textContent = t.title;
-    var text = contactModal.querySelector('.contact-modal-text');
-    text.textContent = t.text;
-    text.hidden = !t.text;
-    contactModal.querySelector('.contact-modal-whatsapp').href = SITE.whatsapp + '?text=' + encodeURIComponent(t.wa);
-    contactModalReturnFocus = document.activeElement;
-    contactModal.classList.remove('hidden');
-    contactModal.querySelector('.contact-modal-call').focus();
-}
-
-function closeContactModal() {
-    if (!contactModal) return;
-    contactModal.classList.add('hidden');
-    if (contactModalReturnFocus && contactModalReturnFocus.focus) contactModalReturnFocus.focus();
-}
-
-// Lab tests are booked by phone: start the call straight away.
+// Searching "contact" / "help" starts the call straight away.
 function callUs() {
     window.location.href = SITE.phoneTel;
 }
 
-// Touch devices can dial directly; elsewhere show the number in a modal.
-function isTouchDevice() {
-    return window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+// ── "No results" message for the search (the only popup besides the lead form) ──
+var noResultsModal = null;
+var noResultsReturnFocus = null;
+
+function buildNoResultsModal() {
+    var overlay = document.createElement('div');
+    overlay.className = 'popup-overlay hidden';
+    overlay.id = 'noResultsModal';
+    overlay.innerHTML =
+        '<div class="popup-modal" role="dialog" aria-modal="true" aria-labelledby="noResultsTitle">' +
+            '<button type="button" class="popup-close" aria-label="Close">✕</button>' +
+            '<div class="popup-content no-results-modal">' +
+                '<h2 id="noResultsTitle">Please contact us for more info</h2>' +
+                '<p class="no-results-text"></p>' +
+                '<a class="no-results-call" href="' + SITE.phoneTel + '">📞 Call ' + SITE.phoneDisplay + '</a>' +
+            '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeNoResultsModal(); });
+    overlay.querySelector('.popup-close').addEventListener('click', closeNoResultsModal);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeNoResultsModal();
+    });
+    return overlay;
+}
+
+function openNoResultsModal(query) {
+    if (!noResultsModal) noResultsModal = buildNoResultsModal();
+    noResultsModal.querySelector('.no-results-text').textContent = 'We couldn’t find “' + query + '” on our website.';
+    noResultsReturnFocus = document.activeElement;
+    noResultsModal.classList.remove('hidden');
+    noResultsModal.querySelector('.no-results-call').focus();
+}
+
+function closeNoResultsModal() {
+    noResultsModal.classList.add('hidden');
+    if (noResultsReturnFocus && noResultsReturnFocus.focus) noResultsReturnFocus.focus();
 }
 
 // ── Lab test data (loaded on demand for search) ───────────────────────
@@ -114,6 +95,9 @@ function withLabTests(callback) {
     document.head.appendChild(s);
 }
 
+// Words ignored when matching single words ("vitamin for kids" → "vitamin").
+var STOP_WORDS = FILLER_WORDS.concat(['and', 'with', 'my', 'to', 'is', 'i', 'want', 'need', 'get', 'check', 'please', 'any', 'all', 'you', 'your', 'do', 'how', 'what']);
+
 // True when every word of `query` appears in `text` (1–2 letter words must match whole words).
 function containsAllWords(text, query) {
     var hay = ' ' + normalizeText(text) + ' ';
@@ -122,37 +106,57 @@ function containsAllWords(text, query) {
     });
 }
 
-// 'test' if the query names a lab test, 'category' if it names a category, else null.
-function findLabTest(categories, query) {
-    var result = null;
-    for (var i = 0; i < categories.length; i++) {
-        var c = categories[i];
-        for (var j = 0; j < c.tests.length; j++) {
-            if (containsAllWords(c.tests[j], query)) return 'test';
-        }
-        if (containsAllWords(c.name, query)) result = 'category';
-    }
-    return result;
+// Words of the query (3+ letters, not stop words) used when matching single words.
+function keyWords(query) {
+    return query.split(' ').filter(function(w) { return w.length >= 3 && STOP_WORDS.indexOf(w) === -1; });
+}
+
+// mode 'all': every word of the query matches. mode 'any': at least one key word starts a word in `text`.
+function textMatches(text, query, mode) {
+    if (mode === 'all') return containsAllWords(text, query);
+    var hay = ' ' + normalizeText(text) + ' ';
+    return keyWords(query).some(function(w) { return hay.indexOf(' ' + w) !== -1; });
+}
+
+function labTestsMatch(categories, query, mode) {
+    return categories.some(function(c) {
+        return textMatches(c.name, query, mode) || c.tests.some(function(t) { return textMatches(t, query, mode); });
+    });
+}
+
+// Health packages & tests shown on the homepage (the single source for package data).
+var homeCardTexts = null;
+function withHomeCards(callback) {
+    if (homeCardTexts) return callback(homeCardTexts);
+    fetch('/').then(function(r) { return r.text(); }).then(function(html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        homeCardTexts = [].map.call(doc.querySelectorAll('#health-packages .test-card'), cardText);
+        callback(homeCardTexts);
+    }).catch(function() { callback([]); });
 }
 
 // ── Search (global so onclick= can find it) ──────────────────────────
+function cardText(card) {
+    return card.getAttribute('data-test') + ' ' + card.querySelector('h4').textContent;
+}
+
 function showAllTestCards() {
     document.querySelectorAll('.test-card').forEach(function(card) {
         card.classList.remove('hidden', 'highlight');
     });
 }
 
-// Filters the test/package cards on this page. Returns true if any matched.
-// term: the typed text (lowercase); core: the normalized query without filler words.
-function filterTestCards(term, core) {
+// Filters the test/package cards on this page and scrolls to the first match. Returns true if any matched.
+// term: the typed text (lowercase); core: the normalized query without filler words; mode: 'all' | 'any'.
+function filterTestCards(term, core, mode) {
     var testCards  = document.querySelectorAll('.test-card');
     var foundCount = 0;
     var firstCard  = null;
 
     testCards.forEach(function(card) {
         card.classList.remove('highlight');
-        var text  = card.getAttribute('data-test') + ' ' + card.querySelector('h4').textContent;
-        var match = term === '' || text.toLowerCase().includes(term) || containsAllWords(text, core);
+        var text  = cardText(card);
+        var match = term === '' || (mode === 'all' && term.length >= 3 && text.toLowerCase().includes(term)) || textMatches(text, core, mode);
         if (match) {
             foundCount++;
             if (!firstCard) firstCard = card;
@@ -184,7 +188,7 @@ function goToHealthPackages() {
 }
 
 function runIntent(go) {
-    if (go.contact)  return openContactModal(go.contact);
+    if (go.call)     return callUs();
     if (go.packages) return goToHealthPackages();
     window.location.href = go.url;
 }
@@ -222,25 +226,42 @@ function searchTests() {
     var city = matchCity(q);
     if (city) { window.location.href = city; return; }
 
-    var core = q.split(' ').filter(function(w) { return FILLER_WORDS.indexOf(w) === -1; }).join(' ') || q;
+    var core   = q.split(' ').filter(function(w) { return FILLER_WORDS.indexOf(w) === -1; }).join(' ') || q;
+    var onHome = !!document.getElementById('health-packages');
+
     withLabTests(function(categories) {
-        // 3. An individual lab test → call us; a test category → the filtered Lab Tests page
-        var labMatch = core.length >= 2 ? findLabTest(categories, core) : null;
-        if (labMatch === 'test') return callUs();
-        if (labMatch === 'category') { window.location.href = '/lab-tests/?q=' + encodeURIComponent(core); return; }
+        withHomeCards(function(homeCards) {
+            // 3. Take the user to where the test or package is shown: first the whole query,
+            //    then any single matching word.
+            var modes = ['all', 'any'];
+            for (var i = 0; i < modes.length; i++) {
+                var mode = modes[i];
+                if (mode === 'all' && core.length < 2) continue;
+                if (mode === 'any' && keyWords(core).length === 0) continue;
 
-        // 4. Packages shown on this page (existing behaviour), radiology words, blog posts
-        if (filterTestCards(raw.toLowerCase(), core)) return;
+                if (filterTestCards(raw.toLowerCase(), core, mode)) return;          // cards on this page
+                if (labTestsMatch(categories, core, mode)) {                          // Lab Tests page
+                    window.location.href = '/lab-tests/?q=' + encodeURIComponent(core);
+                    return;
+                }
+                if (!onHome && homeCards.some(function(t) { return textMatches(t, core, mode); })) {
+                    window.location.href = '/?q=' + encodeURIComponent(core) + '#health-packages';
+                    return;
+                }
 
-        var radiology = RADIOLOGY_WORDS.some(function(w) { return (' ' + q + ' ').indexOf(' ' + w + ' ') !== -1; });
-        if (radiology) { window.location.href = '/radiology/'; return; }
+                if (mode === 'all') {
+                    // Radiology words and blog titles
+                    var radiology = RADIOLOGY_WORDS.some(function(w) { return (' ' + q + ' ').indexOf(' ' + w + ' ') !== -1; });
+                    if (radiology) { window.location.href = '/radiology/'; return; }
+                    for (var b = 0; b < BLOG_POSTS.length; b++) {
+                        if (containsAllWords(BLOG_POSTS[b].title, q)) { window.location.href = BLOG_POSTS[b].url; return; }
+                    }
+                }
+            }
 
-        for (var i = 0; i < BLOG_POSTS.length; i++) {
-            if (containsAllWords(BLOG_POSTS[i].title, q)) { window.location.href = BLOG_POSTS[i].url; return; }
-        }
-
-        // 5. Nothing matched
-        openContactModal('noresults', { text: 'We couldn’t find “' + raw + '” on our website.' });
+            // 4. Nothing matched
+            openNoResultsModal(raw);
+        });
     });
 }
 
@@ -286,22 +307,30 @@ function initLabTestsPage() {
         list.appendChild(block);
     });
 
-    function applyFilter() {
-        var q = normalizeText(input.value);
+    function filterBy(q, mode) {
         var total = 0;
         list.querySelectorAll('.lab-category').forEach(function(block) {
             var inCategory = activeCategory === 'all' || block.dataset.category === activeCategory;
             var shown = 0;
             block.querySelectorAll('.lab-test-item').forEach(function(item) {
-                var match = inCategory && (q === '' || containsAllWords(item.dataset.search, q));
+                var match = inCategory && (q === '' || textMatches(item.dataset.search, q, mode));
                 item.hidden = !match;
                 if (match) shown++;
             });
             block.hidden = shown === 0;
             total += shown;
         });
+        return total;
+    }
+
+    // Whole query first; if nothing matches, any single word of it.
+    function applyFilter() {
+        var q = normalizeText(input.value);
+        var total = filterBy(q, 'all');
+        if (total === 0 && q !== '' && keyWords(q).length) total = filterBy(q, 'any');
         countEl.textContent = total + (total === 1 ? ' test' : ' tests');
         noResult.hidden = total !== 0;
+        return total;
     }
 
     chips.addEventListener('click', function(e) {
@@ -321,11 +350,43 @@ function initLabTestsPage() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('q')) {
         input.value = params.get('q');
-        applyFilter();
-        list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (applyFilter()) {
+            var first = list.querySelector('.lab-test-item:not([hidden])');
+            setTimeout(function() {
+                first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                first.classList.add('highlight');
+                setTimeout(function() { first.classList.remove('highlight'); }, 1000);
+            }, 100);
+        }
     } else {
         applyFilter();
     }
+}
+
+// ── Mobile menu (header, screens up to 1024px) ───────────────────────
+function initMobileMenu() {
+    var toggle = document.querySelector('.nav-toggle');
+    var menu   = document.getElementById('mainNavMenu');
+    if (!toggle || !menu) return;
+
+    function setOpen(open) {
+        menu.classList.toggle('open', open);
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setOpen(!menu.classList.contains('open'));
+    });
+    menu.addEventListener('click', function(e) { if (e.target.closest('a')) setOpen(false); });
+    document.addEventListener('click', function(e) {
+        if (menu.classList.contains('open') && !e.target.closest('.main-header')) setOpen(false);
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); toggle.focus(); }
+    });
 }
 
 // ── Everything else after DOM is ready ───────────────────────────────
@@ -336,9 +397,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var closeBtn = document.getElementById('popupClose');
     var form    = document.getElementById('popupForm');
 
+    var searchQuery = new URLSearchParams(window.location.search).get('q');
+    var arrivedFromSearch = !!(searchQuery && document.getElementById('health-packages'));
+
     if (overlay) {
         // Show popup on load, unless this page opts out via <body data-autopopup="false">
-        if (document.body.getAttribute('data-autopopup') !== 'false') {
+        // or the visitor just arrived from a search.
+        if (document.body.getAttribute('data-autopopup') !== 'false' && !arrivedFromSearch) {
             overlay.classList.remove('hidden');
         }
 
@@ -357,16 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Contact links: <a href="tel:…" data-contact="topic">. Touch devices dial the
-    // number directly for "contact"; everything else opens the contact modal.
-    document.addEventListener('click', function(e) {
-        var link = e.target.closest('[data-contact]');
-        if (!link) return;
-        var topic = link.getAttribute('data-contact');
-        if (topic === 'contact' && isTouchDevice()) return;
-        e.preventDefault();
-        openContactModal(topic);
-    });
 
     // Search — Enter key & auto-clear
     var searchInput = document.getElementById('searchInput');
@@ -387,5 +442,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Homepage opened from a search on another page (/?q=…#health-packages)
+    if (arrivedFromSearch) {
+        var core = normalizeText(searchQuery);
+        searchInput.value = searchQuery;
+        if (!filterTestCards(searchQuery.toLowerCase(), core, 'all')) filterTestCards(searchQuery.toLowerCase(), core, 'any');
+    }
+
     initLabTestsPage();
+    initMobileMenu();
 });

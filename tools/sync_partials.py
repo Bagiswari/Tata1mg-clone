@@ -29,9 +29,8 @@ def sync(path):
     new = re.sub(r'[ \t]*<footer class="footer">.*?</footer>', lambda m: FOOTER, new, count=1, flags=re.S)
     for old, fixed in PHONE_FIXES:
         new = new.replace(old, fixed)
-    # Floating call button & "Book via Phone Call" card show the number on desktop.
-    new = re.sub(r'<a href="tel:\+919650461818" class="(floating-contact|action-card phone-card)"(?! data-contact)',
-                 r'<a href="tel:+919650461818" class="\1" data-contact="contact"', new)
+    # Every phone link dials directly (no contact popup).
+    new = re.sub(r' data-contact="[a-z]+"', '', new)
     # The inline "no results" message is replaced by the contact modal.
     new = re.sub(r'\s*<div class="no-results" id="noResults">.*?</div>', '', new, count=1, flags=re.S)
     if new != html:

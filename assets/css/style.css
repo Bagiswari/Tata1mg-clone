@@ -1163,6 +1163,74 @@ display: block;
 
 #health-packages { scroll-margin-top: 20px; }
 
+.lab-test-item.highlight { animation: highlightPulse 1s ease-in-out; }
+
+/* ── Mobile menu (header only; screens up to 1024px, where the nav was hidden) ── */
+.nav-toggle { display: none; }
+
+@media (max-width: 1024px) {
+    .header { position: relative; }
+    .main-header { position: relative; }
+
+    .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .nav-toggle span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background-color: #333;
+        border-radius: 2px;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .nav-toggle:hover span { background-color: #ff6f61; }
+
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-menu.open {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        border-top: 1px solid #eee;
+        z-index: 1000;
+    }
+
+    .nav-menu.open a {
+        display: block;
+        padding: 14px 30px;
+        border-bottom: 1px solid #f2f2f2;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-toggle { right: 12px; }
+    .nav-menu.open a { padding: 14px 20px; font-size: 16px; }
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -1172,37 +1240,25 @@ display: block;
     white-space: nowrap;
 }
 
-/* ── Contact modal (reuses the lead popup styles) ── */
-.contact-modal { text-align: center; }
+/* ── Search "no results" popup (reuses the lead popup styles) ── */
+.no-results-modal { text-align: center; }
 
-.contact-modal h2 { padding: 0 20px; }
+.no-results-modal h2 { padding: 0 20px; }
 
-.contact-modal-call,
-.contact-modal-whatsapp {
+.no-results-call {
     display: block;
+    margin-top: 10px;
     padding: 14px;
     border-radius: 8px;
+    background-color: #ff6f61;
+    color: white;
     font-size: 16px;
     font-weight: 600;
     text-decoration: none;
     transition: background-color 0.3s;
 }
 
-.contact-modal-call {
-    background-color: #ff6f61;
-    color: white;
-    margin-top: 10px;
-}
-
-.contact-modal-call:hover { background-color: #e55a4e; }
-
-.contact-modal-whatsapp {
-    margin-top: 12px;
-    background-color: #25D366;
-    color: white;
-}
-
-.contact-modal-whatsapp:hover { background-color: #1fb855; }
+.no-results-call:hover { background-color: #e55a4e; }
 
 /* ── Lab Tests page ── */
 .lab-tests-section {
