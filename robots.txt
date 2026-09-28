@@ -1,3 +1,4 @@
 User-agent: *
+Disallow: /tools/
 
 sitemap: https://tata1mglabs.com/sitemap.xml

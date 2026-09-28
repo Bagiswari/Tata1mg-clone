@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnostic Centre Locations | Home Blood Test & Lab Sample Collection Across India – Tata 1mg Labs</title>
-    <meta name="description" content="Find a Tata 1mg Labs diagnostic centre near you. Home blood test & lab sample collection available in Delhi, Mumbai, Bangalore, Chennai, Kolkata & more.">
-    <link rel="canonical" href="https://tata1mglabs.com/diagnostic-centre/" />
+    <title>Lab Tests | Blood Tests & Diagnostic Tests List – Tata 1mg Labs</title>
+    <meta name="description" content="Browse lab tests available with Tata 1mg Labs: blood count, diabetes, thyroid, liver, kidney, vitamin, hormone and more. Call +91-9650461818 to book.">
+    <link rel="canonical" href="https://tata1mglabs.com/lab-tests/" />
     <link rel="icon" type="image/png" href="/tata-logo.png">
     <meta name="robots" content="index, follow, max-snippet: -1, max-image-preview: large, max-video-preview: -1" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
@@ -32,8 +32,8 @@
         {
             "@type": "ListItem",
             "position": 2,
-            "name": "Diagnostic Centre",
-            "item": "https://tata1mglabs.com/diagnostic-centre/"
+            "name": "Lab Tests",
+            "item": "https://tata1mglabs.com/lab-tests/"
         }
     ]
 }
@@ -42,24 +42,6 @@
 
 <body data-autopopup="false">
 
-    <!-- Popup Modal -->
-    <div class="popup-overlay hidden" id="popupOverlay">
-        <div class="popup-modal">
-            <button class="popup-close" id="popupClose">✕</button>
-            <div class="popup-content">
-                <h2>How can we help?</h2>
-                <h3>Get assistance in booking a lab test!</h3>
-                <p>Our health advisors will connect to understand your needs.</p>
-                <form class="popup-form" id="popupForm">
-                    <input type="text" class="popup-input" id="popupName" placeholder="Name" required>
-                    <input type="tel" class="popup-input" id="popupPhone" placeholder="Phone No.*" required pattern="[0-9]{10}">
-                    <button type="submit" class="popup-submit">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Header -->
     <header class="header">
         <div class="main-header">
             <a href="/" class="logo">
@@ -81,86 +63,57 @@
     </header>
 
     <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>›</span> <span class="current">Diagnostic Centre</span>
+        <a href="/">Home</a><span>›</span> <span class="current">Lab Tests</span>
     </nav>
 
-    <!-- Hero / Intro -->
-    <section class="hero">
-        <div class="hero-content" style="flex: 0 0 100%; padding: 40px 50px;">
-            <h1>Diagnostic Centre Locations</h1>
-            <p class="intro-copy">Tata 1mg Labs brings certified diagnostic testing to your doorstep across India. Instead of visiting a lab in person, choose your city below to see home blood test and full body checkup options, with the same NABL-certified labs, pricing, and turnaround times everywhere we operate. Pick your city to get started.</p>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="hero-content" style="flex: 0 0 100%; padding: 40px 50px;">
+                <h1>Lab Tests</h1>
+                <p class="intro-copy">Browse commonly booked lab tests by category. Pick a test to book it with our team — we’ll confirm availability, price and home sample collection for your area.</p>
+            </div>
+        </section>
 
-    <!-- Region-grouped City List -->
-    <section class="city-coverage">
-        <div class="region-block">
-            <h3>NCR</h3>
-            <div class="city-link-grid">
-                <a href="/diagnostic-centre-in-delhi/" class="city-link-card">Diagnostic Centre in Delhi</a>
-                <a href="/diagnostic-centre-in-gurugram/" class="city-link-card">Diagnostic Centre in Gurugram</a>
-                <a href="/diagnostic-centre-in-noida/" class="city-link-card">Diagnostic Centre in Noida</a>
-                <a href="/diagnostic-centre-in-ghaziabad/" class="city-link-card">Diagnostic Centre in Ghaziabad</a>
+        <section class="lab-tests-section">
+            <div class="lab-tests-toolbar">
+                <div class="search-bar">
+                    <label for="labTestSearch" class="visually-hidden">Search lab tests</label>
+                    <input type="search" id="labTestSearch" placeholder="Search lab tests, e.g. thyroid, vitamin D, HbA1c...">
+                    <button type="button" id="labTestSearchBtn">Search</button>
+                </div>
+                <div class="lab-chips" id="labCategoryChips" role="group" aria-label="Filter by category">
+                    <button type="button" class="lab-chip active" data-category="all" aria-pressed="true">All</button>
+                </div>
+                <p class="lab-test-count" id="labTestCount" aria-live="polite"></p>
             </div>
-        </div>
-        <div class="region-block">
-            <h3>West</h3>
-            <div class="city-link-grid">
-                <a href="/diagnostic-centre-in-mumbai/" class="city-link-card">Diagnostic Centre in Mumbai</a>
-                <a href="/diagnostic-centre-in-navi-mumbai/" class="city-link-card">Diagnostic Centre in Navi Mumbai</a>
-            </div>
-        </div>
-        <div class="region-block">
-            <h3>South</h3>
-            <div class="city-link-grid">
-                <a href="/diagnostic-centre-in-bangalore/" class="city-link-card">Diagnostic Centre in Bangalore</a>
-                <a href="/diagnostic-centre-in-chennai/" class="city-link-card">Diagnostic Centre in Chennai</a>
-            </div>
-        </div>
-        <div class="region-block">
-            <h3>East</h3>
-            <div class="city-link-grid">
-                <a href="/diagnostic-centre-in-kolkata/" class="city-link-card">Diagnostic Centre in Kolkata</a>
-            </div>
-        </div>
-        <div class="region-block">
-            <h3>North/UP</h3>
-            <div class="city-link-grid">
-                <a href="/diagnostic-centre-in-lucknow/" class="city-link-card">Diagnostic Centre in Lucknow</a>
-            </div>
-        </div>
-    </section>
 
-    <!-- Features -->
-    <section class="features">
-        <div class="features-content">
-            <h2 class="section-title">Why Choose Us?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <img src="/hm.jpg" alt="Home Sample Collection" class="feature-img">
-                    <h4>Home Sample Collection</h4>
-                    <p>Trained phlebotomists collect samples from your doorstep</p>
-                </div>
-                <div class="feature-item">
-                    <img src="/nabl.avif" alt="Certified Labs" class="feature-img">
-                    <h4>Certified Labs</h4>
-                    <p>Partner with NABL, CAP & ISO certified labs</p>
-                </div>
-                <div class="feature-item">
-                    <img src="/dj.webp" alt="Digital Reports" class="feature-img">
-                    <h4>Digital Reports</h4>
-                    <p>Receive reports via email and WhatsApp</p>
-                </div>
-                <div class="feature-item">
-                    <img src="/hh.jpg" alt="Best Prices" class="feature-img">
-                    <h4>Best Prices</h4>
-                    <p>Get up to 50% discount on all tests</p>
+            <div id="labTestsList"></div>
+
+            <div class="lab-no-results" id="labNoResults" hidden>
+                <p>We couldn’t find that test in this list. Please contact us for more info.</p>
+                <a href="tel:+919650461818" class="cta-btn cta-btn-call" data-contact="contact">📞 Call +91-9650461818</a>
+            </div>
+
+            <noscript>
+                <p class="lab-note">Please enable JavaScript to browse the test list, or call us on <a href="tel:+919650461818">+91-9650461818</a>.</p>
+            </noscript>
+
+            <p class="lab-note">Test names are as listed by Tata 1mg. Call us to confirm availability, price and preparation before booking.</p>
+        </section>
+
+        <!-- CTA strip -->
+        <section class="cta-strip">
+            <div class="cta-strip-box">
+                <h2>Can’t find your test?</h2>
+                <p>Our health advisors can help you book any test or health package.</p>
+                <div class="cta-strip-buttons">
+                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
+                    <a href="https://wa.me/919650461818" target="_blank" class="cta-btn cta-btn-whatsapp">WhatsApp Us</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div>
@@ -223,6 +176,7 @@
             <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
         </svg>
     </a>
+    <script src="/assets/js/lab-tests-data.js"></script>
 
     <script src="/assets/js/main.js"></script>
 

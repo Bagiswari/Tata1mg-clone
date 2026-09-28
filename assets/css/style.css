@@ -1159,3 +1159,279 @@ display: block;
 @media (max-width: 480px) {
     .blog-article-header h1 { font-size: 24px; }
 }
+
+/* ── Navigation: fit 8 items between 1025px and 1399px ── */
+@media (min-width: 1025px) and (max-width: 1399px) {
+    .main-header { padding: 6px 30px; }
+    .nav-menu { gap: 22px; }
+    .nav-menu a { font-size: 15px; }
+}
+
+@media (min-width: 1025px) and (max-width: 1180px) {
+    .nav-menu { gap: 16px; }
+    .nav-menu a { font-size: 14px; }
+}
+
+#health-packages { scroll-margin-top: 20px; }
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ── Contact modal (reuses the lead popup styles) ── */
+.contact-modal { text-align: center; }
+
+.contact-modal h2 { padding: 0 20px; }
+
+.contact-modal-call,
+.contact-modal-whatsapp {
+    display: block;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.contact-modal-call {
+    background-color: #ff6f61;
+    color: white;
+    margin-top: 10px;
+}
+
+.contact-modal-call:hover { background-color: #e55a4e; }
+
+.contact-modal-whatsapp {
+    margin-top: 12px;
+    background-color: #25D366;
+    color: white;
+}
+
+.contact-modal-whatsapp:hover { background-color: #1fb855; }
+
+/* ── Lab Tests page ── */
+.lab-tests-section {
+    max-width: 1200px;
+    margin: 40px auto 50px;
+    padding: 0 50px;
+}
+
+.lab-tests-section [hidden] { display: none !important; }
+
+.lab-tests-toolbar { margin-bottom: 30px; }
+
+.lab-tests-toolbar .search-bar { max-width: 700px; }
+
+.lab-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.lab-chip {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: white;
+    color: #333;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.lab-chip:hover { border-color: #ff6f61; color: #ff6f61; }
+
+.lab-chip.active {
+    background-color: #ff6f61;
+    border-color: #ff6f61;
+    color: white;
+}
+
+.lab-test-count {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.lab-category .city-link-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+.lab-category h2 {
+    font-size: 18px;
+    color: #ff6f61;
+    margin-bottom: 15px;
+}
+
+.lab-test-item {
+    width: 100%;
+    border: none;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.4;
+}
+
+.lab-test-book {
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #ff6f61;
+}
+
+.lab-no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+.lab-no-results p { margin-bottom: 20px; }
+
+.lab-note {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #888;
+}
+
+/* ── Radiology page ── */
+.radiology-showcase {
+    max-width: 1200px;
+    margin: 40px auto 50px;
+    padding: 0 50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.radiology-card {
+    position: relative;
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.radiology-card:first-child {
+    grid-column: 1 / -1;
+    height: 460px;
+}
+
+.radiology-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.radiology-card figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 60px 30px 25px;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0));
+    color: white;
+}
+
+.radiology-card h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.radiology-card p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.image-credits {
+    max-width: 1200px;
+    margin: -20px auto 40px;
+    padding: 0 50px;
+    font-size: 12px;
+    color: #888;
+}
+
+.image-credits a { color: #888; }
+
+/* ── Legal pages ── */
+.legal-page {
+    max-width: 900px;
+    margin: 40px auto 50px;
+    padding: 0 50px;
+}
+
+.legal-source {
+    background: #fff0ee;
+    border-left: 4px solid #ff6f61;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.legal-source a { color: #ff6f61; word-break: break-all; }
+
+.legal-content {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 40px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #444;
+    overflow-wrap: anywhere;
+}
+
+.legal-content h2 {
+    font-size: 20px;
+    color: #333;
+    margin: 30px 0 12px;
+}
+
+.legal-content h2:first-child { margin-top: 0; }
+
+.legal-content p,
+.legal-content ul,
+.legal-content ol { margin-bottom: 14px; }
+
+.legal-content ol,
+.legal-content ul { padding-left: 24px; }
+
+.legal-content li { margin-bottom: 8px; }
+
+.legal-content a { color: #ff6f61; }
+
+.legal-content .legal-updated {
+    font-size: 13px;
+    color: #888;
+}
+
+@media (max-width: 1024px) {
+    .lab-tests-section, .radiology-showcase, .image-credits, .legal-page { padding: 0 30px; }
+}
+
+@media (max-width: 767px) {
+    .lab-tests-section, .radiology-showcase, .image-credits, .legal-page { padding: 0 20px; }
+    .radiology-showcase { grid-template-columns: 1fr; gap: 20px; }
+    .radiology-card, .radiology-card:first-child { height: 280px; }
+    .radiology-card h2 { font-size: 26px; }
+    .radiology-card p { font-size: 14px; }
+    .radiology-card figcaption { padding: 50px 20px 20px; }
+    .legal-content { padding: 25px 20px; font-size: 14px; }
+    .image-credits { margin-top: -10px; }
+}
