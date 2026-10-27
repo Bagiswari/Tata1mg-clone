@@ -111,10 +111,9 @@ def build():
     </nav>
 
     <main>
-        <section class="hero cat-hero">
+        <section class="hero cat-hero cat-hero--banner">
             <div class="hero-content">
                 <h1>Book Lab Tests at Home</h1>
-                <p class="cat-highlight"><span aria-hidden="true">🏠</span> <strong>Home sample collection at no extra cost</strong> in 10 cities across India.</p>
                 <p class="intro-copy">Search {total}+ Tata 1mg lab tests by name or health concern. See what each test checks and how soon reports are ready, then book on call or WhatsApp.</p>
 {search_box('Search a test, e.g. thyroid, CBC, vitamin D, sugar', 'Search lab tests',
             ['Thyroid', 'CBC', 'Vitamin D', 'Sugar', 'Liver', 'Kidney'])}                <ul class="cat-stats">
@@ -122,6 +121,9 @@ def build():
                     <li><strong>{len(cats)}</strong> categories</li>
                     <li><strong>NABL, CAP &amp; ISO</strong> certified labs</li>
                 </ul>
+            </div>
+            <div class="hero-image">
+                <img src="/tata-banner.png" alt="Tata 1mg Labs, India's trusted diagnostics lab" width="760" height="360">
             </div>
         </section>
 

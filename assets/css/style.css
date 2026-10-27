@@ -1417,7 +1417,6 @@ display: block;
     font-size: 14px;
 }
 .city-coverage-box a { color: #ff6f61; }
-.city-coverage-box + .region-block { margin-top: 40px; }
 .section-more {
     text-align: center;
     margin-top: 30px;
@@ -1443,10 +1442,21 @@ display: block;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
 }
-.contact-list {
-    list-style: none;
-    padding-left: 0 !important;
+.contact-number {
+    margin-bottom: 4px !important;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
+.contact-number a { color: #333 !important; text-decoration: none; }
+.contact-sub { color: #777; font-size: 14px; }
+.contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+.contact-actions .cta-btn { flex: 1; justify-content: center; text-align: center; padding: 12px 18px; }
 .contact-form textarea { font-family: inherit; resize: vertical; }
 .contact-form select { background: white; }
 
@@ -1488,19 +1498,35 @@ display: block;
     padding: 40px 50px;
 }
 .cat-hero .intro-copy { max-width: 760px; }
+/* Lab Tests / Health Packages: content left, banner right (like the homepage) */
+.cat-hero--banner .hero-content {
+    flex: 0 0 52%;
+    padding: 40px 20px 40px 50px;
+}
+.cat-hero--banner .hero-image {
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+}
+.cat-hero--banner .hero-image img {
+    height: auto;
+    object-fit: contain;
+}
+@media (max-width: 1024px) {
+    .cat-hero--banner .hero-content { flex: none; width: 100%; padding: 40px 30px 10px; }
+    .cat-hero--banner .hero-image { width: 100%; height: auto; max-height: none; min-height: 0; }
+}
+@media (max-width: 767px) {
+    .cat-hero--banner .hero-content { padding: 30px 20px 10px; }
+}
 .cat-hero__type {
     font-size: 13px !important;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-}
-.cat-highlight {
-    display: inline-block;
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 15px !important;
-    opacity: 1 !important;
 }
 .cat-search {
     position: relative;

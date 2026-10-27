@@ -302,10 +302,9 @@ def hub_page(cards):
     </nav>
 
     <main>
-        <section class="hero cat-hero">
+        <section class="hero cat-hero cat-hero--banner">
             <div class="hero-content">
                 <h1>Health Packages &amp; Full Body Checkups</h1>
-                <p class="cat-highlight"><span aria-hidden="true">🏠</span> <strong>Home sample collection at no extra cost</strong> in 10 cities across India.</p>
                 <p class="intro-copy">Compare Tata 1mg blood test packages, from an essential yearly checkup to a complete full body checkup package with heart, vitamin and inflammation markers, plus packages for women, men, senior citizens, diabetes, fever and more.</p>
 {search_box('Search a package, e.g. full body, women, diabetes', 'Search health packages',
             ['Full body', 'Women', 'Senior', 'Diabetes', 'Fever', 'Vitamin'])}                <ul class="cat-stats">
@@ -313,6 +312,9 @@ def hub_page(cards):
                     <li><strong>{len(catalogue)}</strong> categories</li>
                     <li><strong>NABL, CAP &amp; ISO</strong> certified labs</li>
                 </ul>
+            </div>
+            <div class="hero-image">
+                <img src="/tata-banner.png" alt="Tata 1mg Labs, India's trusted diagnostics lab" width="760" height="360">
             </div>
         </section>
 
