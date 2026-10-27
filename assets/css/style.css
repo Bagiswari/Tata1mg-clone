@@ -70,6 +70,10 @@ body {
     display: flex;
     align-items: center;
     min-height: 100px;
+    /* the banner column is wider than the space left for it; clip it instead of
+       letting the page scroll sideways (clip, unlike hidden, keeps the search
+       suggestions below the hero visible) */
+    overflow-x: clip;
 }
 
 .hero-content {
