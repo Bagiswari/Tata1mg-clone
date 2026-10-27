@@ -308,7 +308,7 @@ def hub_page(cards):
             <div class="cat-featured" data-featured>
                 <div class="cat-subhead">
                     <h2>Most Booked Health Packages</h2>
-                    <a href="#grp-{catalogue[0]['id']}" class="cat-subhead__link">Browse all {total} packages &darr;</a>
+                    <a href="#grp-{catalogue[0]['id']}" class="cat-subhead__link">Browse all packages &darr;</a>
                 </div>
                 <div class="cat-grid">
 {''.join(package_card(c, 'f-' + c['slug']) for c in cards)}                </div>

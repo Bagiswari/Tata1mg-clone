@@ -126,7 +126,7 @@ def build():
             <div class="cat-featured" data-featured>
                 <div class="cat-subhead">
                     <h2>Most Booked Lab Tests</h2>
-                    <a href="#grp-{cats[0]['id']}" class="cat-subhead__link">Browse all {total} tests &darr;</a>
+                    <a href="#grp-{cats[0]['id']}" class="cat-subhead__link">Browse all tests &darr;</a>
                 </div>
                 <div class="cat-grid">
 {''.join(featured)}                </div>
