@@ -15,11 +15,6 @@ PHONE_TEL = 'tel:+919650461818'
 PHONE_DISPLAY = '+91-9650461818'
 WHATSAPP = 'https://wa.me/919650461818'
 
-CITIES = [('delhi', 'Delhi'), ('gurugram', 'Gurugram'), ('noida', 'Noida'), ('ghaziabad', 'Ghaziabad'),
-          ('mumbai', 'Mumbai'), ('navi-mumbai', 'Navi Mumbai'), ('bangalore', 'Bangalore'),
-          ('chennai', 'Chennai'), ('kolkata', 'Kolkata'), ('lucknow', 'Lucknow')]
-
-
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -128,12 +123,6 @@ def tail(cta_title='Ready to Book Your Health Checkup?', cta_text='Speak to our 
 </body>
 </html>
 '''
-
-
-def city_links(prefix='Tata 1mg Blood Test in', indent=16):
-    pad = ' ' * indent
-    return '\n'.join(f'{pad}<a href="/diagnostic-centre-in-{slug}/" class="city-link-card">{prefix} {name}</a>'
-                     for slug, name in CITIES)
 
 
 def write_page(rel, text):

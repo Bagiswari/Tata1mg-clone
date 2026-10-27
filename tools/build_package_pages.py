@@ -11,7 +11,7 @@ tools/data/health-packages.json. Run from the repo root:
 """
 import json
 
-from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, city_links, esc, faq_html, faq_schema,
+from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, esc, faq_html, faq_schema,
                         group_section, head, homepage_cards, icon, price_number, search_box, slugify, steps_section, tail,
                         whatsapp_link, write_page)
 
@@ -250,15 +250,6 @@ def package_page(p, cards):
             <div class="cat-grid">
 {''.join(package_card(o, 'pk-' + o['slug']) for o in others)}            </div>
         </section>
-
-        <section class="city-coverage">
-            <div class="region-block">
-                <h2 class="section-title">Book a Tata 1mg Blood Test in Your City</h2>
-                <div class="city-link-grid">
-{city_links()}
-                </div>
-            </div>
-        </section>
     </main>
 ''' + tail()
 
@@ -343,15 +334,6 @@ def hub_page(cards):
         <section class="faq-section">
             <h2 class="section-title">Frequently Asked Questions</h2>
 {faq_html(HUB_FAQ)}
-        </section>
-
-        <section class="city-coverage">
-            <div class="region-block">
-                <h2 class="section-title">Book a Tata 1mg Blood Test in Your City</h2>
-                <div class="city-link-grid">
-{city_links()}
-                </div>
-            </div>
         </section>
     </main>
 ''' + tail('Not sure which package to choose?', 'Call or WhatsApp our health advisors and we will help you pick the right checkup.')
