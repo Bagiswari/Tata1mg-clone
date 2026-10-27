@@ -1498,29 +1498,27 @@ display: block;
     padding: 40px 50px;
 }
 .cat-hero .intro-copy { max-width: 760px; }
-/* Lab Tests / Health Packages: content left, banner right (like the homepage) */
-.cat-hero--banner .hero-content {
-    flex: 0 0 52%;
-    padding: 40px 20px 40px 50px;
+/* Lab Tests / Health Packages: the homepage hero (content left, banner right).
+   Wide screens: the banner fills the right side edge to edge. Narrower screens:
+   the whole banner sits under the search, full width and uncropped. */
+.cat-hero--banner .cat-search { max-width: 100%; }
+.cat-hero--banner h1 { font-size: 34px; line-height: 1.12; margin-top: 10px; }
+@media (min-width: 1201px) {
+    .cat-hero--banner { align-items: stretch; }
+    .cat-hero--banner .hero-image { align-self: stretch; height: auto; min-height: 400px; }
+    .cat-hero--banner .hero-image img { object-position: 35% center; }
 }
-.cat-hero--banner .hero-image {
-    flex: 1;
-    min-width: 0;
-    height: auto;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
+@media (min-width: 1400px) {
+    .cat-hero--banner .hero-content { flex: 0 0 calc((100% - 1400px) / 2 + 620px); max-width: none; }
 }
-.cat-hero--banner .hero-image img {
-    height: auto;
-    object-fit: contain;
-}
-@media (max-width: 1024px) {
-    .cat-hero--banner .hero-content { flex: none; width: 100%; padding: 40px 30px 10px; }
-    .cat-hero--banner .hero-image { width: 100%; height: auto; max-height: none; min-height: 0; }
+@media (max-width: 1200px) {
+    .cat-hero--banner { flex-direction: column; min-height: auto; }
+    .cat-hero--banner .hero-content { flex: none; width: 100%; padding: 40px 30px 30px; }
+    .cat-hero--banner .hero-image { flex: none; width: 100%; height: auto; min-height: 0; max-height: none; }
+    .cat-hero--banner .hero-image img { height: auto; object-fit: contain; }
 }
 @media (max-width: 767px) {
-    .cat-hero--banner .hero-content { padding: 30px 20px 10px; }
+    .cat-hero--banner .hero-content { padding: 30px 20px 24px; }
 }
 .cat-hero__type {
     font-size: 13px !important;
@@ -1654,15 +1652,6 @@ display: block;
     transition: background 0.2s;
 }
 .cat-popular__chip:hover { background: white; }
-.cat-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 28px;
-    margin-top: 22px;
-    list-style: none;
-    font-size: 14px;
-}
-.cat-stats strong { font-size: 18px; }
 
 .cat-section {
     max-width: 1200px;
