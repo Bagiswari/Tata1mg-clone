@@ -8,6 +8,26 @@ var SITE = {
 // Blog posts the search can find. Keep in sync with /blog/.
 var BLOG_POSTS = [
     {
+        title: "Full Body Checkup Test List with Names: What Each Test Checks",
+        url:   '/blog/full-body-checkup-test-list-with-names/'
+    },
+    {
+        title: "Which Blood Tests Need Fasting? A Simple Guide Before Your Test",
+        url:   '/blog/which-blood-tests-need-fasting/'
+    },
+    {
+        title: "SGPT Test Normal Range: What High ALT Levels Mean",
+        url:   '/blog/sgpt-test-normal-range/'
+    },
+    {
+        title: "Thyroid Test (T3, T4, TSH) Explained: Normal Range and Results",
+        url:   '/blog/thyroid-test-t3-t4-tsh-explained/'
+    },
+    {
+        title: "Vitamin D Test at Home: Normal Range, Price and Who Should Get Tested",
+        url:   '/blog/vitamin-d-test-at-home/'
+    },
+    {
         title: 'Full Body Checkup: What Tests Are Usually Included and Why They Matter',
         url:   '/blog/full-body-checkup-what-tests-are-usually-included-and-why-they-matter/'
     }
@@ -25,7 +45,8 @@ var RADIOLOGY_WORDS = ['radiology', 'x ray', 'xray', 'ultrasound', 'usg', 'sonog
 
 // Whole-query intents → destination. First match wins.
 var SEARCH_INTENTS = [
-    { go: { call: true },           words: ['contact', 'contact us', 'call', 'call us', 'phone', 'phone number', 'customer care', 'support', 'help', 'help center', 'help centre'] },
+    { go: { call: true },           words: ['call', 'call us', 'phone', 'phone number'] },
+    { go: { url: '/contact-us/' },  words: ['contact', 'contact us', 'customer care', 'support', 'help', 'help center', 'help centre', 'enquiry', 'address'] },
     { go: { url: '/radiology/' },   words: RADIOLOGY_WORDS },
     { go: { url: '/blog/' },        words: ['blog', 'blogs', 'article', 'articles', 'health blog'] },
     { go: { url: '/diagnostic-centre/' }, words: ['location', 'locations', 'diagnostic centre', 'diagnostic center', 'centre', 'center', 'lab near me', 'near me', 'cities', 'city'] },
@@ -40,7 +61,7 @@ function normalizeText(s) {
     return (s || '').toLowerCase().replace(/x-ray/g, 'x ray').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
-// Searching "contact" / "help" starts the call straight away.
+// Searching "call" / "phone" starts the call straight away.
 function callUs() {
     window.location.href = SITE.phoneTel;
 }
@@ -183,7 +204,7 @@ function goToHealthPackages() {
         showAllTestCards();
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-        window.location.href = '/#health-packages';
+        window.location.href = '/health-packages/';
     }
 }
 
@@ -447,6 +468,23 @@ document.addEventListener('DOMContentLoaded', function() {
         var core = normalizeText(searchQuery);
         searchInput.value = searchQuery;
         if (!filterTestCards(searchQuery.toLowerCase(), core, 'all')) filterTestCards(searchQuery.toLowerCase(), core, 'any');
+    }
+
+    // Contact page enquiry form → WhatsApp
+    var contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var lines = ['Hi, I have an enquiry.',
+                         'Name: ' + document.getElementById('contactName').value,
+                         'Phone: ' + document.getElementById('contactPhone').value];
+            var city = document.getElementById('contactCity').value;
+            var message = document.getElementById('contactMessage').value.trim();
+            if (city) lines.push('City: ' + city);
+            if (message) lines.push('Message: ' + message);
+            window.open(SITE.whatsapp + '?text=' + encodeURIComponent(lines.join('\n')), '_blank');
+            contactForm.reset();
+        });
     }
 
     initLabTestsPage();

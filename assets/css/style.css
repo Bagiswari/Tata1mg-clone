@@ -1467,3 +1467,104 @@ display: block;
     .legal-content { padding: 25px 20px; font-size: 14px; }
     .image-credits { margin-top: -10px; }
 }
+
+/* ── Areas list (city pages) ─────────────────────────────────────── */
+.area-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 20px;
+    padding: 0;
+}
+.area-list li {
+    background: #fff4f2;
+    color: #333;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+}
+.city-coverage-box a { color: #ff6f61; }
+.city-coverage-box + .region-block { margin-top: 40px; }
+.section-more {
+    text-align: center;
+    margin-top: 30px;
+}
+.section-more a {
+    color: #ff6f61;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ── Health package pages ────────────────────────────────────────── */
+.test-card h4 a {
+    color: inherit;
+    text-decoration: none;
+}
+.test-card h4 a:hover { color: #ff6f61; }
+.package-link {
+    display: block;
+    color: #ff6f61;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 12px;
+}
+.package-summary {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 25px;
+    margin-bottom: 10px;
+}
+.package-summary .package-tests {
+    display: block;
+    color: #666;
+    margin-bottom: 10px;
+}
+.package-summary .cta-strip-buttons { justify-content: flex-start; }
+.package-detail .cta-btn,
+.legal-content .cta-btn { color: white; }
+
+/* ── Contact page ────────────────────────────────────────────────── */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+.contact-list {
+    list-style: none;
+    padding-left: 0 !important;
+}
+.contact-form textarea { font-family: inherit; resize: vertical; }
+.contact-form select { background: white; }
+
+@media (max-width: 767px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Blog tables ─────────────────────────────────────────────────── */
+.blog-content .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0 25px;
+}
+.blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.5;
+}
+.blog-content th,
+.blog-content td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+.blog-content th {
+    background: #fff4f2;
+    color: #333;
+}
+.blog-content .blog-disclaimer {
+    font-size: 14px;
+    color: #777;
+    margin-top: 25px;
+}
