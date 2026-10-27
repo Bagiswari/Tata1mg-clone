@@ -141,7 +141,7 @@ function textMatches(text, query, mode) {
 
 function labTestsMatch(categories, query, mode) {
     return categories.some(function(c) {
-        return textMatches(c.name, query, mode) || c.tests.some(function(t) { return textMatches(t, query, mode); });
+        return textMatches(c.name, query, mode) || c.tests.some(function(t) { return textMatches(t.name, query, mode); });
     });
 }
 
@@ -199,7 +199,7 @@ function filterTestCards(term, core, mode) {
 }
 
 function goToHealthPackages() {
-    var section = document.getElementById('health-packages');
+    var section = document.getElementById('health-packages') || document.getElementById('all-packages');
     if (section) {
         showAllTestCards();
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -286,101 +286,278 @@ function searchTests() {
     });
 }
 
-// ── Lab Tests page (/lab-tests/) ─────────────────────────────────────
-function initLabTestsPage() {
-    var list = document.getElementById('labTestsList');
-    if (!list || !window.LAB_TEST_CATEGORIES) return;
+// ── Lab Tests & Health Packages catalogue (/lab-tests/, /health-packages/) ──
+// The cards are static HTML (built by tools/build_lab_tests_page.py and
+// tools/build_package_pages.py); this adds the search with live suggestions,
+// the category chips and the "View all" buttons.
 
-    var input    = document.getElementById('labTestSearch');
-    var chips    = document.getElementById('labCategoryChips');
-    var countEl  = document.getElementById('labTestCount');
-    var noResult = document.getElementById('labNoResults');
-    var activeCategory = 'all';
+// Score how well a name matches a partial query: every typed word must start a
+// word or appear inside the name (or, failing that, in `extra`). 0 = no match.
+function suggestScore(name, extra, q) {
+    var words = q.split(' ').filter(Boolean);
+    if (!words.length) return 0;
+    var n = normalizeText(name);
+    var hay = ' ' + n + ' ' + normalizeText(extra);
+    var s = 0;
+    for (var i = 0; i < words.length; i++) {
+        var w = words[i];
+        if (n.indexOf(w) === 0) s += 6;
+        else if ((' ' + n).indexOf(' ' + w) !== -1) s += 4;
+        else if (n.indexOf(w) !== -1) s += 2;
+        else if (hay.indexOf(' ' + w) !== -1) s += 1;
+        else return 0;
+    }
+    return s - n.length / 200; // shorter names win ties
+}
 
-    window.LAB_TEST_CATEGORIES.forEach(function(cat, i) {
-        var chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'lab-chip';
-        chip.dataset.category = String(i);
-        chip.textContent = cat.name;
-        chips.appendChild(chip);
+// Scroll a card into view and highlight it briefly.
+function focusCard(el) {
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); // phones: close the keyboard
+    setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+    el.classList.add('is-focus');
+    setTimeout(function() { el.classList.remove('is-focus'); }, 3000);
+}
 
-        var block = document.createElement('div');
-        block.className = 'region-block lab-category';
-        block.dataset.category = String(i);
-        var heading = document.createElement('h2');
-        heading.textContent = cat.name;
-        var grid = document.createElement('div');
-        grid.className = 'city-link-grid';
-        cat.tests.forEach(function(name) {
-            // Each test is a direct call link.
-            var link = document.createElement('a');
-            link.href = SITE.phoneTel;
-            link.className = 'city-link-card lab-test-item';
-            link.dataset.search = normalizeText(name + ' ' + cat.name);
-            link.setAttribute('aria-label', 'Call ' + SITE.phoneDisplay + ' to book ' + name);
-            link.innerHTML = '<span class="lab-test-name"></span><span class="lab-test-book">Book &rarr;</span>';
-            link.querySelector('.lab-test-name').textContent = name;
-            grid.appendChild(link);
-        });
-        block.appendChild(heading);
-        block.appendChild(grid);
-        list.appendChild(block);
+function initCatalogue() {
+    var root = document.querySelector('[data-catalogue]');
+    if (!root) return;
+
+    var noun     = root.getAttribute('data-noun');
+    var input    = document.getElementById('catSearch');
+    var drop     = document.getElementById('catSuggest');
+    var form     = input.closest('form');
+    var featured = root.querySelector('[data-featured]');
+    var countEl  = root.querySelector('.cat-count');
+    var empty    = root.querySelector('.cat-empty');
+    var chips    = [].slice.call(root.querySelectorAll('.cat-chips .lab-chip'));
+    var groups   = [].slice.call(root.querySelectorAll('.cat-group'));
+    var cards    = [].slice.call(root.querySelectorAll('.cat-group .cat-card'));
+    var activeGroup = 'all';
+
+    var index = cards.map(function(card) {
+        var group = card.closest('.cat-group');
+        var meta = [].map.call(card.querySelectorAll('.cat-meta li'), function(li) { return li.textContent.trim(); });
+        return {
+            card: card,
+            name: card.querySelector('.cat-card__title').textContent.trim(),
+            extra: card.getAttribute('data-search'),
+            meta: meta.join(' · '),
+            group: group.getAttribute('data-name'),
+            icon: group.getAttribute('data-icon'),
+            boost: card.classList.contains('cat-card--priced') ? 1 : 0 // priced (most booked) items first on ties
+        };
+    });
+    var groupIndex = groups.map(function(g) {
+        return { id: g.getAttribute('data-group'), name: g.getAttribute('data-name'), icon: g.getAttribute('data-icon'), extra: g.getAttribute('data-keywords') };
     });
 
+    // ── Filtering ──
     function filterBy(q, mode) {
         var total = 0;
-        list.querySelectorAll('.lab-category').forEach(function(block) {
-            var inCategory = activeCategory === 'all' || block.dataset.category === activeCategory;
+        groups.forEach(function(group) {
+            var inGroup = activeGroup === 'all' || group.getAttribute('data-group') === activeGroup;
             var shown = 0;
-            block.querySelectorAll('.lab-test-item').forEach(function(item) {
-                var match = inCategory && (q === '' || textMatches(item.dataset.search, q, mode));
-                item.hidden = !match;
+            group.querySelectorAll('.cat-card').forEach(function(card) {
+                var match = inGroup && (q === '' || textMatches(card.getAttribute('data-search'), q, mode));
+                card.hidden = !match;
                 if (match) shown++;
             });
-            block.hidden = shown === 0;
+            group.hidden = shown === 0;
             total += shown;
         });
         return total;
     }
 
     // Whole query first; if nothing matches, any single word of it.
-    function applyFilter() {
+    function apply() {
         var q = normalizeText(input.value);
         var total = filterBy(q, 'all');
         if (total === 0 && q !== '' && keyWords(q).length) total = filterBy(q, 'any');
-        countEl.textContent = total + (total === 1 ? ' test' : ' tests');
-        noResult.hidden = total !== 0;
+        var filtered = q !== '' || activeGroup !== 'all';
+        root.classList.toggle('is-filtered', filtered);
+        if (featured) featured.hidden = filtered;
+        var label = total + ' ' + (total === 1 ? noun.replace(/s$/, '') : noun);
+        countEl.textContent = q ? label + ' matching “' + input.value.trim() + '”' : filtered ? label : '';
+        empty.hidden = total !== 0;
         return total;
     }
 
-    chips.addEventListener('click', function(e) {
-        var chip = e.target.closest('.lab-chip');
-        if (!chip) return;
-        activeCategory = chip.dataset.category;
-        chips.querySelectorAll('.lab-chip').forEach(function(c) {
-            c.classList.toggle('active', c === chip);
-            c.setAttribute('aria-pressed', c === chip ? 'true' : 'false');
+    function setGroup(id) {
+        activeGroup = id;
+        chips.forEach(function(c) {
+            var on = c.getAttribute('data-group') === id;
+            c.classList.toggle('active', on);
+            c.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
-        applyFilter();
-    });
-    input.addEventListener('input', applyFilter);
-    input.addEventListener('keypress', function(e) { if (e.key === 'Enter') applyFilter(); });
-    document.getElementById('labTestSearchBtn').addEventListener('click', applyFilter);
+    }
 
-    var params = new URLSearchParams(window.location.search);
-    if (params.get('q')) {
-        input.value = params.get('q');
-        if (applyFilter()) {
-            var first = list.querySelector('.lab-test-item:not([hidden])');
-            setTimeout(function() {
-                first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                first.classList.add('highlight');
-                setTimeout(function() { first.classList.remove('highlight'); }, 1000);
-            }, 100);
+    function scrollToResults() {
+        var first = root.querySelector('.cat-group:not([hidden])') || empty;
+        (countEl.textContent ? countEl : first).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showCard(card) {
+        input.value = '';
+        setGroup('all');
+        apply();
+        closeDrop();
+        var group = card.closest('.cat-group');
+        if (card.classList.contains('is-extra') || card.classList.contains('is-extra-sm')) setOpen(group, true);
+        focusCard(card);
+    }
+
+    // ── "View all" per group ──
+    function setOpen(group, open) {
+        group.classList.toggle('is-open', open);
+        var btn = group.querySelector('.cat-more');
+        if (!btn) return;
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Show less' : btn.getAttribute('data-more');
+    }
+    root.addEventListener('click', function(e) {
+        var more = e.target.closest('.cat-more');
+        if (more) {
+            var group = more.closest('.cat-group');
+            var open = !group.classList.contains('is-open');
+            setOpen(group, open);
+            if (!open) group.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-    } else {
-        applyFilter();
+        if (e.target.closest('.cat-reset')) {
+            input.value = '';
+            setGroup('all');
+            apply();
+            root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            setGroup(chip.getAttribute('data-group'));
+            apply();
+        });
+    });
+
+    // ── Live suggestions ──
+    var active = -1;
+    function rows() { return [].slice.call(drop.querySelectorAll('.cat-suggest__row')); }
+    function closeDrop() {
+        drop.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        active = -1;
+    }
+    function el(tag, cls, text) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text) e.textContent = text;
+        return e;
+    }
+    function renderDrop() {
+        var q = normalizeText(input.value);
+        if (q.length < 2) return closeDrop();
+        var hits = index.map(function(i) { var s = suggestScore(i.name, i.extra, q); return { i: i, s: s && s + i.boost }; })
+            .filter(function(x) { return x.s > 0; })
+            .sort(function(a, b) { return b.s - a.s; }).slice(0, 6);
+        var cats = groupIndex.filter(function(g) { return suggestScore(g.name, g.extra, q) > 0; }).slice(0, 3);
+
+        drop.innerHTML = '';
+        if (!hits.length && !cats.length) {
+            var none = el('div', 'cat-suggest__empty');
+            none.appendChild(el('p', '', 'No match for “' + input.value.trim() + '”. Call us and we will help.'));
+            var call = el('a', 'cat-btn cat-btn--book', '📞 Call');
+            call.href = SITE.phoneTel;
+            none.appendChild(call);
+            drop.appendChild(none);
+        }
+        if (hits.length) {
+            drop.appendChild(el('p', 'cat-suggest__label', noun === 'packages' ? 'Health packages' : 'Lab tests'));
+            hits.forEach(function(x) {
+                var row = el('button', 'cat-suggest__row');
+                row.type = 'button';
+                row.setAttribute('role', 'option');
+                row.appendChild(el('span', 'cat-suggest__icon', x.i.icon));
+                var name = el('span', 'cat-suggest__name', x.i.name);
+                name.appendChild(el('small', '', x.i.meta || x.i.group));
+                row.appendChild(name);
+                row.appendChild(el('span', 'cat-suggest__cat', x.i.group));
+                row.addEventListener('click', function() { showCard(x.i.card); });
+                drop.appendChild(row);
+            });
+        }
+        if (cats.length) {
+            drop.appendChild(el('p', 'cat-suggest__label', 'Categories'));
+            var wrap = el('div', 'cat-suggest__chips');
+            cats.forEach(function(g) {
+                var chip = el('button', 'cat-suggest__row cat-suggest__chip', g.icon + ' ' + g.name);
+                chip.type = 'button';
+                chip.addEventListener('click', function() {
+                    input.value = '';
+                    setGroup(g.id);
+                    apply();
+                    closeDrop();
+                    scrollToResults();
+                });
+                wrap.appendChild(chip);
+            });
+            drop.appendChild(wrap);
+        }
+        var all = el('button', 'cat-suggest__all', 'See all results →');
+        all.type = 'button';
+        all.addEventListener('click', function() { closeDrop(); scrollToResults(); });
+        drop.appendChild(all);
+
+        drop.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        active = -1;
+    }
+
+    input.addEventListener('input', function() {
+        if (input.value.trim()) setGroup('all'); // typing searches every category
+        apply();
+        renderDrop();
+    });
+    input.addEventListener('focus', renderDrop);
+    input.addEventListener('keydown', function(e) {
+        var r = rows();
+        if (e.key === 'Escape') return closeDrop();
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !drop.hidden && r.length) {
+            e.preventDefault();
+            active = (active + (e.key === 'ArrowDown' ? 1 : -1) + r.length) % r.length;
+            r.forEach(function(row, i) { row.classList.toggle('is-active', i === active); });
+            r[active].scrollIntoView({ block: 'nearest' });
+        }
+        if (e.key === 'Enter' && active >= 0 && r[active]) {
+            e.preventDefault();
+            r[active].click();
+        }
+    });
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        closeDrop();
+        apply();
+        scrollToResults();
+    });
+    document.addEventListener('pointerdown', function(e) {
+        if (!e.target.closest('.cat-search')) closeDrop();
+    });
+
+    document.querySelectorAll('.cat-popular__chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+            input.value = chip.getAttribute('data-q');
+            setGroup('all');
+            apply();
+            scrollToResults();
+        });
+    });
+
+    // Opened from the site search (/lab-tests/?q=…) or a category link (?group=…)
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('group') && groupIndex.some(function(g) { return g.id === params.get('group'); })) setGroup(params.get('group'));
+    if (params.get('q')) input.value = params.get('q');
+    if (apply() && (params.get('q') || params.get('group'))) {
+        setTimeout(function() {
+            var first = root.querySelector('.cat-group:not([hidden]) .cat-card:not([hidden])');
+            if (first && params.get('q')) focusCard(first); else scrollToResults();
+        }, 100);
     }
 }
 
@@ -487,6 +664,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    initLabTestsPage();
+    initCatalogue();
     initMobileMenu();
 });

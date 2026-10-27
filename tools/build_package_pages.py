@@ -1,22 +1,19 @@
-"""Build /health-packages/ and one page per health package.
+"""Build /health-packages/ and one page per priced health package.
 
-Prices, test counts and included tests are read from the package cards on the
-homepage (index.html), so edit them there. The extra copy for each package
-(summary, who it's for, preparation, report time) lives in PACKAGES below.
-Run from the repo root, then run tools/sync_partials.py:
+Prices, test counts and included tests of the priced packages are read from the
+package cards on the homepage (index.html), so edit them there. The extra copy for
+each priced package (summary, who it's for, preparation, report time) lives in
+PACKAGES below. The full Tata 1mg package catalogue shown on /health-packages/
+(name, about, tests, report time, included tests; no prices) is
+tools/data/health-packages.json. Run from the repo root:
 
     python tools/build_package_pages.py
 """
-import html
 import json
-import pathlib
-import re
-import urllib.parse
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-PARTIALS = ROOT / 'tools' / 'partials'
-SITE = 'https://tata1mglabs.com'
-WHATSAPP = 'https://wa.me/919650461818'
+from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, city_links, esc, faq_html, faq_schema,
+                        group_section, head, homepage_cards, price_number, search_box, slugify, steps_section, tail,
+                        whatsapp_link, write_page)
 
 FASTING = [
     'Fast for 10–12 hours before sample collection. Plain water is allowed.',
@@ -99,9 +96,6 @@ PACKAGES = {
     },
 }
 
-CITIES = [('delhi', 'Delhi'), ('gurugram', 'Gurugram'), ('noida', 'Noida'), ('ghaziabad', 'Ghaziabad'),
-          ('mumbai', 'Mumbai'), ('navi-mumbai', 'Navi Mumbai'), ('bangalore', 'Bangalore'),
-          ('chennai', 'Chennai'), ('kolkata', 'Kolkata'), ('lucknow', 'Lucknow')]
 
 HUB_FAQ = [
     ('Which Tata 1mg blood test package should I choose?',
@@ -111,131 +105,37 @@ HUB_FAQ = [
     ('Is home sample collection included in the package price?',
      'Yes. Home sample collection is included at no extra charge. You only pay the package price.'),
     ('How soon will I get my health package report?',
-     'Reports for packages with routine tests are usually ready within 24 hours. Packages with vitamin and specialised markers usually take 24–48 hours. Reports are shared by email and WhatsApp.'),
+     'Most checkup packages are ready within 24–48 hours. Specialised and genetic packages can take from a few days to a few weeks; the report time shown on each package is indicative and can vary by city. Reports are shared by email and WhatsApp.'),
     ('Where are the samples tested?',
      'All samples are processed at NABL, CAP and ISO certified partner labs.'),
 ]
 
 
-def esc(s):
-    return html.escape(s, quote=True)
-
-
-def price_number(s):
-    return re.sub(r'[^0-9]', '', s)
 
 
 def read_cards():
-    page = (ROOT / 'index.html').read_text(encoding='utf-8')
-    cards = []
-    grid = page[page.index('id="health-packages"'):]
-    grid = grid[:grid.index('</section>')]
-    for block in grid.split('<div class="test-card"')[1:]:
-        name = re.sub(r'<[^>]+>', '', re.search(r'<h4>(.*?)</h4>', block, flags=re.S).group(1)).strip()
-        if name not in PACKAGES:
-            continue
-        def grab(cls):
-            m = re.search(r'<span class="' + cls + r'">(.*?)</span>', block)
-            return m.group(1).strip() if m else ''
-        cards.append(dict(
-            PACKAGES[name],
-            name=name,
-            tests=re.search(r'Contains (\d+) tests?', block).group(1),
-            price=grab('current-price'),
-            original=grab('original-price'),
-            discount=grab('discount-badge'),
-            included=[html.unescape(t).strip() for t in re.findall(r'<li>(.*?)</li>', block)],
-        ))
+    """The priced packages, in homepage order, with their PACKAGES copy."""
+    cards = [dict(c, **PACKAGES[c['name']]) for c in homepage_cards() if c['name'] in PACKAGES]
     missing = set(PACKAGES) - {c['name'] for c in cards}
     if missing:
         raise SystemExit('Package cards not found on the homepage: ' + ', '.join(sorted(missing)))
     return cards
 
 
-def head(title, description, url, schemas):
-    blocks = ''.join(
-        '    <script type="application/ld+json">\n' + json.dumps(s, indent=4, ensure_ascii=False) + '\n    </script>\n'
-        for s in schemas)
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{esc(title)}</title>
-    <meta name="description" content="{esc(description)}">
-    <link rel="canonical" href="{url}" />
-    <link rel="icon" type="image/png" href="/tata-logo.png">
-    <meta name="robots" content="index, follow, max-snippet: -1, max-image-preview: large, max-video-preview: -1" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <!-- Google tag -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17905897099"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){{dataLayer.push(arguments);}}
-        gtag('js', new Date());
-        gtag('config', 'AW-17905897099');
-    </script>
-{blocks}</head>
-
-<body>
-
-'''
+def load_catalogue():
+    return json.loads((ROOT / 'tools/data/health-packages.json').read_text(encoding='utf-8'))
 
 
-def breadcrumb_schema(items):
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(items)],
-    }
+def package_card(p, card_id):
+    return card(dict(name=p['short'], about=p['summary'], tests=p['tests'], price=p['price'], original=p['original'],
+                     discount=p['discount'], includes=p['included'], url=f'/health-packages/{p["slug"]}/'),
+                card_id=card_id, group='featured', group_name='Health package', icon='📋', noun='package',
+                search_extra=p['name'])
 
 
-def tail():
-    footer = (PARTIALS / 'footer.html').read_text(encoding='utf-8').rstrip('\n')
-    return f'''
-    <!-- CTA Strip -->
-    <section class="cta-strip">
-        <div class="cta-strip-box">
-            <h2>Ready to Book Your Health Checkup?</h2>
-            <p>Speak to our health advisors or book instantly on WhatsApp.</p>
-            <div class="cta-strip-buttons">
-                <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
-                <a href="{WHATSAPP}" target="_blank" class="cta-btn cta-btn-whatsapp">Book on WhatsApp</a>
-            </div>
-        </div>
-    </section>
-
-{footer}
-
-    <!-- Floating Contact Button -->
-    <a href="tel:+919650461818" class="floating-contact" title="Contact Us">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-        </svg>
-    </a>
-
-    <script src="/assets/js/main.js"></script>
-
-</body>
-</html>
-'''
-
-
-def price_html(p, indent):
-    pad = ' ' * indent
-    out = f'{pad}<span class="current-price">{p["price"]}</span>\n'
-    if p['original']:
-        out += f'{pad}<span class="original-price">{p["original"]}</span>\n'
-    if p['discount']:
-        out += f'{pad}<span class="discount-badge">{p["discount"]}</span>\n'
-    return out
-
-
-def city_links(prefix):
-    return '\n'.join(
-        f'                <a href="/diagnostic-centre-in-{slug}/" class="city-link-card">{prefix} {name}</a>'
-        for slug, name in CITIES)
+def report_summary(p):
+    """Short report time for the facts row."""
+    return 'Within 24 hours' if p['report'] != EXTENDED_REPORT else '24–48 hours'
 
 
 def package_page(p, cards):
@@ -265,77 +165,97 @@ def package_page(p, cards):
             },
         },
     ]
-    book = WHATSAPP + '?text=' + urllib.parse.quote('Hi, I want to book ' + p['name'])
-    included = '\n'.join(f'                    <li>{esc(t)}</li>' for t in p['included'])
-    prep = '\n'.join(f'                    <li>{esc(t)}</li>' for t in p['prep'])
-    others = '\n'.join(
-        f'                <a href="/health-packages/{o["slug"]}/" class="city-link-card">{esc(o["short"])} · {o["price"]}</a>'
-        for o in cards if o is not p)
+    included = '\n'.join(f'                        <li>{esc(t)}</li>' for t in p['included'])
+    prep = '\n'.join(f'                        <li>{esc(t)}</li>' for t in p['prep'])
+    mrp = f'                    <span class="original-price">{p["original"]}</span>\n' if p['original'] else ''
+    off = f'                    <span class="discount-badge">{p["discount"]}</span>\n' if p['discount'] else ''
+    save = ''
+    if p['original']:
+        saved = int(price_number(p['original'])) - int(price_number(p['price']))
+        save = f'                <p class="pkg-buy__save">You save ₹{saved:,} on MRP</p>\n'
+    # the three other packages closest in price
+    others = sorted((o for o in cards if o is not p),
+                    key=lambda o: abs(int(price_number(o['price'])) - int(price_number(p['price']))))[:3]
 
-    return head(title, description, url, schemas) + f'''    <header class="header"></header>
-
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/">Home</a><span>›</span> <a href="/health-packages/">Health Packages</a><span>›</span> <span class="current">{esc(p["short"])}</span>
     </nav>
 
     <main>
-        <section class="hero">
-            <div class="hero-content" style="flex: 0 0 100%; padding: 40px 50px;">
+        <section class="hero cat-hero">
+            <div class="hero-content">
+                <p class="cat-hero__type">📋 Health package</p>
                 <h1>{esc(p["short"])}</h1>
                 <p class="intro-copy">{esc(p["summary"])}</p>
             </div>
         </section>
 
-        <section class="legal-page">
-            <div class="legal-content package-detail">
-                <div class="package-summary">
-                    <span class="package-tests">⏱️ Contains {p["tests"]} tests</span>
-                    <div class="price-section">
-{price_html(p, 24)}                    </div>
-                    <p>Home sample collection included at no extra cost.</p>
-                    <div class="cta-strip-buttons">
-                        <a href="{book}" target="_blank" class="cta-btn cta-btn-whatsapp">Book on WhatsApp</a>
-                        <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
-                    </div>
-                </div>
+        <section class="pkg-detail">
+            <div class="pkg-detail__main">
+                <ul class="pkg-facts">
+                    <li><span class="pkg-facts__icon" aria-hidden="true">🧪</span><span><span class="pkg-facts__label">Tests included</span><span class="pkg-facts__value">{p["tests"]} tests</span></span></li>
+                    <li><span class="pkg-facts__icon" aria-hidden="true">⏱️</span><span><span class="pkg-facts__label">Report time</span><span class="pkg-facts__value">{report_summary(p)}</span></span></li>
+                    <li><span class="pkg-facts__icon" aria-hidden="true">🏠</span><span><span class="pkg-facts__label">Sample collection</span><span class="pkg-facts__value">At home, no extra cost</span></span></li>
+                    <li><span class="pkg-facts__icon" aria-hidden="true">📄</span><span><span class="pkg-facts__label">Reports</span><span class="pkg-facts__value">Email &amp; WhatsApp</span></span></li>
+                </ul>
 
-                <h2>Tests included</h2>
-                <ul>
+                <div class="legal-content package-detail">
+                    <h2>Tests included</h2>
+                    <p class="pkg-muted">{len(p["included"])} test groups · {p["tests"]} tests in total</p>
+                    <ul class="cat-includes cat-includes--lg">
 {included}
-                </ul>
+                    </ul>
 
-                <h2>Who should take this package?</h2>
-                <p>{esc(p["for"])} If you have symptoms or an existing condition, check with your doctor which tests you need.</p>
+                    <h2>Who should take this package?</h2>
+                    <p>{esc(p["for"])} If you have symptoms or an existing condition, check with your doctor which tests you need.</p>
 
-                <h2>Preparation</h2>
-                <ul>
+                    <h2>Preparation</h2>
+                    <ul>
 {prep}
-                </ul>
+                    </ul>
 
-                <h2>Report time</h2>
-                <p>{esc(p["report"])}</p>
+                    <h2>Report time</h2>
+                    <p>{esc(p["report"])}</p>
 
-                <h2>How home sample collection works</h2>
-                <ol>
-                    <li>Call <a href="tel:+919650461818">+91-9650461818</a> or message us on WhatsApp to book the {esc(p["short"])}.</li>
-                    <li>Pick a time slot. A trained phlebotomist visits your home to collect the sample.</li>
-                    <li>Your sample is tested at a NABL, CAP and ISO certified partner lab.</li>
-                    <li>You receive your report by email and WhatsApp.</li>
-                </ol>
+                    <h2>How home sample collection works</h2>
+                    <ol>
+                        <li>Call <a href="tel:+919650461818">+91-9650461818</a> or message us on WhatsApp to book the {esc(p["short"])}.</li>
+                        <li>Pick a time slot. A trained phlebotomist visits your home to collect the sample.</li>
+                        <li>Your sample is tested at a NABL, CAP and ISO certified partner lab.</li>
+                        <li>You receive your report by email and WhatsApp.</li>
+                    </ol>
+                </div>
             </div>
+
+            <aside class="pkg-buy" aria-label="Price and booking">
+                <p class="pkg-buy__label">Package price</p>
+                <div class="price-section">
+                    <span class="current-price">{p["price"]}</span>
+{mrp}{off}                </div>
+{save}                <a href="{whatsapp_link(p["name"])}" target="_blank" class="cta-btn cta-btn-whatsapp pkg-buy__btn">Book on WhatsApp</a>
+                <a href="tel:+919650461818" class="cta-btn cta-btn-call pkg-buy__btn">📞 Call +91-9650461818</a>
+                <ul class="pkg-buy__points">
+                    <li>✔ Home sample collection included</li>
+                    <li>✔ NABL, CAP &amp; ISO certified partner labs</li>
+                    <li>✔ Available 24/7 on call and WhatsApp</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="cat-section">
+            <div class="cat-subhead">
+                <h2>Compare Other Packages</h2>
+                <a href="/health-packages/" class="cat-subhead__link">View all health packages &rarr;</a>
+            </div>
+            <div class="cat-grid">
+{''.join(package_card(o, 'pk-' + o['slug']) for o in others)}            </div>
         </section>
 
         <section class="city-coverage">
             <div class="region-block">
                 <h2 class="section-title">Book a Tata 1mg Blood Test in Your City</h2>
                 <div class="city-link-grid">
-{city_links("Tata 1mg Blood Test in")}
-                </div>
-            </div>
-            <div class="region-block">
-                <h2 class="section-title">Other Health Packages</h2>
-                <div class="city-link-grid">
-{others}
+{city_links()}
                 </div>
             </div>
         </section>
@@ -345,6 +265,10 @@ def package_page(p, cards):
 
 def hub_page(cards):
     url = SITE + '/health-packages/'
+    catalogue = load_catalogue()
+    priced = {c['name']: c for c in cards}
+    listed = {p['name'] for g in catalogue for p in g['packages']}
+    total = len(listed) + sum(1 for c in cards if c['name'] not in listed)
     title = 'Tata 1mg Blood Test Packages | Full Body Checkup Prices'
     description = 'Compare Tata 1mg blood test packages and full body checkup packages from ₹999. Home sample collection, NABL-certified labs and digital reports.'
     schemas = [
@@ -357,86 +281,87 @@ def hub_page(cards):
                 {'@type': 'ListItem', 'position': i + 1, 'name': c['short'], 'url': f'{SITE}/health-packages/{c["slug"]}/'}
                 for i, c in enumerate(cards)],
         },
-        {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            'mainEntity': [
-                {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in HUB_FAQ],
-        },
+        faq_schema(HUB_FAQ),
     ]
-    card_html = ''
-    for c in cards:
-        tooltip = '\n'.join(f'                        <li>{esc(t)}</li>' for t in c['included'])
-        card_html += f'''
-            <div class="test-card" data-test="{esc(c["short"].lower())}">
-                <h4><a href="/health-packages/{c["slug"]}/">{esc(c["name"])}</a></h4>
-                <div class="test-info"><span>⏱️ Contains {c["tests"]} tests</span></div>
-                <div class="price-section">
-{price_html(c, 20)}                </div>
-                <a href="/health-packages/{c["slug"]}/" class="package-link">View tests, preparation &amp; report time &rarr;</a>
-                <button class="book-btn">BOOK NOW</button>
-                <div class="test-tooltip">
-                    <h5>Tests Included</h5>
-                    <ul>
-{tooltip}
-                    </ul>
-                </div>
-            </div>
-'''
-    faq = '\n'.join(f'''            <details class="faq-item">
-                <summary>{esc(q)}</summary>
-                <p>{esc(a)}</p>
-            </details>''' for q, a in HUB_FAQ)
 
-    return head(title, description, url, schemas) + f'''    <header class="header"></header>
+    groups = ''
+    for g in catalogue:
+        group_cards = []
+        for p in g['packages']:
+            item = dict(p)
+            c = priced.get(p['name'])
+            if c:  # priced package: homepage price and its own page
+                item.update(price=c['price'], original=c['original'], discount=c['discount'],
+                            url=f'/health-packages/{c["slug"]}/')
+            group_cards.append(card(item, card_id='p-' + slugify(p['name']), group=g['id'], group_name=g['name'],
+                                    icon=g['icon'], noun='package', search_extra=' '.join(g['keywords'])))
+        groups += group_section(g['id'], g['name'], g['icon'], g['keywords'], group_cards, 'packages')
 
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/">Home</a><span>›</span> <span class="current">Health Packages</span>
     </nav>
 
     <main>
-        <section class="hero">
-            <div class="hero-content" style="flex: 0 0 100%; padding: 40px 50px;">
+        <section class="hero cat-hero">
+            <div class="hero-content">
                 <h1>Health Packages &amp; Full Body Checkups</h1>
-                <p class="intro-copy">Compare Tata 1mg blood test packages, from an essential yearly checkup to a complete full body checkup package with heart, vitamin and inflammation markers. Every Tata 1mg lab test package includes home sample collection at no extra cost, testing at NABL, CAP and ISO certified partner labs, and digital reports on email and WhatsApp.</p>
+                <p class="cat-highlight"><span aria-hidden="true">🏠</span> <strong>Home sample collection at no extra cost</strong> in 10 cities across India.</p>
+                <p class="intro-copy">Compare Tata 1mg blood test packages, from an essential yearly checkup to a complete full body checkup package with heart, vitamin and inflammation markers, plus packages for women, men, senior citizens, diabetes, fever and more.</p>
+{search_box('Search a package, e.g. full body, women, diabetes', 'Search health packages',
+            ['Full body', 'Women', 'Senior', 'Diabetes', 'Fever', 'Vitamin'])}                <ul class="cat-stats">
+                    <li><strong>{total}+</strong> health packages</li>
+                    <li><strong>{len(catalogue)}</strong> categories</li>
+                    <li><strong>NABL, CAP &amp; ISO</strong> certified labs</li>
+                </ul>
             </div>
         </section>
 
-        <section class="popular-tests" id="health-packages">
-            <h2 class="section-title">All Health Packages</h2>
-            <div class="test-grid" id="testGrid">
-{card_html}
+        <section class="cat-section" id="all-packages" data-catalogue data-noun="packages">
+            <div class="cat-featured" data-featured>
+                <div class="cat-subhead">
+                    <h2>Most Booked Health Packages</h2>
+                    <a href="#grp-{catalogue[0]['id']}" class="cat-subhead__link">Browse all {total} packages &darr;</a>
+                </div>
+                <div class="cat-grid">
+{''.join(package_card(c, 'f-' + c['slug']) for c in cards)}                </div>
             </div>
+
+            <div class="cat-subhead cat-subhead--all">
+                <h2>All Health Packages by Category</h2>
+            </div>
+{chips_bar([(g['id'], g['name'], g['icon']) for g in catalogue], 'Filter packages by category')}            <p class="cat-count" aria-live="polite"></p>
+{groups}
+            <div class="cat-empty" hidden>
+                <p class="cat-empty__icon" aria-hidden="true">🔍</p>
+                <p>We couldn't find that package. Call or WhatsApp us and we'll help you choose the right checkup.</p>
+                <div class="cta-strip-buttons">
+                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
+                    <button type="button" class="cat-reset">Show all packages</button>
+                </div>
+            </div>
+            <p class="cat-note">For packages without a listed price, call us for the current price. Report times are indicative and can vary by city.</p>
         </section>
 
+{steps_section()}
         <section class="faq-section">
             <h2 class="section-title">Frequently Asked Questions</h2>
-{faq}
+{faq_html(HUB_FAQ)}
         </section>
 
         <section class="city-coverage">
             <div class="region-block">
                 <h2 class="section-title">Book a Tata 1mg Blood Test in Your City</h2>
                 <div class="city-link-grid">
-{city_links("Tata 1mg Blood Test in")}
+{city_links()}
                 </div>
             </div>
         </section>
     </main>
-''' + tail()
-
-
-def write(rel, text):
-    header = (PARTIALS / 'header.html').read_text(encoding='utf-8').rstrip('\n')
-    text = text.replace('    <header class="header"></header>', header, 1)
-    path = ROOT / rel
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding='utf-8', newline='')
-    print('wrote', rel)
+''' + tail('Not sure which package to choose?', 'Call or WhatsApp our health advisors and we will help you pick the right checkup.')
 
 
 if __name__ == '__main__':
     cards = read_cards()
-    write('health-packages/index.html', hub_page(cards))
+    write_page('health-packages/index.html', hub_page(cards))
     for p in cards:
-        write(f'health-packages/{p["slug"]}/index.html', package_page(p, cards))
+        write_page(f'health-packages/{p["slug"]}/index.html', package_page(p, cards))
