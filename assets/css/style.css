@@ -1427,6 +1427,30 @@ display: block;
     text-decoration: none;
 }
 
+/* "Explore all tests / health packages" under Popular Tests (city pages) */
+.explore-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 30px;
+}
+.explore-link {
+    padding: 12px 24px;
+    border: 1px solid #ff6f61;
+    border-radius: 24px;
+    background: white;
+    color: #ff6f61;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+.explore-link:hover { background: #ff6f61; color: white; }
+@media (max-width: 767px) {
+    .explore-links { flex-direction: column; align-items: stretch; }
+    .explore-link { text-align: center; }
+}
+
 /* ── Health package pages ────────────────────────────────────────── */
 .test-card h4 a {
     color: inherit;
