@@ -12,7 +12,7 @@ tools/data/health-packages.json. Run from the repo root:
 import json
 
 from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, city_links, esc, faq_html, faq_schema,
-                        group_section, head, homepage_cards, price_number, search_box, slugify, steps_section, tail,
+                        group_section, head, homepage_cards, icon, price_number, search_box, slugify, steps_section, tail,
                         whatsapp_link, write_page)
 
 FASTING = [
@@ -129,7 +129,7 @@ def load_catalogue():
 def package_card(p, card_id):
     return card(dict(name=p['short'], about=p['summary'], tests=p['tests'], price=p['price'], original=p['original'],
                      discount=p['discount'], includes=p['included'], url=f'/health-packages/{p["slug"]}/'),
-                card_id=card_id, group='featured', group_name='Health package', icon='📋', noun='package',
+                card_id=card_id, group='featured', group_name='Health package', icon_name='package', noun='package',
                 search_extra=p['name'])
 
 
@@ -184,7 +184,7 @@ def package_page(p, cards):
     <main>
         <section class="hero cat-hero">
             <div class="hero-content">
-                <p class="cat-hero__type">📋 Health package</p>
+                <p class="cat-hero__type">{icon("package")}Health package</p>
                 <h1>{esc(p["short"])}</h1>
                 <p class="intro-copy">{esc(p["summary"])}</p>
             </div>
@@ -193,10 +193,10 @@ def package_page(p, cards):
         <section class="pkg-detail">
             <div class="pkg-detail__main">
                 <ul class="pkg-facts">
-                    <li><span class="pkg-facts__icon" aria-hidden="true">🧪</span><span><span class="pkg-facts__label">Tests included</span><span class="pkg-facts__value">{p["tests"]} tests</span></span></li>
-                    <li><span class="pkg-facts__icon" aria-hidden="true">⏱️</span><span><span class="pkg-facts__label">Report time</span><span class="pkg-facts__value">{report_summary(p)}</span></span></li>
-                    <li><span class="pkg-facts__icon" aria-hidden="true">🏠</span><span><span class="pkg-facts__label">Sample collection</span><span class="pkg-facts__value">At home, no extra cost</span></span></li>
-                    <li><span class="pkg-facts__icon" aria-hidden="true">📄</span><span><span class="pkg-facts__label">Reports</span><span class="pkg-facts__value">Email &amp; WhatsApp</span></span></li>
+                    <li><span class="pkg-facts__icon">{icon("tube")}</span><span><span class="pkg-facts__label">Tests included</span><span class="pkg-facts__value">{p["tests"]} tests</span></span></li>
+                    <li><span class="pkg-facts__icon">{icon("clock")}</span><span><span class="pkg-facts__label">Report time</span><span class="pkg-facts__value">{report_summary(p)}</span></span></li>
+                    <li><span class="pkg-facts__icon">{icon("home")}</span><span><span class="pkg-facts__label">Sample collection</span><span class="pkg-facts__value">At home, no extra cost</span></span></li>
+                    <li><span class="pkg-facts__icon">{icon("report")}</span><span><span class="pkg-facts__label">Reports</span><span class="pkg-facts__value">Email &amp; WhatsApp</span></span></li>
                 </ul>
 
                 <div class="legal-content package-detail">
@@ -233,11 +233,11 @@ def package_page(p, cards):
                     <span class="current-price">{p["price"]}</span>
 {mrp}{off}                </div>
 {save}                <a href="{whatsapp_link(p["name"])}" target="_blank" class="cta-btn cta-btn-whatsapp pkg-buy__btn">Book on WhatsApp</a>
-                <a href="tel:+919650461818" class="cta-btn cta-btn-call pkg-buy__btn">📞 Call +91-9650461818</a>
+                <a href="tel:+919650461818" class="cta-btn cta-btn-call pkg-buy__btn">{icon("phone")}Call +91-9650461818</a>
                 <ul class="pkg-buy__points">
-                    <li>✔ Home sample collection included</li>
-                    <li>✔ NABL, CAP &amp; ISO certified partner labs</li>
-                    <li>✔ Available 24/7 on call and WhatsApp</li>
+                    <li>Home sample collection included</li>
+                    <li>NABL, CAP &amp; ISO certified partner labs</li>
+                    <li>Available 24/7 on call and WhatsApp</li>
                 </ul>
             </aside>
         </section>
@@ -294,7 +294,7 @@ def hub_page(cards):
                 item.update(price=c['price'], original=c['original'], discount=c['discount'],
                             url=f'/health-packages/{c["slug"]}/')
             group_cards.append(card(item, card_id='p-' + slugify(p['name']), group=g['id'], group_name=g['name'],
-                                    icon=g['icon'], noun='package', search_extra=' '.join(g['keywords'])))
+                                    icon_name=g['icon'], noun='package', search_extra=' '.join(g['keywords'])))
         groups += group_section(g['id'], g['name'], g['icon'], g['keywords'], group_cards, 'packages')
 
     return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -329,10 +329,10 @@ def hub_page(cards):
 {chips_bar([(g['id'], g['name'], g['icon']) for g in catalogue], 'Filter packages by category')}            <p class="cat-count" aria-live="polite"></p>
 {groups}
             <div class="cat-empty" hidden>
-                <p class="cat-empty__icon" aria-hidden="true">🔍</p>
+                <p class="cat-empty__icon">{icon("search")}</p>
                 <p>We couldn't find that package. Call or WhatsApp us and we'll help you choose the right checkup.</p>
                 <div class="cta-strip-buttons">
-                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
+                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">{icon("phone")}Call +91-9650461818</a>
                     <button type="button" class="cat-reset">Show all packages</button>
                 </div>
             </div>

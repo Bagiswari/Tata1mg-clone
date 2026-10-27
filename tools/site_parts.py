@@ -37,6 +37,11 @@ def price_number(s):
     return re.sub(r'[^0-9]', '', s)
 
 
+def icon(name, cls='ic'):
+    """An icon from assets/icons/icons.svg."""
+    return f'<svg class="{cls}" aria-hidden="true"><use href="/assets/icons/icons.svg#i-{name}"/></svg>'
+
+
 def whatsapp_link(name):
     return WHATSAPP + '?text=' + urllib.parse.quote('Hi, I want to book ' + name)
 
@@ -103,7 +108,7 @@ def tail(cta_title='Ready to Book Your Health Checkup?', cta_text='Speak to our 
             <h2>{esc(cta_title)}</h2>
             <p>{esc(cta_text)}</p>
             <div class="cta-strip-buttons">
-                <a href="{PHONE_TEL}" class="cta-btn cta-btn-call">📞 Call {PHONE_DISPLAY}</a>
+                <a href="{PHONE_TEL}" class="cta-btn cta-btn-call">{icon("phone")}Call {PHONE_DISPLAY}</a>
                 <a href="{WHATSAPP}" target="_blank" class="cta-btn cta-btn-whatsapp">Book on WhatsApp</a>
             </div>
         </div>
@@ -175,7 +180,7 @@ def price_html(p, indent):
     return out + f'{pad}</div>\n'
 
 
-def card(item, *, card_id, group, group_name, icon, noun='test', search_extra='', extra_class=''):
+def card(item, *, card_id, group, group_name, icon_name, noun='test', search_extra='', extra_class=''):
     """One test or package card.
 
     item: name, about, tests, reports, includes (packages), price/original/discount (priced items),
@@ -185,15 +190,15 @@ def card(item, *, card_id, group, group_name, icon, noun='test', search_extra=''
     title = f'<a href="{item["url"]}">{esc(name)}</a>' if item.get('url') else esc(name)
     meta = []
     if item.get('tests'):
-        meta.append(f'<li>🧪 {item["tests"]} {"test" if item["tests"] == 1 else "tests"}</li>')
+        meta.append(f'<li>{icon("tube")}{item["tests"]} {"test" if item["tests"] == 1 else "tests"}</li>')
     if item.get('reports'):
-        meta.append(f'<li>⏱️ Reports in {esc(item["reports"])}</li>')
+        meta.append(f'<li>{icon("clock")}Reports in {esc(item["reports"])}</li>')
     includes = item.get('includes') or []
     search = norm(' '.join([name, group_name, search_extra, ' '.join(includes)]))
     classes = ' '.join(filter(None, ['cat-card', noun == 'package' and 'cat-card--pkg', item.get('price') and 'cat-card--priced', extra_class]))
 
     out = f'''                <article class="{classes}" id="{card_id}" data-group="{group}" data-search="{esc(search)}">
-                    <span class="cat-card__type"><span aria-hidden="true">{icon}</span> {esc(group_name)}</span>
+                    <span class="cat-card__type">{icon(icon_name)}{esc(group_name)}</span>
                     <h3 class="cat-card__title">{title}</h3>
 '''
     if meta:
@@ -212,7 +217,7 @@ def card(item, *, card_id, group, group_name, icon, noun='test', search_extra=''
     if item.get('url'):
         out += f'                        <a href="{item["url"]}" class="cat-card__details">View details &rarr;</a>\n'
     out += f'''                        <div class="cat-card__actions">
-                            <a href="{PHONE_TEL}" class="cat-btn cat-btn--book" aria-label="Call {PHONE_DISPLAY} to book {esc(name)}">📞 Book Now</a>
+                            <a href="{PHONE_TEL}" class="cat-btn cat-btn--book" aria-label="Call {PHONE_DISPLAY} to book {esc(name)}">{icon("phone")}Book Now</a>
                             <a href="{whatsapp_link(name)}" target="_blank" class="cat-btn cat-btn--wa" aria-label="Book {esc(name)} on WhatsApp">WhatsApp</a>
                         </div>
                     </div>
@@ -224,7 +229,7 @@ def card(item, *, card_id, group, group_name, icon, noun='test', search_extra=''
 PREVIEW = 3  # cards shown per group before "View more" (2 on phones, see style.css)
 
 
-def group_section(group_id, name, icon, keywords, cards_html, noun_plural):
+def group_section(group_id, name, icon_name, keywords, cards_html, noun_plural):
     count = len(cards_html)
     collapsible = count > PREVIEW + 1
     if collapsible:
@@ -235,9 +240,9 @@ def group_section(group_id, name, icon, keywords, cards_html, noun_plural):
                 <button type="button" class="cat-more" aria-expanded="false" aria-controls="grp-{group_id}-list" data-more="View all {count} {noun_plural}">View all {count} {noun_plural}</button>
             </div>
 ''' if collapsible else '')
-    return f'''        <section class="cat-group{' has-more' if collapsible else ''}" id="grp-{group_id}" data-group="{group_id}" data-name="{esc(name)}" data-icon="{icon}" data-keywords="{esc(' '.join(keywords))}" aria-labelledby="grp-{group_id}-title">
+    return f'''        <section class="cat-group{' has-more' if collapsible else ''}" id="grp-{group_id}" data-group="{group_id}" data-name="{esc(name)}" data-icon="{icon_name}" data-keywords="{esc(' '.join(keywords))}" aria-labelledby="grp-{group_id}-title">
             <div class="cat-group__head">
-                <span class="cat-group__icon" aria-hidden="true">{icon}</span>
+                <span class="cat-group__icon">{icon(icon_name)}</span>
                 <h2 id="grp-{group_id}-title">{esc(name)}</h2>
                 <span class="cat-group__count">{count} {noun_plural}</span>
             </div>
@@ -249,8 +254,8 @@ def group_section(group_id, name, icon, keywords, cards_html, noun_plural):
 
 def chips_bar(groups, label):
     chips = [f'<button type="button" class="lab-chip active" data-group="all" aria-pressed="true">All</button>']
-    chips += [f'<button type="button" class="lab-chip" data-group="{gid}" aria-pressed="false"><span aria-hidden="true">{icon}</span> {esc(name)}</button>'
-              for gid, name, icon in groups]
+    chips += [f'<button type="button" class="lab-chip" data-group="{gid}" aria-pressed="false">{icon(icon_name)}{esc(name)}</button>'
+              for gid, name, icon_name in groups]
     return ('        <div class="cat-bar">\n'
             f'            <div class="cat-chips" role="group" aria-label="{esc(label)}">\n'
             + ''.join(f'                {c}\n' for c in chips) +
@@ -281,21 +286,21 @@ def faq_html(faq, indent=8):
 
 
 STEPS = [
-    ('📞', 'Book your test', 'Call or WhatsApp us with the test or package you need.'),
-    ('📅', 'Pick a time slot', 'Choose a time that suits you, including early mornings for fasting tests.'),
-    ('🏠', 'Sample collected at home', 'A trained phlebotomist collects your sample at your doorstep.'),
-    ('📄', 'Get your report', 'Tested at certified partner labs; reports reach you on email and WhatsApp.'),
+    ('phone', 'Book your test', 'Call or WhatsApp us with the test or package you need.'),
+    ('calendar', 'Pick a time slot', 'Choose a time that suits you, including early mornings for fasting tests.'),
+    ('home', 'Sample collected at home', 'A trained phlebotomist collects your sample at your doorstep.'),
+    ('report', 'Get your report', 'Tested at certified partner labs; reports reach you on email and WhatsApp.'),
 ]
 
 
 def steps_section(title='How Home Sample Collection Works'):
     items = ''.join(f'''            <li class="cat-step">
                 <span class="cat-step__num">{i + 1:02d}</span>
-                <span class="cat-step__icon" aria-hidden="true">{icon}</span>
+                <span class="cat-step__icon">{icon(name)}</span>
                 <h3>{esc(t)}</h3>
                 <p>{esc(d)}</p>
             </li>
-''' for i, (icon, t, d) in enumerate(STEPS))
+''' for i, (name, t, d) in enumerate(STEPS))
     return f'''    <section class="cat-steps-section">
         <h2 class="section-title">{esc(title)}</h2>
         <ol class="cat-steps">

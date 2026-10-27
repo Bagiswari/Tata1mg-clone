@@ -2,7 +2,7 @@
   {
     "id": "fullbody",
     "name": "Full Body & General Checkups",
-    "icon": "📋",
+    "icon": "fullbody",
     "keywords": [
       "full body",
       "checkup",
@@ -391,7 +391,7 @@
   {
     "id": "women",
     "name": "Women",
-    "icon": "👩",
+    "icon": "women",
     "keywords": [
       "women",
       "woman",
@@ -835,7 +835,7 @@
   {
     "id": "men",
     "name": "Men",
-    "icon": "👨",
+    "icon": "men",
     "keywords": [
       "men",
       "man",
@@ -1088,7 +1088,7 @@
   {
     "id": "senior",
     "name": "Senior Citizens",
-    "icon": "👴",
+    "icon": "senior",
     "keywords": [
       "senior",
       "elderly",
@@ -1185,7 +1185,7 @@
   {
     "id": "children",
     "name": "Children",
-    "icon": "👶",
+    "icon": "children",
     "keywords": [
       "child",
       "children",
@@ -1255,7 +1255,7 @@
   {
     "id": "diabetes",
     "name": "Diabetes",
-    "icon": "💉",
+    "icon": "diabetes",
     "keywords": [
       "diabetes",
       "sugar",
@@ -1347,7 +1347,7 @@
   {
     "id": "heart",
     "name": "Heart & Blood Pressure",
-    "icon": "❤️",
+    "icon": "heart",
     "keywords": [
       "heart",
       "cardiac",
@@ -1415,7 +1415,7 @@
   {
     "id": "fever",
     "name": "Fever & Infections",
-    "icon": "🌡️",
+    "icon": "fever",
     "keywords": [
       "fever",
       "infection",
@@ -1730,7 +1730,7 @@
   {
     "id": "vitamins",
     "name": "Vitamins, Bones & Joints",
-    "icon": "💊",
+    "icon": "vitamins",
     "keywords": [
       "vitamin",
       "deficiency",
@@ -1909,7 +1909,7 @@
   {
     "id": "organs",
     "name": "Thyroid, Liver, Kidney & Gut",
-    "icon": "🩺",
+    "icon": "organs",
     "keywords": [
       "thyroid",
       "liver",
@@ -2024,7 +2024,7 @@
   {
     "id": "lifestyle",
     "name": "Lifestyle & Weight",
-    "icon": "🏃",
+    "icon": "lifestyle",
     "keywords": [
       "weight",
       "obesity",
@@ -2125,7 +2125,7 @@
   {
     "id": "allergy",
     "name": "Allergy & Food Intolerance",
-    "icon": "🤧",
+    "icon": "allergy",
     "keywords": [
       "allergy",
       "food",
@@ -2952,7 +2952,7 @@
   {
     "id": "special",
     "name": "Blood, Autoimmune & Specialised",
-    "icon": "🔬",
+    "icon": "special",
     "keywords": [
       "autoimmune",
       "blood",
@@ -3177,7 +3177,7 @@
   {
     "id": "cancer",
     "name": "Cancer & Genetic",
-    "icon": "🧬",
+    "icon": "genetic",
     "keywords": [
       "cancer",
       "genetic",

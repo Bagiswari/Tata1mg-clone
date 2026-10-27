@@ -8,7 +8,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "blood",
         "name": "Blood Count & Anaemia",
-        "icon": "🩸",
+        "icon": "blood",
         "keywords": [
             "blood",
             "cbc",
@@ -143,7 +143,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "diabetes",
         "name": "Diabetes",
-        "icon": "💉",
+        "icon": "diabetes",
         "keywords": [
             "diabetes",
             "sugar",
@@ -228,7 +228,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "thyroid",
         "name": "Thyroid",
-        "icon": "🦋",
+        "icon": "thyroid",
         "keywords": [
             "thyroid",
             "tsh",
@@ -307,7 +307,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "heart",
         "name": "Heart & Cholesterol",
-        "icon": "❤️",
+        "icon": "heart",
         "keywords": [
             "heart",
             "cholesterol",
@@ -411,7 +411,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "liver",
         "name": "Liver",
-        "icon": "🩺",
+        "icon": "liver",
         "keywords": [
             "liver",
             "lft",
@@ -504,7 +504,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "kidney",
         "name": "Kidney & Electrolytes",
-        "icon": "💧",
+        "icon": "kidney",
         "keywords": [
             "kidney",
             "kft",
@@ -605,7 +605,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "vitamins",
         "name": "Vitamins & Minerals",
-        "icon": "💊",
+        "icon": "vitamins",
         "keywords": [
             "vitamin",
             "b12",
@@ -705,7 +705,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "hormones",
         "name": "Hormones & Fertility",
-        "icon": "🧬",
+        "icon": "hormones",
         "keywords": [
             "hormone",
             "fertility",
@@ -833,7 +833,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "fever",
         "name": "Fever & Infections",
-        "icon": "🌡️",
+        "icon": "fever",
         "keywords": [
             "fever",
             "dengue",
@@ -955,7 +955,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "arthritis",
         "name": "Arthritis & Autoimmune",
-        "icon": "🦴",
+        "icon": "arthritis",
         "keywords": [
             "arthritis",
             "joint",
@@ -1024,7 +1024,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "allergy",
         "name": "Allergy",
-        "icon": "🤧",
+        "icon": "allergy",
         "keywords": [
             "allergy",
             "ige",
@@ -1084,7 +1084,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "cancer",
         "name": "Cancer Markers",
-        "icon": "🔬",
+        "icon": "cancer",
         "keywords": [
             "cancer",
             "tumour",
@@ -1159,7 +1159,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "urine",
         "name": "Urine & Stool",
-        "icon": "🧫",
+        "icon": "urine",
         "keywords": [
             "urine",
             "stool",
@@ -1213,7 +1213,7 @@ window.LAB_TEST_CATEGORIES = [
     {
         "id": "coagulation",
         "name": "Coagulation",
-        "icon": "🩹",
+        "icon": "coagulation",
         "keywords": [
             "coagulation",
             "clotting",

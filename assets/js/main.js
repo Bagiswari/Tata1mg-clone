@@ -310,6 +310,18 @@ function suggestScore(name, extra, q) {
     return s - n.length / 200; // shorter names win ties
 }
 
+// An icon from assets/icons/icons.svg (same markup as icon() in tools/site_parts.py).
+function iconEl(name) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('class', 'ic');
+    svg.setAttribute('aria-hidden', 'true');
+    var use = document.createElementNS(ns, 'use');
+    use.setAttribute('href', '/assets/icons/icons.svg#i-' + name);
+    svg.appendChild(use);
+    return svg;
+}
+
 // Scroll a card into view and highlight it briefly.
 function focusCard(el) {
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); // phones: close the keyboard
@@ -463,8 +475,10 @@ function initCatalogue() {
         if (!hits.length && !cats.length) {
             var none = el('div', 'cat-suggest__empty');
             none.appendChild(el('p', '', 'No match for “' + input.value.trim() + '”. Call us and we will help.'));
-            var call = el('a', 'cat-btn cat-btn--book', '📞 Call');
+            var call = el('a', 'cat-btn cat-btn--book');
             call.href = SITE.phoneTel;
+            call.appendChild(iconEl('phone'));
+            call.appendChild(document.createTextNode('Call'));
             none.appendChild(call);
             drop.appendChild(none);
         }
@@ -474,7 +488,7 @@ function initCatalogue() {
                 var row = el('button', 'cat-suggest__row');
                 row.type = 'button';
                 row.setAttribute('role', 'option');
-                row.appendChild(el('span', 'cat-suggest__icon', x.i.icon));
+                row.appendChild(el('span', 'cat-suggest__icon')).appendChild(iconEl(x.i.icon));
                 var name = el('span', 'cat-suggest__name', x.i.name);
                 name.appendChild(el('small', '', x.i.meta || x.i.group));
                 row.appendChild(name);
@@ -487,8 +501,10 @@ function initCatalogue() {
             drop.appendChild(el('p', 'cat-suggest__label', 'Categories'));
             var wrap = el('div', 'cat-suggest__chips');
             cats.forEach(function(g) {
-                var chip = el('button', 'cat-suggest__row cat-suggest__chip', g.icon + ' ' + g.name);
+                var chip = el('button', 'cat-suggest__row cat-suggest__chip');
                 chip.type = 'button';
+                chip.appendChild(iconEl(g.icon));
+                chip.appendChild(document.createTextNode(g.name));
                 chip.addEventListener('click', function() {
                     input.value = '';
                     setGroup(g.id);

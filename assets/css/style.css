@@ -1714,13 +1714,12 @@ display: block;
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: #ff6f61;
-    font-size: 22px;
-    box-shadow: 0 6px 14px rgba(255,111,97,0.35);
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #fff1ee;
 }
+.cat-group__icon .ic { width: 34px; height: 34px; }
 .cat-group__head h2 { font-size: 22px; color: #333; }
 .cat-group__count {
     margin-left: auto;
@@ -2048,3 +2047,28 @@ display: block;
     .pkg-detail { padding: 0 20px; }
     .pkg-facts { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ── Icons (assets/icons/icons.svg) ──────────────────────────────── */
+.ic {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    vertical-align: -4px;
+}
+.cat-card__type { display: inline-flex; align-items: center; gap: 6px; }
+.cat-card__type .ic { width: 20px; height: 20px; }
+.cat-meta li { display: inline-flex; align-items: center; gap: 5px; }
+.cat-meta .ic { width: 16px; height: 16px; }
+.cat-btn { gap: 6px; }
+.cat-btn--book .ic { width: 16px; height: 16px; color: white; }
+.cat-chips .lab-chip { display: inline-flex; align-items: center; gap: 6px; }
+.cat-suggest__icon .ic { width: 22px; height: 22px; }
+.cat-suggest__chip { display: inline-flex; align-items: center; gap: 6px; }
+.cat-step__icon .ic { width: 34px; height: 34px; color: #ff6f61; }
+.pkg-facts__icon .ic { width: 26px; height: 26px; }
+.cat-empty__icon .ic { width: 52px; height: 52px; }
+.cat-hero__type { display: flex; align-items: center; gap: 8px; }
+.cat-hero__type .ic { width: 22px; height: 22px; }
+.cta-btn .ic { width: 18px; height: 18px; margin-right: 6px; color: #ff6f61; }
+.pkg-buy__points li::before { content: "\2713"; margin-right: 8px; color: #4caf50; font-weight: 700; }

@@ -10,7 +10,7 @@ import json
 import re
 
 from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, esc, faq_html, faq_schema, features_section,
-                        group_section, head, homepage_cards, search_box, slugify, steps_section, tail, write_page)
+                        group_section, head, icon, homepage_cards, search_box, slugify, steps_section, tail, write_page)
 from build_package_pages import PACKAGES
 
 # Homepage test card → (official test name in lab-tests-data.js or None, category id)
@@ -74,7 +74,7 @@ def build():
         about = official[name]['about'] if name else ABOUT[h['name']]
         c = by_id[cat_id]
         featured.append(card(dict(fields, name=h['name'], about=about), card_id='f-' + slugify(h['name']),
-                             group=cat_id, group_name=c['name'], icon=c['icon']))
+                             group=cat_id, group_name=c['name'], icon_name=c['icon']))
     missing = set(HOME_TESTS) - {h['name'] for h in homepage_cards()}
     if missing:
         raise SystemExit('Homepage test cards not found: ' + ', '.join(sorted(missing)))
@@ -82,7 +82,7 @@ def build():
     groups = ''
     for c in cats:
         cards = [card(dict(t, **priced.get(t['name'], {})), card_id='t-' + slugify(t['name']), group=c['id'],
-                      group_name=c['name'], icon=c['icon'], search_extra=' '.join(c['keywords']))
+                      group_name=c['name'], icon_name=c['icon'], search_extra=' '.join(c['keywords']))
                  for t in c['tests']]
         groups += group_section(c['id'], c['name'], c['icon'], c['keywords'], cards, 'tests')
     total = sum(len(c['tests']) for c in cats)
@@ -95,7 +95,7 @@ def build():
         pkg_cards.append(card(dict(name=p['short'], about=p['summary'], tests=h['tests'], price=h['price'],
                                    original=h['original'], discount=h['discount'], includes=h['included'],
                                    url=f'/health-packages/{p["slug"]}/'),
-                              card_id='pk-' + p['slug'], group='packages', group_name='Health package', icon='📋', noun='package'))
+                              card_id='pk-' + p['slug'], group='packages', group_name='Health package', icon_name='package', noun='package'))
 
     url = SITE + '/lab-tests/'
     title = 'Tata 1mg Lab Tests List & Prices | Book Blood Tests at Home'
@@ -138,10 +138,10 @@ def build():
 {chips_bar([(c['id'], c['name'], c['icon']) for c in cats], 'Filter tests by category')}            <p class="cat-count" aria-live="polite"></p>
 {groups}
             <div class="cat-empty" hidden>
-                <p class="cat-empty__icon" aria-hidden="true">🔍</p>
+                <p class="cat-empty__icon">{icon("search")}</p>
                 <p>We couldn't find that test in this list. Many more tests are available, so call or WhatsApp us with the test name from your prescription.</p>
                 <div class="cta-strip-buttons">
-                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">📞 Call +91-9650461818</a>
+                    <a href="tel:+919650461818" class="cta-btn cta-btn-call">{icon("phone")}Call +91-9650461818</a>
                     <button type="button" class="cat-reset">Show all tests</button>
                 </div>
             </div>
