@@ -116,6 +116,21 @@ function withLabTests(callback) {
     document.head.appendChild(s);
 }
 
+// ── Health package data (loaded on demand for search) ─────────────────
+function withHealthPackages(callback) {
+    if (window.HEALTH_PACKAGE_GROUPS) return callback(window.HEALTH_PACKAGE_GROUPS);
+    var s = document.createElement('script');
+    s.src = '/assets/js/health-packages-data.js';
+    s.onload  = function() { callback(window.HEALTH_PACKAGE_GROUPS || []); };
+    s.onerror = function() { callback([]); };
+    document.head.appendChild(s);
+}
+
+// Card ids on /lab-tests/ and /health-packages/ (same as slugify() in tools/site_parts.py).
+function slugify(s) {
+    return s.toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 // Words ignored when matching single words ("vitamin for kids" → "vitamin").
 var STOP_WORDS = FILLER_WORDS.concat(['and', 'with', 'my', 'to', 'is', 'i', 'want', 'need', 'get', 'check', 'please', 'any', 'all', 'you', 'your', 'do', 'how', 'what']);
 
@@ -310,6 +325,18 @@ function suggestScore(name, extra, q) {
     return s - n.length / 200; // shorter names win ties
 }
 
+// Best n suggestions for q. items: { name, extra, boost }. If any names match, only
+// name matches are shown; otherwise matches on category words ("sugar" → diabetes tests).
+function rankSuggestions(items, q, n) {
+    function ranked(withExtra) {
+        return items.map(function(i) { var s = suggestScore(i.name, withExtra ? i.extra : '', q); return { i: i, s: s && s + (i.boost || 0) }; })
+            .filter(function(x) { return x.s > 0; });
+    }
+    var hits = ranked(false);
+    if (!hits.length) hits = ranked(true);
+    return hits.sort(function(a, b) { return b.s - a.s; }).slice(0, n).map(function(x) { return x.i; });
+}
+
 // An icon from assets/icons/icons.svg (same markup as icon() in tools/site_parts.py).
 function iconEl(name) {
     var ns = 'http://www.w3.org/2000/svg';
@@ -328,6 +355,98 @@ function focusCard(el) {
     setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
     el.classList.add('is-focus');
     setTimeout(function() { el.classList.remove('is-focus'); }, 3000);
+}
+
+function makeEl(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+}
+
+// Live suggestions under a search box. build(q) returns
+//   { sections: [{ label, items: [{ icon, name, meta, pill, href | pick }], chips }],
+//     all: { label, pick } }
+// Items with href are links; items with pick() are buttons. Arrow keys move through
+// the rows, Enter opens the highlighted one, Escape or a click outside closes the list.
+function attachSuggest(input, drop, wrap, build) {
+    var active = -1;
+    function rows() { return [].slice.call(drop.querySelectorAll('.cat-suggest__row')); }
+    function close() {
+        drop.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        active = -1;
+    }
+    function row(item, cls) {
+        var r = makeEl(item.href ? 'a' : 'button', cls);
+        if (item.href) r.href = item.href; else r.type = 'button';
+        r.setAttribute('role', 'option');
+        if (item.pick) r.addEventListener('click', function() { close(); item.pick(); });
+        return r;
+    }
+    function render() {
+        var q = normalizeText(input.value);
+        if (q.length < 2) return close();
+        var res = build(q);
+        if (!res) return close(); // data still loading
+        drop.innerHTML = '';
+        if (!res.sections.some(function(sec) { return sec.items.length; })) {
+            var none = makeEl('div', 'cat-suggest__empty');
+            none.appendChild(makeEl('p', '', 'No match for “' + input.value.trim() + '”. Call us and we will help.'));
+            var call = makeEl('a', 'cat-btn cat-btn--book');
+            call.href = SITE.phoneTel;
+            call.appendChild(iconEl('phone'));
+            call.appendChild(document.createTextNode('Call'));
+            none.appendChild(call);
+            drop.appendChild(none);
+        }
+        res.sections.forEach(function(sec) {
+            if (!sec.items.length) return;
+            drop.appendChild(makeEl('p', 'cat-suggest__label', sec.label));
+            var box = sec.chips ? drop.appendChild(makeEl('div', 'cat-suggest__chips')) : drop;
+            sec.items.forEach(function(item) {
+                var r = row(item, sec.chips ? 'cat-suggest__row cat-suggest__chip' : 'cat-suggest__row');
+                if (sec.chips) {
+                    r.appendChild(iconEl(item.icon));
+                    r.appendChild(document.createTextNode(item.name));
+                } else {
+                    r.appendChild(makeEl('span', 'cat-suggest__icon')).appendChild(iconEl(item.icon));
+                    var name = makeEl('span', 'cat-suggest__name', item.name);
+                    name.appendChild(makeEl('small', '', item.meta || item.pill));
+                    r.appendChild(name);
+                    r.appendChild(makeEl('span', 'cat-suggest__cat', item.pill));
+                }
+                box.appendChild(r);
+            });
+        });
+        var all = makeEl('button', 'cat-suggest__all', res.all.label);
+        all.type = 'button';
+        all.addEventListener('click', function() { close(); res.all.pick(); });
+        drop.appendChild(all);
+        drop.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        active = -1;
+    }
+
+    input.addEventListener('focus', render);
+    input.addEventListener('keydown', function(e) {
+        var r = rows();
+        if (e.key === 'Escape') return close();
+        if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !drop.hidden && r.length) {
+            e.preventDefault();
+            active = (active + (e.key === 'ArrowDown' ? 1 : -1) + r.length) % r.length;
+            r.forEach(function(el, i) { el.classList.toggle('is-active', i === active); });
+            r[active].scrollIntoView({ block: 'nearest' });
+        }
+        if (e.key === 'Enter' && active >= 0 && r[active]) {
+            e.preventDefault();
+            r[active].click();
+        }
+    });
+    document.addEventListener('pointerdown', function(e) {
+        if (!wrap.contains(e.target)) close();
+    });
+    return { render: render, close: close };
 }
 
 function initCatalogue() {
@@ -450,110 +569,33 @@ function initCatalogue() {
     });
 
     // ── Live suggestions ──
-    var active = -1;
-    function rows() { return [].slice.call(drop.querySelectorAll('.cat-suggest__row')); }
-    function closeDrop() {
-        drop.hidden = true;
-        input.setAttribute('aria-expanded', 'false');
-        active = -1;
-    }
-    function el(tag, cls, text) {
-        var e = document.createElement(tag);
-        if (cls) e.className = cls;
-        if (text) e.textContent = text;
-        return e;
-    }
-    function renderDrop() {
-        var q = normalizeText(input.value);
-        if (q.length < 2) return closeDrop();
-        var hits = index.map(function(i) { var s = suggestScore(i.name, i.extra, q); return { i: i, s: s && s + i.boost }; })
-            .filter(function(x) { return x.s > 0; })
-            .sort(function(a, b) { return b.s - a.s; }).slice(0, 6);
+    var suggest = attachSuggest(input, drop, input.closest('.cat-search'), function(q) {
+        var hits = rankSuggestions(index, q, 6);
         var cats = groupIndex.filter(function(g) { return suggestScore(g.name, g.extra, q) > 0; }).slice(0, 3);
-
-        drop.innerHTML = '';
-        if (!hits.length && !cats.length) {
-            var none = el('div', 'cat-suggest__empty');
-            none.appendChild(el('p', '', 'No match for “' + input.value.trim() + '”. Call us and we will help.'));
-            var call = el('a', 'cat-btn cat-btn--book');
-            call.href = SITE.phoneTel;
-            call.appendChild(iconEl('phone'));
-            call.appendChild(document.createTextNode('Call'));
-            none.appendChild(call);
-            drop.appendChild(none);
-        }
-        if (hits.length) {
-            drop.appendChild(el('p', 'cat-suggest__label', noun === 'packages' ? 'Health packages' : 'Lab tests'));
-            hits.forEach(function(x) {
-                var row = el('button', 'cat-suggest__row');
-                row.type = 'button';
-                row.setAttribute('role', 'option');
-                row.appendChild(el('span', 'cat-suggest__icon')).appendChild(iconEl(x.i.icon));
-                var name = el('span', 'cat-suggest__name', x.i.name);
-                name.appendChild(el('small', '', x.i.meta || x.i.group));
-                row.appendChild(name);
-                row.appendChild(el('span', 'cat-suggest__cat', x.i.group));
-                row.addEventListener('click', function() { showCard(x.i.card); });
-                drop.appendChild(row);
-            });
-        }
-        if (cats.length) {
-            drop.appendChild(el('p', 'cat-suggest__label', 'Categories'));
-            var wrap = el('div', 'cat-suggest__chips');
-            cats.forEach(function(g) {
-                var chip = el('button', 'cat-suggest__row cat-suggest__chip');
-                chip.type = 'button';
-                chip.appendChild(iconEl(g.icon));
-                chip.appendChild(document.createTextNode(g.name));
-                chip.addEventListener('click', function() {
-                    input.value = '';
-                    setGroup(g.id);
-                    apply();
-                    closeDrop();
-                    scrollToResults();
-                });
-                wrap.appendChild(chip);
-            });
-            drop.appendChild(wrap);
-        }
-        var all = el('button', 'cat-suggest__all', 'See all results →');
-        all.type = 'button';
-        all.addEventListener('click', function() { closeDrop(); scrollToResults(); });
-        drop.appendChild(all);
-
-        drop.hidden = false;
-        input.setAttribute('aria-expanded', 'true');
-        active = -1;
-    }
+        return {
+            sections: [
+                { label: noun === 'packages' ? 'Health packages' : 'Lab tests', items: hits.map(function(i) {
+                    return { icon: i.icon, name: i.name, meta: i.meta, pill: i.group, pick: function() { showCard(i.card); } };
+                }) },
+                { label: 'Categories', chips: true, items: cats.map(function(g) {
+                    return { icon: g.icon, name: g.name, pick: function() { input.value = ''; setGroup(g.id); apply(); scrollToResults(); } };
+                }) }
+            ],
+            all: { label: 'See all results →', pick: scrollToResults }
+        };
+    });
+    var closeDrop = suggest.close;
 
     input.addEventListener('input', function() {
         if (input.value.trim()) setGroup('all'); // typing searches every category
         apply();
-        renderDrop();
-    });
-    input.addEventListener('focus', renderDrop);
-    input.addEventListener('keydown', function(e) {
-        var r = rows();
-        if (e.key === 'Escape') return closeDrop();
-        if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !drop.hidden && r.length) {
-            e.preventDefault();
-            active = (active + (e.key === 'ArrowDown' ? 1 : -1) + r.length) % r.length;
-            r.forEach(function(row, i) { row.classList.toggle('is-active', i === active); });
-            r[active].scrollIntoView({ block: 'nearest' });
-        }
-        if (e.key === 'Enter' && active >= 0 && r[active]) {
-            e.preventDefault();
-            r[active].click();
-        }
+        suggest.render();
     });
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         closeDrop();
         apply();
         scrollToResults();
-    });
-    document.addEventListener('pointerdown', function(e) {
-        if (!e.target.closest('.cat-search')) closeDrop();
     });
 
     document.querySelectorAll('.cat-popular__chip').forEach(function(chip) {
@@ -569,12 +611,107 @@ function initCatalogue() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('group') && groupIndex.some(function(g) { return g.id === params.get('group'); })) setGroup(params.get('group'));
     if (params.get('q')) input.value = params.get('q');
-    if (apply() && (params.get('q') || params.get('group'))) {
+    var linked = params.get('item') && document.getElementById(params.get('item'));
+    if (linked && root.contains(linked)) {
+        apply();
+        setTimeout(function() { showCard(linked); }, 100);
+    } else if (apply() && (params.get('q') || params.get('group'))) {
         setTimeout(function() {
             var first = root.querySelector('.cat-group:not([hidden]) .cat-card:not([hidden])');
             if (first && params.get('q')) focusCard(first); else scrollToResults();
         }, 100);
     }
+}
+
+// ── Homepage & city page search: live suggestions ─────────────────────
+// Suggests lab tests, health packages and their categories; each opens its card on
+// /lab-tests/ or /health-packages/ (or the package page). Enter still runs searchTests().
+function initHeroSearch() {
+    var input = document.getElementById('searchInput');
+    var bar = input && input.closest('.search-bar');
+    if (!bar) return;
+
+    var wrap = makeEl('div', 'cat-search hero-search');
+    bar.parentNode.insertBefore(wrap, bar);
+    wrap.appendChild(bar);
+    var drop = wrap.appendChild(makeEl('div', 'cat-suggest'));
+    drop.id = 'heroSuggest';
+    drop.hidden = true;
+    drop.setAttribute('role', 'listbox');
+    drop.setAttribute('aria-label', 'Suggestions');
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('role', 'combobox');
+    input.setAttribute('aria-controls', 'heroSuggest');
+    input.setAttribute('aria-expanded', 'false');
+
+    var tests = null, packages = null, testCats = [], packageGroups = [];
+
+    // Price and report time from the test cards on this page, so suggestions match them.
+    var CARD_NAMES = { 'Urine R/M (Routine & Microscopy)': 'Urine R/M (Urine Routine & Microscopy)',
+                       'Dengue Test (NS1 Antigen)': 'Dengue Fever NS1 Antigen' };
+    var onPage = {};
+    document.querySelectorAll('.test-card').forEach(function(card) {
+        var name = card.querySelector('h4').textContent.trim();
+        var price = card.querySelector('.current-price');
+        var report = [].filter.call(card.querySelectorAll('.test-info span'), function(span) { return /Report in/.test(span.textContent); })[0];
+        onPage[CARD_NAMES[name] || name] = { price: price && price.textContent.trim(),
+                                             reports: report && report.textContent.replace(/.*Report in\s*/, '').trim() };
+    });
+
+    function facts(item) {
+        return [item.price, item.tests && item.tests + (item.tests === 1 ? ' test' : ' tests'),
+                item.reports && 'Reports in ' + item.reports].filter(Boolean).join(' · ');
+    }
+    function load() {
+        withLabTests(function(cats) {
+            testCats = cats;
+            tests = [];
+            cats.forEach(function(c) {
+                var extra = c.name + ' ' + (c.keywords || []).join(' ');
+                c.tests.forEach(function(t) {
+                    var card = onPage[t.name];
+                    if (card) t = { name: t.name, tests: t.tests, price: card.price, reports: card.reports || t.reports };
+                    tests.push({ icon: c.icon, name: t.name, meta: facts(t), pill: c.name, extra: extra, boost: card ? 1 : 0,
+                                 href: '/lab-tests/?item=t-' + slugify(t.name) });
+                });
+            });
+            suggest.render();
+        });
+        withHealthPackages(function(groups) {
+            packageGroups = groups;
+            packages = [];
+            groups.forEach(function(g) {
+                var extra = g.name + ' ' + (g.keywords || []).join(' ');
+                g.packages.forEach(function(p) {
+                    packages.push({ icon: g.icon, name: p.name, meta: facts(p), pill: g.name, extra: extra, boost: p.price ? 1 : 0,
+                                    href: p.url || '/health-packages/?item=p-' + slugify(p.name) });
+                });
+            });
+            suggest.render();
+        });
+    }
+    function categories(list, q, noun, url) {
+        return list.filter(function(c) { return suggestScore(c.name, (c.keywords || []).join(' '), q) > 0; })
+            .map(function(c) { return { icon: c.icon, name: c.name + ' ' + noun, href: url + '?group=' + c.id }; });
+    }
+
+    var suggest = attachSuggest(input, drop, wrap, function(q) {
+        if (!tests || !packages) return null;
+        return {
+            sections: [
+                { label: 'Lab tests', items: rankSuggestions(tests, q, 4) },
+                { label: 'Health packages', items: rankSuggestions(packages, q, 4) },
+                { label: 'Categories', chips: true,
+                  items: categories(testCats, q, 'tests', '/lab-tests/').concat(categories(packageGroups, q, 'packages', '/health-packages/')).slice(0, 4) }
+            ],
+            all: { label: 'Search all results →', pick: searchTests }
+        };
+    });
+    input.addEventListener('focus', load, { once: true });
+    input.addEventListener('input', function() { suggest.render(); });
+    // Enter / Search run the full search (searchTests), which may stay on this page
+    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') suggest.close(); });
+    bar.querySelector('button').addEventListener('click', suggest.close);
 }
 
 // ── Mobile menu (header, screens up to 1024px) ───────────────────────
@@ -681,5 +818,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     initCatalogue();
+    initHeroSearch();
     initMobileMenu();
 });

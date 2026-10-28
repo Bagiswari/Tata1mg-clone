@@ -2100,3 +2100,7 @@ display: block;
 .cat-hero__type .ic { width: 22px; height: 22px; }
 .cta-btn .ic { width: 18px; height: 18px; margin-right: 6px; color: #ff6f61; }
 .pkg-buy__points li::before { content: "\2713"; margin-right: 8px; color: #4caf50; font-weight: 700; }
+
+/* Homepage & city page search suggestions (initHeroSearch in main.js) */
+.hero-search { margin-top: 0; z-index: 50; }
+a.cat-suggest__row { text-decoration: none; }

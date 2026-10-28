@@ -1,4 +1,5 @@
 // Lab tests shown on /lab-tests/ and used by the site search.
+// Only tests done on a blood or urine sample collected at home (no scans, swabs or centre visits).
 // Single source of truth. Every name is copied verbatim from its official Tata 1mg test page
 // (https://www.1mg.com/labs/test/...), verified 28 Sep 2026. Add new tests here only.
 // Per test: name, about (one plain-language line), tests (parameters) and reports (indicative
@@ -823,10 +824,6 @@ window.LAB_TEST_CATEGORIES = [
                 "about": "A blood test that confirms and tracks early pregnancy by measuring hCG.",
                 "tests": 1,
                 "reports": "12 hrs"
-            },
-            {
-                "name": "Semen Analysis at Center",
-                "about": "Checks sperm count, movement and shape to assess male fertility."
             }
         ]
     },
@@ -925,12 +922,6 @@ window.LAB_TEST_CATEGORIES = [
             {
                 "name": "Mantoux Test",
                 "about": "A skin test to check for exposure to tuberculosis (TB)."
-            },
-            {
-                "name": "AFB Staining, Sputum",
-                "about": "Checks a sputum (phlegm) sample for TB bacteria.",
-                "tests": 1,
-                "reports": "30 hrs"
             },
             {
                 "name": "Culture Aerobic Blood (Automated), Adult",
@@ -1158,12 +1149,10 @@ window.LAB_TEST_CATEGORIES = [
     },
     {
         "id": "urine",
-        "name": "Urine & Stool",
+        "name": "Urine Tests",
         "icon": "urine",
         "keywords": [
-            "urine",
-            "stool",
-            "motion"
+            "urine"
         ],
         "tests": [
             {
@@ -1193,18 +1182,6 @@ window.LAB_TEST_CATEGORIES = [
             {
                 "name": "Urine Ketone, Qualitative",
                 "about": "Checks urine for ketones — seen in uncontrolled diabetes, fasting or dieting.",
-                "tests": 1,
-                "reports": "12 hrs"
-            },
-            {
-                "name": "Stool Examination R/M",
-                "about": "Checks a stool sample for worms, infection, blood or digestive problems.",
-                "tests": 1,
-                "reports": "12 hrs"
-            },
-            {
-                "name": "Stool For Occult Blood",
-                "about": "Looks for hidden blood in stool, an early sign of gut bleeding.",
                 "tests": 1,
                 "reports": "12 hrs"
             }

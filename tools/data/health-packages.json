@@ -171,36 +171,6 @@
         ]
       },
       {
-        "name": "Comprehensive Gold Package with ECG & USG Whole Abdomen",
-        "about": "A full body blood checkup plus ECG and an abdominal ultrasound.",
-        "tests": 88,
-        "reports": "12 hrs",
-        "includes": [
-          "Comprehensive Gold Full Body Checkup · 17 tests",
-          "ECG & Ultrasound Whole Abdomen at centre · 2 tests"
-        ]
-      },
-      {
-        "name": "Comprehensive Platinum Package with ECG, USG Whole Abdomen & 2D-Echo",
-        "about": "A full body checkup with ECG, abdominal ultrasound and a heart echo.",
-        "tests": 102,
-        "reports": "12 hrs",
-        "includes": [
-          "Comprehensive Platinum Full Body Checkup · 24 tests",
-          "ECG, Ultrasound Whole Abdomen & 2D-Echo at Centre · 3 tests"
-        ]
-      },
-      {
-        "name": "Comprehensive Platinum Package with ECG, USG Whole Abdomen & PFT",
-        "about": "A full body checkup for men with ECG, abdominal ultrasound and a lung function test.",
-        "tests": 105,
-        "reports": "48 hrs",
-        "includes": [
-          "Platinum ECG, USG Whole Abdomen & PFT at Centre. · 3 tests",
-          "Comprehensive Platinum Package - Pathology · 28 tests"
-        ]
-      },
-      {
         "name": "2026 Comprehensive New Year Health Checkup",
         "about": "A thorough full body checkup to start the year knowing where your health stands.",
         "tests": 84,
@@ -366,24 +336,6 @@
           "KFT with Electrolytes (Kidney Function Test with Electrolytes) · 8 tests",
           "CBC (Complete Blood Count) · 13 tests",
           "LFT (Liver Function Test) · 6 tests"
-        ]
-      },
-      {
-        "name": "Pre-employment Checkup for Food Handlers",
-        "about": "The health screening required for people joining the food industry.",
-        "tests": 48,
-        "reports": "3 days",
-        "includes": [
-          "ESR (Erythrocyte Sedimentation Rate)",
-          "CBC (Complete Blood Count) · 13 tests",
-          "Hepatitis A Virus, IgM",
-          "Hepatitis E Virus, IgM Antibody",
-          "Stool Examination R/M",
-          "Widal Test (Slide Agglutination)",
-          "HIV Combo (Antigen And Antibody) Test",
-          "Urine R/M (Urine Routine & Microscopy) · 19 tests",
-          "Hepatitis C Virus (HCV) Antibody",
-          "Hepatitis B Surface Antigen (HBsAg)"
         ]
       }
     ]
@@ -790,45 +742,6 @@
           "Amylase",
           "Microalbumin Creatinine Ratio, Urine · 3 tests"
         ]
-      },
-      {
-        "name": "Comprehensive Ai Health Screening - Nura Women",
-        "about": "A premium, AI-assisted full health screening for women.",
-        "tests": 54,
-        "reports": "24 hrs",
-        "includes": [
-          "Thyroid Profile Total (T3, T4 & TSH) · 3 tests",
-          "Doctor Consultation",
-          "Coronary Heart Disease",
-          "Lung Cancer",
-          "ECG",
-          "Digital Automatic Blood Pressure Check",
-          "Digital Automatic Body Measurement",
-          "Gout – Uric Acid",
-          "Liver Cancer Screening",
-          "Kidney Cancer Screening",
-          "Pancreatic Cancer Screening",
-          "Chronic Obstructive Pulmonary Disease (COPD)",
-          "Visceral Fat Analysis",
-          "Abdomen (Kidney / Gall Bladder Stone)",
-          "Metabolic Syndrome",
-          "Osteoporosis/ Bone Mineral Density Sarcopenia",
-          "Full Body Composition",
-          "Japanese-style Fecal Immunochemical Test (FIT) - Colon Cancer",
-          "Ai-based Dual Fluorescence Oral Imaging System - Oral Cancer",
-          "Ai-based 3D Digital Mammography (with Soft Fit Paddle) - Breast Cancer",
-          "Vision test & Eye Retinopathy",
-          "Ai-based Colposcopy - Cervical Cancer",
-          "Stomach Health - H.pylori IgG",
-          "CA19-9 Marker for Pancreatic Cancer",
-          "CA 125 Marker Ovarian Cancer Screening",
-          "Kidney Health by Profiling (CRE/BUN/eGFR)",
-          "Liver Health by Profiling (AST-GOT/ALT-GPT/GGT- TP/ALB)",
-          "Heart and Hyperlipidaemia by Lipid Profile (TCHO/TG/HDL/LDL/HDL%)",
-          "Urine Analysis",
-          "Diabetes (HbA1c)",
-          "CBC (Complete Blood Count) · 13 tests"
-        ]
       }
     ]
   },
@@ -1044,43 +957,6 @@
           "LFT (Liver Function Test) · 6 tests",
           "Amylase",
           "Microalbumin Creatinine Ratio, Urine · 3 tests"
-        ]
-      },
-      {
-        "name": "Comprehensive Ai Health Screening - Nura Men",
-        "about": "A premium, AI-assisted full health screening for men.",
-        "tests": 51,
-        "reports": "24 hrs",
-        "includes": [
-          "Thyroid Profile Total (T3, T4 & TSH) · 3 tests",
-          "Doctor Consultation",
-          "Coronary Heart Disease",
-          "Lung Cancer",
-          "ECG",
-          "Digital Automatic Blood Pressure Check",
-          "Digital Automatic Body Measurement",
-          "Gout – Uric Acid",
-          "Liver Cancer Screening",
-          "Kidney Cancer Screening",
-          "Pancreatic Cancer Screening",
-          "Chronic Obstructive Pulmonary Disease (COPD)",
-          "Visceral Fat Analysis",
-          "Abdomen (Kidney / Gall Bladder Stone)",
-          "Metabolic Syndrome",
-          "Osteoporosis/ Bone Mineral Density Sarcopenia",
-          "Full Body Composition",
-          "Japanese-style Fecal Immunochemical Test (FIT) - Colon Cancer",
-          "Ai-based Dual Fluorescence Oral Imaging System - Oral Cancer",
-          "Prostate Cancer (PSA)",
-          "Vision test & Eye Retinopathy",
-          "Stomach Health - H.pylori IgG",
-          "CA19-9 Marker for Pancreatic Cancer",
-          "Kidney Health by Profiling (CRE/BUN/eGFR)",
-          "Liver Health by Profiling (AST-GOT/ALT-GPT/GGT- TP/ALB)",
-          "Heart and Hyperlipidaemia by Lipid Profile (TCHO/TG/HDL/LDL/HDL%)",
-          "Urine Analysis",
-          "Diabetes (HbA1c)",
-          "CBC (Complete Blood Count) · 13 tests"
         ]
       }
     ]
@@ -1502,50 +1378,6 @@
         ]
       },
       {
-        "name": "All-in-One Fever Checkup (with Covid-19)",
-        "about": "A wide fever screening, including Covid-19.",
-        "tests": 79,
-        "reports": "48 hrs",
-        "includes": [
-          "CRP (C-Reactive Protein), Quantitative",
-          "ESR (Erythrocyte Sedimentation Rate)",
-          "Coronavirus Covid -19 test- RT PCR",
-          "Dengue Fever, IgG & IgM · 2 tests",
-          "Peripheral Smear Examination",
-          "Chikungunya, IgM",
-          "LFT (Liver Function Test) · 6 tests",
-          "CBC (Complete Blood Count) · 13 tests",
-          "Malarial Antigen (Vivax & Falciparum) Detection",
-          "Dengue Fever NS1 Antigen",
-          "Salmonella Typhi (Typhidot) IgG & IgM · 2 tests",
-          "Influenza A",
-          "H3N2",
-          "Widal Test (Slide Agglutination)",
-          "KFT with Electrolytes (Kidney Function Test with Electrolytes) · 8 tests",
-          "Urine R/M (Urine Routine & Microscopy) · 19 tests",
-          "Procalcitonin",
-          "Dengue and Chikungunya Virus RT PCR (Qualitative)",
-          "Influenza B",
-          "Rnase P(IC)",
-          "Respiratory Syncytial Virus (RSV)",
-          "H1N1"
-        ]
-      },
-      {
-        "name": "Fever Panel for Influenza like Illnesses",
-        "about": "Finds the cause of flu-like fever, including flu and Covid-19.",
-        "tests": 67,
-        "reports": "12 hrs",
-        "includes": [
-          "CBC (Complete Blood Count) · 13 tests",
-          "CRP (C-Reactive Protein), Quantitative",
-          "Urine R/M (Urine Routine & Microscopy) · 19 tests",
-          "Coronavirus Covid -19 test- RT PCR",
-          "LFT and KFT (Liver Function Test & Kidney Function Test) · 2 tests",
-          "Viral Flu Panel (Influenza A&B, H3N2, H1N1, RSV) Qualitative RT-PCR · 6 tests"
-        ]
-      },
-      {
         "name": "FLU (Influenza) Monitoring panel",
         "about": "Monitors your blood and organs during a flu infection.",
         "tests": 61,
@@ -1557,33 +1389,6 @@
           "CBC (Complete Blood Count) · 13 tests",
           "Urine R/M (Urine Routine & Microscopy) · 19 tests",
           "KFT with Electrolytes (Kidney Function Test with Electrolytes) · 8 tests"
-        ]
-      },
-      {
-        "name": "Viral Flu Panel (Influenza A&B, H3N2, H1N1, RSV) Qualitative RT-PCR",
-        "about": "Identifies the exact flu virus — influenza A and B, H3N2, H1N1 or RSV.",
-        "tests": 6,
-        "reports": "12 hrs",
-        "includes": [
-          "Influenza A",
-          "Influenza B",
-          "Respiratory Syncytial Virus (RSV)",
-          "H1N1",
-          "H3N2",
-          "Rnase P(IC)"
-        ]
-      },
-      {
-        "name": "H1N1 Swine Flu Panel by RT-PCR",
-        "about": "Detects swine flu (H1N1) and related flu viruses.",
-        "tests": 5,
-        "reports": "12 hrs",
-        "includes": [
-          "RNASE P (IC)",
-          "Influenza A",
-          "H1N1 pdm",
-          "InfA (H3N2)",
-          "Influenza B"
         ]
       },
       {
@@ -1662,18 +1467,6 @@
           "Hepatitis A Virus, IgM",
           "Hepatitis C Virus (HCV) Antibody",
           "Hepatitis B Surface Antigen (HBsAg)"
-        ]
-      },
-      {
-        "name": "H. Pylori Screening Panel",
-        "about": "Checks for H. pylori, a stomach infection that causes gastritis and ulcers.",
-        "tests": 4,
-        "reports": "4 days",
-        "includes": [
-          "Helicobacter Pylori, IgG",
-          "Helicobacter Pylori, IgM",
-          "Helicobacter Pylori Urea Breath Test",
-          "Helicobacter Pylori Antigen detection"
         ]
       },
       {
@@ -2000,23 +1793,6 @@
           "Urine R/M (Urine Routine & Microscopy) · 19 tests",
           "Protein Total, Serum · 4 tests",
           "Blood Urea Nitrogen (BUN)"
-        ]
-      },
-      {
-        "name": "Acidity-Reflux Panel with Urea Breath Test",
-        "about": "Finds the causes of ongoing acidity, reflux and indigestion.",
-        "tests": 43,
-        "reports": "4 days",
-        "includes": [
-          "HbA1c (Glycosylated Hemoglobin)",
-          "CBC (Complete Blood Count) · 13 tests",
-          "TSH (Thyroid Stimulating Hormone) Ultrasensitive",
-          "LFT (Liver Function Test) · 6 tests",
-          "Tissue Transglutaminase Antibody, IgA",
-          "Immunoglobulin A",
-          "Helicobacter Pylori Urea Breath Test",
-          "Serum Iron Studies Comprehensive · 5 tests",
-          "Vitamin B12"
         ]
       }
     ]
@@ -3113,64 +2889,6 @@
           "Anti-CCP Antibody",
           "Hypersensitive Pneumonitis Profile - Basic · 6 tests"
         ]
-      },
-      {
-        "name": "Radio Screening Package I",
-        "about": "Imaging tests to check heart and lung health.",
-        "includes": [
-          "ECG at Center",
-          "X - Ray Chest PA View"
-        ]
-      },
-      {
-        "name": "Radio Screening Package II",
-        "about": "Imaging tests for heart, lungs and abdomen.",
-        "includes": [
-          "Ultrasound Whole Abdomen",
-          "ECG at Center",
-          "X - Ray Chest PA View"
-        ]
-      },
-      {
-        "name": "Radio Screening Package III",
-        "about": "A set of imaging tests for an overall health check.",
-        "includes": [
-          "Ultrasound Whole Abdomen",
-          "Echo (Echocardiography)",
-          "Treadmill Test",
-          "X - Ray Chest PA View"
-        ]
-      },
-      {
-        "name": "Radio Screening Package IV",
-        "about": "Imaging tests designed for women's health needs.",
-        "includes": [
-          "Genital PAP Smear",
-          "Ultrasound Whole Abdomen",
-          "ECG at Center",
-          "Echo (Echocardiography)",
-          "Treadmill Test",
-          "Mammography Both Breast- For Females Older Than 40 Years",
-          "X - Ray Chest PA View"
-        ]
-      },
-      {
-        "name": "Radio Screening Package V",
-        "about": "Imaging tests for heart, lungs and abdomen.",
-        "includes": [
-          "Ultrasound Whole Abdomen",
-          "X - Ray Chest PA View"
-        ]
-      },
-      {
-        "name": "Radio Screening Package VI",
-        "about": "A wider set of imaging tests for an overall health check.",
-        "includes": [
-          "Ultrasound Whole Abdomen",
-          "ECG at Center",
-          "Treadmill Test",
-          "X - Ray Chest PA View"
-        ]
       }
     ]
   },
@@ -3241,16 +2959,6 @@
         "includes": [
           "Mycobacterium TB complex",
           "Nontuberculosis Mycobacterium species (NTM)"
-        ]
-      },
-      {
-        "name": "Lung Combo Panel II - IHC (ALK D5F3, ROS1, PDL1, c-MET) & RT-PCR (EGFR [Hot Spot] exons 18, 19, 20, 21)",
-        "about": "Finds gene changes in lung cancer to guide targeted treatment.",
-        "tests": 2,
-        "reports": "10 days",
-        "includes": [
-          "IHC (ALK D5F3, ROS1, PDL1, c-MET)",
-          "RT-PCR (EGFR[Hot Spot] exons 18, 19, 20, 21)"
         ]
       },
       {
