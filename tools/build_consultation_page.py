@@ -134,7 +134,7 @@ def build():
                 <div class="dc-hero__card">
                     <div class="dc-hero__price">
                         <span class="dc-hero__price-value">₹{FEE}</span>
-                        <span class="dc-hero__price-note">per consultation<br>phone or video call</span>
+                        <span class="dc-hero__price-note">per consultation</span>
                     </div>
                     <p class="dc-hero__card-label">In your consultation</p>
                     <ul class="dc-hero__list">{hero_points}</ul>
@@ -163,26 +163,6 @@ def build():
             <h2 class="section-title">How It Works</h2>
             <ol class="cat-steps">
 {steps}            </ol>
-        </section>
-
-        <section class="dc-section">
-            <h2 class="section-title">Choose How You Consult</h2>
-            <div class="dc-modes">
-                <div class="dc-mode">
-                    <span class="dc-card__icon">{icon("phone")}</span>
-                    <div>
-                        <h3>Phone call</h3>
-                        <p>Discuss your report and get your advice over a regular phone call. Simple and quick, with no app needed.</p>
-                    </div>
-                </div>
-                <div class="dc-mode">
-                    <span class="dc-card__icon">{icon("video")}</span>
-                    <div>
-                        <h3>Video call</h3>
-                        <p>See the doctor face to face, show your report or symptoms on camera and go through your results together.</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section class="legal-page dc-book" id="book-consultation">
@@ -244,7 +224,6 @@ def build():
 {faq_html(FAQ)}
         </section>
 
-        <p class="dc-note">Online consultations give medical advice based on your reports and the information you share. They do not replace an in-person examination when one is needed, and are not for emergencies. In an emergency, call 112 or go to the nearest hospital.</p>
     </main>
 ''' + tail('Have your lab report ready?', 'Book an online consultation and get your results explained by a doctor.')
     write_page('doctor-consultation/index.html', page)
