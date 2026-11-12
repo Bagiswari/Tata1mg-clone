@@ -213,7 +213,7 @@ def build():
                         </select>
                         <label class="visually-hidden" for="consultMessage">Your concern</label>
                         <textarea class="popup-input" id="consultMessage" rows="3" placeholder="Your health concern or questions about the report"></textarea>
-                        <button type="submit" class="popup-submit">Request Consultation · ₹{FEE}</button>
+                        <button type="submit" class="popup-submit">Request Consultation</button>
                     </form>
                 </div>
             </div>
