@@ -48,6 +48,7 @@ var SEARCH_INTENTS = [
     { go: { call: true },           words: ['call', 'call us', 'phone', 'phone number'] },
     { go: { url: '/contact-us/' },  words: ['contact', 'contact us', 'customer care', 'support', 'help', 'help center', 'help centre', 'enquiry', 'address'] },
     { go: { url: '/radiology/' },   words: RADIOLOGY_WORDS },
+    { go: { url: '/doctor-consultation/' }, words: ['doctor', 'doctors', 'doctor consultation', 'consultation', 'consult', 'consult doctor', 'online doctor', 'online consultation', 'teleconsultation', 'video consultation', 'report review', 'report analysis', 'prescription'] },
     { go: { url: '/blog/' },        words: ['blog', 'blogs', 'article', 'articles', 'health blog'] },
     { go: { url: '/diagnostic-centre/' }, words: ['location', 'locations', 'diagnostic centre', 'diagnostic center', 'centre', 'center', 'lab near me', 'near me', 'cities', 'city'] },
     { go: { packages: true },       words: ['health package', 'health packages', 'package', 'packages', 'health checkup', 'health checkups', 'checkup', 'check up', 'full body checkup', 'full body check up'] },
@@ -814,6 +815,26 @@ document.addEventListener('DOMContentLoaded', function() {
             if (message) lines.push('Message: ' + message);
             window.open(SITE.whatsapp + '?text=' + encodeURIComponent(lines.join('\n')), '_blank');
             contactForm.reset();
+        });
+    }
+
+    // Doctor consultation request → WhatsApp
+    var consultForm = document.getElementById('consultForm');
+    if (consultForm) {
+        document.getElementById('consultDate').min = new Date().toISOString().slice(0, 10);
+        consultForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var value = function(id) { return document.getElementById(id).value.trim(); };
+            var lines = ['Hi, I want to book a doctor consultation.',
+                         'Name: ' + value('consultName'),
+                         'Phone: ' + value('consultPhone'),
+                         'Consultation: ' + value('consultMode'),
+                         'Lab report: ' + value('consultReport')];
+            if (value('consultDate')) lines.push('Preferred date: ' + value('consultDate'));
+            if (value('consultTime')) lines.push('Preferred time: ' + value('consultTime'));
+            if (value('consultMessage')) lines.push('Concern: ' + value('consultMessage'));
+            window.open(SITE.whatsapp + '?text=' + encodeURIComponent(lines.join('\n')), '_blank');
+            consultForm.reset();
         });
     }
 

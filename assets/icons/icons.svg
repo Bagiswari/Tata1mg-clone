@@ -223,4 +223,66 @@
   <circle cx="21" cy="21" r="13" fill="#ffd9d4" stroke="#ff6f61" stroke-width="4"/>
   <path d="M31 31l10 10" stroke="#2b3445" stroke-width="5" stroke-linecap="round"/>
 </symbol>
+
+<!-- ── Doctor consultation ── -->
+<symbol id="i-doctor" viewBox="0 0 48 48">
+  <circle cx="24" cy="13" r="8" fill="#ffd9d4"/>
+  <path d="M16 11c0-5 4-8 8-8s8 3 8 8c-2-2-5-3-8-3s-6 1-8 3z" fill="#2b3445"/>
+  <path d="M9 45v-8c0-7 6-12 15-12s15 5 15 12v8z" fill="#e8eef7"/>
+  <path d="M20 25l4 8 4-8" fill="#6ab7e8"/>
+  <path d="M17 27v7a4 4 0 0 0 8 0" fill="none" stroke="#2b3445" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="31" cy="35" r="3.5" fill="#ff6f61"/>
+  <path d="M31 27v4.5" stroke="#2b3445" stroke-width="2.2" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="i-video" viewBox="0 0 48 48">
+  <rect x="4" y="12" width="28" height="24" rx="5" fill="#ff6f61"/>
+  <path d="M32 21l11-6v18l-11-6z" fill="#e85d50"/>
+  <circle cx="18" cy="21" r="4" fill="#fff"/>
+  <path d="M11 31c1-4 4-5 7-5s6 1 7 5" fill="#fff"/>
+</symbol>
+
+<symbol id="i-prescription" viewBox="0 0 48 48">
+  <path d="M10 5h20l8 8v29a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="#e8eef7"/>
+  <path d="M30 5v8h8" fill="#c9d4e5"/>
+  <path d="M15 15v13M15 15h5a4 4 0 0 1 0 8h-5M19 23l7 9M26 23l-6 9" fill="none" stroke="#ff6f61" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M15 37h18" stroke="#2b3445" stroke-width="2.6" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="i-diet" viewBox="0 0 48 48">
+  <path d="M24 15c-4-3-14-3-15 7-1 9 5 21 11 21 2 0 3-1 4-1s2 1 4 1c6 0 12-12 11-21-1-10-11-10-15-7z" fill="#ff6f61"/>
+  <path d="M24 15c0-5 2-9 6-11" fill="none" stroke="#2b3445" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M25 10c4-4 10-4 12-1-3 4-9 4-12 1z" fill="#4fbf8b"/>
+  <path d="M14 23c0-3 2-5 5-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="i-referral" viewBox="0 0 48 48">
+  <rect x="7" y="14" width="26" height="29" rx="3" fill="#e8eef7"/>
+  <rect x="13" y="5" width="14" height="11" rx="2" fill="#ffd9d4"/>
+  <path d="M20 7.5v6M17 10.5h6" stroke="#ff6f61" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M13 22h4M23 22h4M13 29h4M23 29h4" stroke="#2b3445" stroke-width="2.6" stroke-linecap="round"/>
+  <rect x="16" y="35" width="8" height="8" fill="#2b3445"/>
+  <circle cx="37" cy="33" r="9" fill="#4fbf8b"/>
+  <path d="M33 33h8M38 29.5l3.5 3.5-3.5 3.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="i-chat" viewBox="0 0 48 48">
+  <path d="M6 10a5 5 0 0 1 5-5h18a5 5 0 0 1 5 5v11a5 5 0 0 1-5 5H16l-7 6v-6.5A5 5 0 0 1 6 21z" fill="#ff6f61"/>
+  <path d="M13 13h14M13 19h9" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M38 18h1a5 5 0 0 1 5 5v9a5 5 0 0 1-3 4.6V43l-7-6H25a5 5 0 0 1-5-5v-2" fill="#ffd9d4"/>
+  <circle cx="27" cy="31" r="1.6" fill="#ff6f61"/><circle cx="32" cy="31" r="1.6" fill="#ff6f61"/><circle cx="37" cy="31" r="1.6" fill="#ff6f61"/>
+</symbol>
+
+<symbol id="i-upload" viewBox="0 0 48 48">
+  <path d="M10 6h20l8 8v28a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="#e8eef7"/>
+  <path d="M30 6v8h8" fill="#c9d4e5"/>
+  <path d="M14 20h12M14 27h8" stroke="#2b3445" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="35" cy="35" r="9" fill="#ff6f61"/>
+  <path d="M35 39.5v-9M31 34l4-4 4 4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="i-shield" viewBox="0 0 48 48">
+  <path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z" fill="#4fbf8b"/>
+  <path d="M17 24l5 5 9-10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
 </svg>
