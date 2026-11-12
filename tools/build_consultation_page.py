@@ -45,6 +45,15 @@ REPORTS = [
      '/lab-tests/', 'Browse lab tests'),
 ]
 
+# Trust bar under the hero: (icon, value, label)
+TRUST = [
+    ('l-messages', '30L+', 'Total Consultations'),
+    ('l-calendar', '3k+', 'Daily Consultations'),
+    ('l-stethoscope', '22+', 'Specialities'),
+    ('l-award', 'Certified', 'Doctors'),
+    ('l-lock', '100%', 'Confidential'),
+]
+
 STEPS = [
     ('l-phone', 'Book your consultation', 'Call, WhatsApp or fill in the form below with your preferred date and time.'),
     ('l-file-up', 'Share your report', 'Send your lab test report on WhatsApp, from Tata 1mg Labs or any other lab.'),
@@ -57,6 +66,10 @@ FAQ = [
      'Yes. Reports from any lab are accepted. Send a clear photo or PDF of your report on WhatsApp and the doctor will review it during your consultation.'),
     ('How do I share my lab report with the doctor?',
      'Send your report on WhatsApp to +91-9650461818 after booking. If you tested with Tata 1mg Labs, you can share the report you received on email or WhatsApp.'),
+    ('Who are the doctors?',
+     'Consultations are with certified, qualified doctors who review your report and medical history before advising you.'),
+    ('Is my consultation confidential?',
+     'Yes, 100%. Your reports, health details and conversation with the doctor are kept confidential and used only for your consultation.'),
     ('Is the consultation on a phone call or a video call?',
      'You can choose either. A video call is useful if you want to show your report or symptoms; an audio call works well if you just want to discuss your results.'),
     ('Will I get a prescription?',
@@ -102,6 +115,8 @@ def build():
                 <a href="{l}"{' target="_blank"' if l.startswith('http') else ''} class="dc-report__link">{esc(lt)} &rarr;</a>
             </div>
 ''' for i, t, d, l, lt in REPORTS)
+    trust = ''.join(f'''                <li>{icon(i)}<span><strong>{esc(v)}</strong>{esc(l)}</span></li>
+''' for i, v, l in TRUST)
     steps = ''.join(f'''            <li class="cat-step">
                 <span class="cat-step__num">{n + 1:02d}</span>
                 <span class="cat-step__icon">{icon(i)}</span>
@@ -138,6 +153,11 @@ def build():
                     </figcaption>
                 </figure>
             </div>
+        </section>
+
+        <section class="dc-trust" aria-label="Why consult with us">
+            <ul class="dc-trust__list">
+{trust}            </ul>
         </section>
 
         <section class="dc-section">

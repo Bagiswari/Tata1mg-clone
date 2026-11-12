@@ -26,7 +26,9 @@ PHONE_FIXES = [
 def sync(path):
     html = path.read_text(encoding='utf-8')
     new = re.sub(r'[ \t]*<header class="header">.*?</header>', lambda m: HEADER, html, count=1, flags=re.S)
-    new = re.sub(r'[ \t]*<footer class="footer">.*?</footer>', lambda m: FOOTER, new, count=1, flags=re.S)
+    # The footer partial starts with the trust strip, so replace that too when the page already has it.
+    new = re.sub(r'[ \t]*(?:<!-- Trust strip -->\s*<section class="trust-strip".*?</section>\s*)?<footer class="footer">.*?</footer>',
+                 lambda m: FOOTER, new, count=1, flags=re.S)
     for old, fixed in PHONE_FIXES:
         new = new.replace(old, fixed)
     # Every phone link dials directly (no contact popup).
