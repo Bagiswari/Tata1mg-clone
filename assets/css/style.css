@@ -2261,3 +2261,26 @@ a.cat-suggest__row { text-decoration: none; }
     .dc-section { padding: 0 20px; }
     .dc-reports, .dc-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Homepage: heading with a link on the right (Most Booked Health Checkups) */
+.section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 20px;
+    margin-bottom: 30px;
+}
+.section-head .section-title { margin-bottom: 0; }
+.section-head__link {
+    color: #ff6f61;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.section-head__link:hover { text-decoration: underline; }
+@media (max-width: 767px) {
+    .section-head { margin-bottom: 20px; }
+    .section-head__link { font-size: 15px; }
+}
