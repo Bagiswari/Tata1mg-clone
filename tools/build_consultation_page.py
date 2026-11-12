@@ -12,44 +12,44 @@ FEE = 299  # per consultation, phone or video call
 
 # What the doctor covers in a consultation: (icon, title, text)
 COVERS = [
-    ('report', 'Parameter-wise report analysis',
+    ('l-file-text', 'Parameter-wise report analysis',
      'Every value in your report is explained one by one: what it measures, whether it is normal, borderline or out of range, and what it means for you.'),
-    ('search', 'Causes and connections',
+    ('l-search', 'Causes and connections',
      'The doctor looks at your results together, not in isolation, to explain the likely reasons behind abnormal values and how they relate to each other.'),
-    ('shield', "Do's and don'ts for each parameter",
+    ('l-shield-check', "Do's and don'ts for each parameter",
      'Clear, practical steps for every value that needs attention: what to do, what to avoid and what to watch for.'),
-    ('diet', 'Diet guidance',
+    ('l-utensils', 'Diet guidance',
      'What to eat more of, what to cut down and simple meal changes that suit your results, your routine and your food habits.'),
-    ('lifestyle', 'Lifestyle guidance',
+    ('l-activity', 'Lifestyle guidance',
      'Advice on activity, sleep, stress, weight, alcohol and smoking, tailored to what your report shows.'),
-    ('prescription', 'Treatment and prescription',
+    ('l-pill', 'Treatment and prescription',
      'If treatment is needed, the doctor explains the options and gives a prescription with medicines, where medically appropriate.'),
-    ('referral', 'Referral to a specialist',
+    ('l-referral', 'Referral to a specialist',
      'If your results need a specialist, such as an endocrinologist, cardiologist or nephrologist, you are told which one and why.'),
-    ('calendar', 'Follow-up and re-test plan',
+    ('l-calendar', 'Follow-up and re-test plan',
      'Which tests to repeat, when to repeat them and what improvement to look for, so you can track your progress.'),
-    ('chat', 'Unhurried, detailed discussion',
+    ('l-messages', 'Unhurried, detailed discussion',
      'Time to ask every question you have about your health and your report, without feeling rushed.'),
 ]
 
 # Report options: (icon, title, text, link, link text)
 REPORTS = [
-    ('package', 'Tested with Tata 1mg Labs?',
+    ('l-clipboard', 'Tested with Tata 1mg Labs?',
      'Book a consultation after your test and share the report you receive on email or WhatsApp.',
      '/health-packages/', 'View health packages'),
-    ('upload', 'Have a report from another lab?',
+    ('l-file-up', 'Have a report from another lab?',
      "Reports from any lab work. Send a clear photo or PDF of your report on WhatsApp and we'll arrange your consultation.",
      WHATSAPP + '?text=' + 'Hi%2C%20I%20want%20a%20doctor%20consultation%20for%20my%20lab%20report.', 'Share your report'),
-    ('tube', 'No tests yet?',
+    ('l-flask', 'No tests yet?',
      'Book your lab test or health package with home sample collection first, then consult the doctor about your results.',
      '/lab-tests/', 'Browse lab tests'),
 ]
 
 STEPS = [
-    ('phone', 'Book your consultation', 'Call, WhatsApp or fill in the form below with your preferred date and time.'),
-    ('upload', 'Share your report', 'Send your lab test report on WhatsApp, from Tata 1mg Labs or any other lab.'),
-    ('video', 'Consult on call or video', 'The doctor goes through your report parameter by parameter and answers your questions.'),
-    ('prescription', 'Get your care plan', 'Receive your advice, diet and lifestyle plan, prescription and any specialist referral.'),
+    ('l-phone', 'Book your consultation', 'Call, WhatsApp or fill in the form below with your preferred date and time.'),
+    ('l-file-up', 'Share your report', 'Send your lab test report on WhatsApp, from Tata 1mg Labs or any other lab.'),
+    ('l-video', 'Consult on call or video', 'The doctor goes through your report parameter by parameter and answers your questions.'),
+    ('l-file-text', 'Get your care plan', 'Receive your advice, diet and lifestyle plan, prescription and any specialist referral.'),
 ]
 
 FAQ = [
@@ -109,7 +109,6 @@ def build():
                 <p>{esc(d)}</p>
             </li>
 ''' for n, (i, t, d) in enumerate(STEPS))
-    hero_points = ''.join(f'<li>{icon(i)}<span>{esc(t)}</span></li>' for i, t, _ in COVERS[:6])
 
     page = head('Online Doctor Consultation for Lab Reports | Tata 1mg Labs',
                 f'Consult a doctor on call or video about your lab test report for ₹{FEE}. Parameter-wise analysis, diet and '
@@ -121,28 +120,23 @@ def build():
     <main>
         <section class="hero dc-hero">
             <div class="hero-content">
-                <p class="cat-hero__type">{icon("doctor")}Doctor consultation</p>
+                <p class="cat-hero__type">{icon("l-stethoscope")}Doctor consultation</p>
                 <h1>Online Doctor Consultation for Your Lab Reports</h1>
                 <p class="intro-copy">Talk to a doctor on a phone or video call about your lab test results. Get a parameter-by-parameter explanation of your report, diet and lifestyle guidance, a prescription if you need one and a referral to a specialist when required. Reports from Tata 1mg Labs or any other lab are welcome.</p>
                 <div class="dc-hero__actions">
-                    <a href="#book-consultation" class="cta-btn dc-btn-book">{icon("calendar")}Book a Consultation</a>
+                    <a href="#book-consultation" class="cta-btn dc-btn-book">{icon("l-calendar")}Book a Consultation</a>
                     <a href="{PHONE_TEL}" class="cta-btn cta-btn-call">{icon("phone")}Call {PHONE_DISPLAY}</a>
                     <a href="{WHATSAPP}?text=Hi%2C%20I%20want%20to%20book%20a%20doctor%20consultation." target="_blank" class="cta-btn cta-btn-whatsapp">WhatsApp Us</a>
                 </div>
             </div>
             <div class="dc-hero__panel">
-                <div class="dc-hero__card">
-                    <div class="dc-hero__price">
+                <figure class="dc-hero__photo">
+                    <img src="/assets/images/doctor-consultation.webp" alt="Doctor going through a patient's lab report during a consultation" width="800" height="500">
+                    <figcaption class="dc-hero__price">
                         <span class="dc-hero__price-value">₹{FEE}</span>
                         <span class="dc-hero__price-note">per consultation</span>
-                    </div>
-                    <p class="dc-hero__card-label">In your consultation</p>
-                    <ul class="dc-hero__list">{hero_points}</ul>
-                    <div class="dc-hero__modes">
-                        <span>{icon("phone")}Phone call</span>
-                        <span>{icon("video")}Video call</span>
-                    </div>
-                </div>
+                    </figcaption>
+                </figure>
             </div>
         </section>
 
@@ -159,7 +153,7 @@ def build():
 {covers}            </div>
         </section>
 
-        <section class="cat-steps-section">
+        <section class="cat-steps-section dc-step-icons">
             <h2 class="section-title">How It Works</h2>
             <ol class="cat-steps">
 {steps}            </ol>

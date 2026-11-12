@@ -2127,31 +2127,6 @@ a.cat-suggest__row { text-decoration: none; }
 .dc-btn-book { background: white; color: #ff6f61 !important; }
 .dc-btn-book:hover { background: #fff4f2; }
 .dc-btn-book .ic { color: #ff6f61; }
-.dc-hero__panel {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 50px 40px 20px;
-}
-.dc-hero__card {
-    width: 100%;
-    max-width: 420px;
-    padding: 26px;
-    border-radius: 14px;
-    background: white;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
-}
-.dc-hero__price {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-    padding-bottom: 16px;
-    border-bottom: 1px dashed #e5e5e5;
-}
-.dc-hero__price-value { font-size: 36px; font-weight: 800; color: #ff6f61; letter-spacing: -0.5px; }
-.dc-hero__price-note { font-size: 13px; line-height: 1.35; color: #666; }
 .dc-fee {
     display: inline-block;
     margin-bottom: 4px !important;
@@ -2161,44 +2136,44 @@ a.cat-suggest__row { text-decoration: none; }
     color: #333;
 }
 .dc-fee strong { color: #ff6f61; font-size: 18px; }
-.dc-hero__card-label {
-    margin-bottom: 14px;
-    font-size: 12px !important;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #888;
-    opacity: 1 !important;
-}
-.dc-hero__list { display: grid; gap: 12px; list-style: none; }
-.dc-hero__list li {
+
+.dc-hero__panel {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
+    justify-content: center;
+    padding: 40px 50px 50px 20px;
 }
-.dc-hero__list .ic { width: 30px; height: 30px; }
-.dc-hero__modes {
+.dc-hero__photo {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    margin: 0;
+}
+.dc-hero__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+}
+.dc-hero__price {
+    position: absolute;
+    left: -18px;
+    bottom: -18px;
     display: flex;
+    align-items: center;
     gap: 10px;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px dashed #e5e5e5;
+    padding: 12px 18px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.15);
 }
-.dc-hero__modes span {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: #fff4f2;
-    font-size: 13px;
-    font-weight: 600;
-    color: #333;
-}
-.dc-hero__modes .ic { width: 16px; height: 16px; color: #ff6f61; }
+.dc-hero__price-value { font-size: 30px; font-weight: 800; color: #ff6f61; letter-spacing: -0.5px; }
+.dc-hero__price-note { font-size: 13px; line-height: 1.35; color: #666; }
+.dc-step-icons .cat-step__icon .ic { width: 28px; height: 28px; }
 
 .dc-section {
     max-width: 1200px;
@@ -2215,7 +2190,7 @@ a.cat-suggest__row { text-decoration: none; }
     border-radius: 14px;
     background: #fff1ee;
 }
-.dc-card__icon .ic { width: 34px; height: 34px; color: #ff6f61; }
+.dc-card__icon .ic { width: 28px; height: 28px; color: #ff6f61; }
 
 .dc-reports, .dc-grid {
     display: grid;
@@ -2249,13 +2224,15 @@ a.cat-suggest__row { text-decoration: none; }
 
 @media (max-width: 1024px) {
     .dc-hero .hero-content { flex: none; width: 100%; padding: 40px 30px 10px; }
-    .dc-hero__panel { width: 100%; padding: 10px 30px 40px; justify-content: flex-start; }
+    .dc-hero__panel { width: 100%; padding: 10px 30px 50px; justify-content: flex-start; }
     .dc-section { padding: 0 30px; }
     .dc-reports, .dc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
     .dc-hero .hero-content { padding: 30px 20px 10px; }
-    .dc-hero__panel { padding: 10px 20px 30px; }
+    .dc-hero__panel { padding: 10px 20px 40px; }
+    .dc-hero__price { left: 12px; bottom: -16px; padding: 10px 14px; }
+    .dc-hero__price-value { font-size: 24px; }
     .dc-hero__actions { flex-direction: column; }
     .dc-hero__actions .cta-btn { justify-content: center; }
     .dc-section { padding: 0 20px; }
