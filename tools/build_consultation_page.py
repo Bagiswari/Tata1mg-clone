@@ -8,6 +8,7 @@ from site_parts import (PHONE_DISPLAY, PHONE_TEL, SITE, WHATSAPP, breadcrumb_sch
                         head, icon, tail, write_page)
 
 URL = SITE + '/doctor-consultation/'
+FEE = 299  # per consultation, phone or video call
 
 # What the doctor covers in a consultation: (icon, title, text)
 COVERS = [
@@ -63,7 +64,7 @@ FAQ = [
     ('Will the doctor refer me to a specialist?',
      'Yes, if your results need specialist care, the doctor will tell you which specialist to see and why.'),
     ('How much does a consultation cost?',
-     'Call or WhatsApp us on +91-9650461818 for the current consultation fee and available slots.'),
+     f'The consultation fee is ₹{FEE} per consultation, for a phone call or a video call. Call or WhatsApp us on +91-9650461818 to book a slot.'),
     ('Is this service for emergencies?',
      'No. Online consultations are not for medical emergencies. In an emergency, call 112 or go to the nearest hospital immediately.'),
 ]
@@ -83,6 +84,8 @@ def build():
             'provider': {'@type': 'MedicalBusiness', 'name': 'Tata 1mg Labs', 'url': SITE + '/', 'telephone': '+919650461818'},
             'areaServed': {'@type': 'Country', 'name': 'India'},
             'availableChannel': {'@type': 'ServiceChannel', 'servicePhone': '+919650461818'},
+            'offers': {'@type': 'Offer', 'price': str(FEE), 'priceCurrency': 'INR', 'url': URL,
+                       'availability': 'https://schema.org/InStock'},
         },
         faq_schema(FAQ),
     ]
@@ -109,8 +112,8 @@ def build():
     hero_points = ''.join(f'<li>{icon(i)}<span>{esc(t)}</span></li>' for i, t, _ in COVERS[:6])
 
     page = head('Online Doctor Consultation for Lab Reports | Tata 1mg Labs',
-                'Consult a doctor on call or video about your lab test report. Parameter-wise analysis, diet and lifestyle '
-                'advice, prescription and specialist referral. Reports from any lab accepted.',
+                f'Consult a doctor on call or video about your lab test report for ₹{FEE}. Parameter-wise analysis, diet and '
+                'lifestyle advice, prescription and specialist referral. Reports from any lab accepted.',
                 URL, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="/">Home</a><span>›</span> <span class="current">Doctor Consultation</span>
     </nav>
@@ -129,6 +132,10 @@ def build():
             </div>
             <div class="dc-hero__panel">
                 <div class="dc-hero__card">
+                    <div class="dc-hero__price">
+                        <span class="dc-hero__price-value">₹{FEE}</span>
+                        <span class="dc-hero__price-note">per consultation<br>phone or video call</span>
+                    </div>
                     <p class="dc-hero__card-label">In your consultation</p>
                     <ul class="dc-hero__list">{hero_points}</ul>
                     <div class="dc-hero__modes">
@@ -182,7 +189,8 @@ def build():
             <div class="contact-grid">
                 <div class="legal-content">
                     <h2>Book your consultation</h2>
-                    <p>Fill in your details and we'll continue on WhatsApp to confirm your slot and the consultation fee. You can share your lab report in the same chat.</p>
+                    <p>Fill in your details and we'll continue on WhatsApp to confirm your slot. You can share your lab report in the same chat.</p>
+                    <p class="dc-fee">Consultation fee: <strong>₹{FEE}</strong> per consultation</p>
                     <ul class="dc-checks">
                         <li>Phone or video call, at a time that suits you</li>
                         <li>Reports from Tata 1mg Labs or any other lab</li>
@@ -225,7 +233,7 @@ def build():
                         </select>
                         <label class="visually-hidden" for="consultMessage">Your concern</label>
                         <textarea class="popup-input" id="consultMessage" rows="3" placeholder="Your health concern or questions about the report"></textarea>
-                        <button type="submit" class="popup-submit">Request Consultation</button>
+                        <button type="submit" class="popup-submit">Request Consultation · ₹{FEE}</button>
                     </form>
                 </div>
             </div>

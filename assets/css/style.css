@@ -2142,6 +2142,25 @@ a.cat-suggest__row { text-decoration: none; }
     background: white;
     box-shadow: 0 16px 40px rgba(0,0,0,0.15);
 }
+.dc-hero__price {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+.dc-hero__price-value { font-size: 36px; font-weight: 800; color: #ff6f61; letter-spacing: -0.5px; }
+.dc-hero__price-note { font-size: 13px; line-height: 1.35; color: #666; }
+.dc-fee {
+    display: inline-block;
+    margin-bottom: 4px !important;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #fff4f2;
+    color: #333;
+}
+.dc-fee strong { color: #ff6f61; font-size: 18px; }
 .dc-hero__card-label {
     margin-bottom: 14px;
     font-size: 12px !important;
