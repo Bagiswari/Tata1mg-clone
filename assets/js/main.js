@@ -534,7 +534,6 @@ function initCatalogue() {
         apply();
         closeDrop();
         var group = card.closest('.cat-group');
-        if (card.classList.contains('is-extra') || card.classList.contains('is-extra-sm')) setOpen(group, true);
         focusCard(card);
     }
 
