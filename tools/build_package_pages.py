@@ -11,7 +11,8 @@ tools/data/health-packages.json. Run from the repo root:
 """
 import json
 
-from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, esc, faq_html, faq_schema,
+from site_parts import (load_details, official_facts_html, official_sections_html,
+                        ROOT, SITE, breadcrumb_schema, card, chips_bar, esc, faq_html, faq_schema,
                         group_section, head, homepage_cards, icon, price_number, search_box, slugify, steps_section, tail,
                         whatsapp_link, write_page)
 
@@ -113,6 +114,9 @@ HUB_FAQ = [
 
 
 
+DETAILS = load_details()['packages']
+
+
 def read_cards():
     """The priced packages, in homepage order, with their PACKAGES copy."""
     cards = [dict(c, **PACKAGES[c['name']]) for c in homepage_cards() if c['name'] in PACKAGES]
@@ -165,6 +169,7 @@ def package_page(p, cards):
             },
         },
     ]
+    official = DETAILS.get(p['name'])
     included = '\n'.join(f'                        <li>{esc(t)}</li>' for t in p['included'])
     prep = '\n'.join(f'                        <li>{esc(t)}</li>' for t in p['prep'])
     mrp = f'                    <span class="original-price">{p["original"]}</span>\n' if p['original'] else ''
@@ -177,22 +182,11 @@ def package_page(p, cards):
     others = sorted((o for o in cards if o is not p),
                     key=lambda o: abs(int(price_number(o['price'])) - int(price_number(p['price']))))[:3]
 
-    return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a><span>›</span> <a href="/health-packages/">Health Packages</a><span>›</span> <span class="current">{esc(p["short"])}</span>
-    </nav>
-
-    <main>
-        <section class="hero cat-hero">
-            <div class="hero-content">
-                <p class="cat-hero__type">{icon("package")}Health package</p>
-                <h1>{esc(p["short"])}</h1>
-                <p class="intro-copy">{esc(p["summary"])}</p>
-            </div>
-        </section>
-
-        <section class="pkg-detail">
-            <div class="pkg-detail__main">
-                <ul class="pkg-facts">
+    if official:  # official Tata 1mg facts and details (tools/data/details.json)
+        body = (official_facts_html(official) + '\n                <div class="legal-content package-detail od">\n'
+                + official_sections_html(official, p['name'], 20))
+    else:
+        body = f'''                <ul class="pkg-facts">
                     <li><span class="pkg-facts__icon">{icon("tube")}</span><span><span class="pkg-facts__label">Tests included</span><span class="pkg-facts__value">{p["tests"]} tests</span></span></li>
                     <li><span class="pkg-facts__icon">{icon("clock")}</span><span><span class="pkg-facts__label">Report time</span><span class="pkg-facts__value">{report_summary(p)}</span></span></li>
                     <li><span class="pkg-facts__icon">{icon("home")}</span><span><span class="pkg-facts__label">Sample collection</span><span class="pkg-facts__value">At home, no extra cost</span></span></li>
@@ -215,8 +209,24 @@ def package_page(p, cards):
                     </ul>
 
                     <h2>Report time</h2>
-                    <p>{esc(p["report"])}</p>
+                    <p>{esc(p["report"])}</p>'''
 
+    return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>›</span> <a href="/health-packages/">Health Packages</a><span>›</span> <span class="current">{esc(p["short"])}</span>
+    </nav>
+
+    <main>
+        <section class="hero cat-hero">
+            <div class="hero-content">
+                <p class="cat-hero__type">{icon("package")}Health package</p>
+                <h1>{esc(p["short"])}</h1>
+                <p class="intro-copy">{esc(official["about"] if official and official.get("about") else p["summary"])}</p>
+            </div>
+        </section>
+
+        <section class="pkg-detail">
+            <div class="pkg-detail__main">
+{body}
                     <h2>How home sample collection works</h2>
                     <ol>
                         <li>Call <a href="tel:+919650461818">+91-9650461818</a> or message us on WhatsApp to book the {esc(p["short"])}.</li>
@@ -284,6 +294,8 @@ def hub_page(cards):
             if c:  # priced package: homepage price and its own page
                 item.update(price=c['price'], original=c['original'], discount=c['discount'],
                             url=f'/health-packages/{c["slug"]}/')
+            elif p['name'] in DETAILS:  # its official detail page (build_detail_pages.py)
+                item['url'] = f'/health-packages/{slugify(p["name"])}/'
             group_cards.append(card(item, card_id='p-' + slugify(p['name']), group=g['id'], group_name=g['name'],
                                     icon_name=g['icon'], noun='package', search_extra=' '.join(g['keywords'])))
         groups += group_section(g['id'], g['name'], g['icon'], g['keywords'], group_cards, 'packages')

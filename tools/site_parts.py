@@ -218,21 +218,10 @@ def card(item, *, card_id, group, group_name, icon_name, noun='test', search_ext
     return out
 
 
-PREVIEW = 3  # cards shown per group before "View more" (2 on phones, see style.css)
-
-
 def group_section(group_id, name, icon_name, keywords, cards_html, noun_plural):
+    """One category: heading + every card in it (no collapsing)."""
     count = len(cards_html)
-    collapsible = count > PREVIEW + 1
-    if collapsible:
-        cards_html = [c.replace('class="cat-card', 'class="cat-card is-extra', 1) if i >= PREVIEW
-                      else c.replace('class="cat-card', 'class="cat-card is-extra-sm', 1) if i == PREVIEW - 1 else c
-                      for i, c in enumerate(cards_html)]
-    more = (f'''            <div class="cat-more-wrap">
-                <button type="button" class="cat-more" aria-expanded="false" aria-controls="grp-{group_id}-list" data-more="View all {count} {noun_plural}">View all {count} {noun_plural}</button>
-            </div>
-''' if collapsible else '')
-    return f'''        <section class="cat-group{' has-more' if collapsible else ''}" id="grp-{group_id}" data-group="{group_id}" data-name="{esc(name)}" data-icon="{icon_name}" data-keywords="{esc(' '.join(keywords))}" aria-labelledby="grp-{group_id}-title">
+    return f'''        <section class="cat-group" id="grp-{group_id}" data-group="{group_id}" data-name="{esc(name)}" data-icon="{icon_name}" data-keywords="{esc(' '.join(keywords))}" aria-labelledby="grp-{group_id}-title">
             <div class="cat-group__head">
                 <span class="cat-group__icon">{icon(icon_name)}</span>
                 <h2 id="grp-{group_id}-title">{esc(name)}</h2>
@@ -240,7 +229,7 @@ def group_section(group_id, name, icon_name, keywords, cards_html, noun_plural):
             </div>
             <div class="cat-grid" id="grp-{group_id}-list">
 {''.join(cards_html)}            </div>
-{more}        </section>
+        </section>
 '''
 
 
@@ -306,3 +295,72 @@ def features_section():
     page = (ROOT / 'index.html').read_text(encoding='utf-8')
     start = page.index('    <section class="features">')
     return page[start:page.index('</section>', start) + len('</section>')] + '\n'
+
+
+# ── Official Tata 1mg details (tools/data/details.json) ─────────────
+# Copied word for word from each test's / package's official page on
+# https://www.1mg.com/labs/ (default city Gurgaon). Only fields on that page exist.
+
+def load_details():
+    path = ROOT / 'tools/data/details.json'
+    return json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'tests': {}, 'packages': {}}
+
+
+def official_facts_html(d, indent=16):
+    pad = ' ' * indent
+    for_who = re.sub(r'^For\s+', '', d.get('for', ''), flags=re.I)
+    facts = [
+        ('tube', 'Contains', d.get('contains')),
+        ('clock', 'Earliest reports in', d.get('reports')),
+        ('urine' if d.get('sample', '').lower() == 'urine' else 'blood', 'Samples required', d.get('sample')),
+        ('l-users', 'For', for_who[:1].upper() + for_who[1:] if for_who else ''),
+    ]
+    items = ''.join(f'{pad}    <li><span class="pkg-facts__icon">{icon(i)}</span><span><span class="pkg-facts__label">{esc(l)}</span>'
+                    f'<span class="pkg-facts__value">{esc(v)}</span></span></li>\n' for i, l, v in facts if v)
+    return f'{pad}<ul class="pkg-facts">\n{items}{pad}</ul>\n' if items else ''
+
+
+def _list(items, pad):
+    out = ''
+    for it in items:
+        sub = f'<span class="od-sub">{esc(it["text"])}</span>' if it.get('text') else ''
+        out += f'{pad}    <li>{esc(it["title"])}{sub}</li>\n'
+    return f'{pad}<ul class="od-list">\n{out}{pad}</ul>\n'
+
+
+def official_sections_html(d, name, indent=16):
+    """Also known as, what it measures, samples, preparations, why it is booked."""
+    pad = ' ' * indent
+    out = ''
+    if d.get('aka'):
+        chips = ''.join(f'<li>{esc(a)}</li>' for a in d['aka'])
+        out += f'{pad}<h2>Also known as</h2>\n{pad}<ul class="od-chips">{chips}</ul>\n'
+    if d.get('measures'):
+        out += f'{pad}<h2>What does {esc(name)} measure?</h2>\n'
+        if d.get('measuresCount'):
+            out += f'{pad}<p class="pkg-muted">{esc(d["measuresCount"])}</p>\n'
+        rows = ''
+        for m in d['measures']:
+            if m.get('items'):
+                sub = ''.join(f'<li>{esc(s)}</li>' for s in m['items'])
+                rows += f'{pad}    <li class="has-items"><strong>{esc(m["name"])}</strong><ul>{sub}</ul></li>\n'
+            else:
+                rows += f'{pad}    <li><strong>{esc(m["name"])}</strong></li>\n'
+        out += f'{pad}<ul class="od-measures">\n{rows}{pad}</ul>\n'
+    if d.get('sampleInfo'):
+        out += f'{pad}<h2>Samples required</h2>\n' + _list(d['sampleInfo'], pad)
+    if d.get('prepInfo'):
+        out += f'{pad}<h2>Preparations</h2>\n' + _list(d['prepInfo'], pad)
+    if d.get('why'):
+        out += f'{pad}<h2>{esc(d.get("whyTitle") or "Why is this test booked?")}</h2>\n'
+        group = []
+        def flush():
+            return _list(group, pad) if group else ''
+        for it in d['why']:
+            if re.match(r'^[A-Z]\.\s', it['title']) and not it.get('text'):
+                out += flush(); group = []
+                out += f'{pad}<h3>{esc(re.sub(r"^[A-Z]\.\s*", "", it["title"]))}</h3>\n'
+            else:
+                group.append(it)
+        out += flush()
+    return out

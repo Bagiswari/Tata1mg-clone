@@ -12,6 +12,7 @@ import re
 from site_parts import (ROOT, SITE, breadcrumb_schema, card, chips_bar, esc, faq_html, faq_schema, features_section,
                         group_section, head, icon, homepage_cards, search_box, slugify, steps_section, tail, write_page)
 from build_package_pages import PACKAGES
+from site_parts import load_details
 
 # Homepage test card → (official test name in lab-tests-data.js or None, category id)
 HOME_TESTS = {
@@ -57,6 +58,8 @@ def load_categories():
 
 def build():
     cats = load_categories()
+    details = load_details()['tests']
+    url_of = lambda n: f'/lab-tests/{slugify(n)}/' if n in details else None  # official detail page (build_detail_pages.py)
     by_id = {c['id']: c for c in cats}
     official = {t['name']: t for c in cats for t in c['tests']}
 
@@ -73,7 +76,7 @@ def build():
             priced[name] = fields
         about = official[name]['about'] if name else ABOUT[h['name']]
         c = by_id[cat_id]
-        featured.append(card(dict(fields, name=h['name'], about=about), card_id='f-' + slugify(h['name']),
+        featured.append(card(dict(fields, name=h['name'], about=about, url=url_of(name) if name else None), card_id='f-' + slugify(h['name']),
                              group=cat_id, group_name=c['name'], icon_name=c['icon']))
     missing = set(HOME_TESTS) - {h['name'] for h in homepage_cards()}
     if missing:
@@ -81,7 +84,7 @@ def build():
 
     groups = ''
     for c in cats:
-        cards = [card(dict(t, **priced.get(t['name'], {})), card_id='t-' + slugify(t['name']), group=c['id'],
+        cards = [card(dict(t, **priced.get(t['name'], {}), url=url_of(t['name'])), card_id='t-' + slugify(t['name']), group=c['id'],
                       group_name=c['name'], icon_name=c['icon'], search_extra=' '.join(c['keywords']))
                  for t in c['tests']]
         groups += group_section(c['id'], c['name'], c['icon'], c['keywords'], cards, 'tests')
