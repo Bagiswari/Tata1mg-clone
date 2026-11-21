@@ -2330,3 +2330,9 @@ a.cat-suggest__row { text-decoration: none; }
 @media (max-width: 640px) {
     .od-measures, .od-measures ul { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Intro text under a page hero, and a short lead line under a catalogue heading */
+.page-intro p { max-width: 900px; font-size: 16px; line-height: 1.75; color: #444; }
+.cat-lead { margin: -8px 0 20px; font-size: 15px; color: #666; }
+.section-lead { max-width: 860px; margin: -14px 0 24px; font-size: 16px; line-height: 1.7; color: #555; }
+.dc-about { max-width: 1000px; }

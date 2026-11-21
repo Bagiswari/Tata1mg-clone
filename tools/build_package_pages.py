@@ -56,6 +56,14 @@ PACKAGES = {
         'short': 'Advanced Preventive Health Checkup',
         'summary': 'A preventive checkup with kidney function and electrolytes, Vitamin D, Vitamin B12 and iron studies alongside the core organ tests.',
         'for': 'Adults over 30 looking for a preventive checkup that also screens for the most common vitamin and mineral deficiencies.',
+        'about': ('What Is a Preventive Health Checkup?',
+                  'A preventive health checkup is a set of tests done when you feel well, to find health problems before they '
+                  'cause symptoms. Conditions such as diabetes, high cholesterol, thyroid disorders, vitamin deficiencies and '
+                  'early liver or kidney changes often develop silently for years. Testing once a year gives you and your doctor '
+                  'a baseline, shows how your values change over time and helps you act early with simple diet and lifestyle '
+                  'changes or treatment. The Advanced Preventive Health Checkup covers blood sugar, cholesterol, liver, kidney '
+                  'and thyroid function, a complete blood count, urine, Vitamin D, Vitamin B12 and iron studies, making it a '
+                  'good yearly check for adults over 30.'),
         'prep': FASTING,
         'report': EXTENDED_REPORT,
     },
@@ -97,6 +105,11 @@ PACKAGES = {
     },
 }
 
+
+# Shown under "Annual Health Checkup Packages" on /health-packages/
+ANNUAL = ['Tax Saver Essential Health Checkup', 'Tax Saver Advanced Health Checkup',
+          'Tax Saver Advanced Plus Health Checkup for Women', 'Tax Saver Advanced Plus Health Checkup for Men',
+          '2026 Comprehensive New Year Health Checkup']
 
 HUB_FAQ = [
     ('Which Tata 1mg blood test package should I choose?',
@@ -200,7 +213,10 @@ def package_page(p, cards):
 {included}
                     </ul>
 
-                    <h2>Who should take this package?</h2>
+{f'''                    <h2>{esc(p["about"][0])}</h2>
+                    <p>{esc(p["about"][1])}</p>
+
+''' if p.get("about") else ''}                    <h2>Who should take this package?</h2>
                     <p>{esc(p["for"])} If you have symptoms or an existing condition, check with your doctor which tests you need.</p>
 
                     <h2>Preparation</h2>
@@ -270,8 +286,9 @@ def hub_page(cards):
     priced = {c['name']: c for c in cards}
     listed = {p['name'] for g in catalogue for p in g['packages']}
     total = len(listed) + sum(1 for c in cards if c['name'] not in listed)
-    title = 'Tata 1mg Blood Test Packages | Full Body Checkup Prices'
-    description = 'Compare Tata 1mg blood test packages and full body checkup packages from ₹999. Home sample collection, NABL-certified labs and digital reports.'
+    title = 'Full Body Checkup & Health Checkup Packages | Tata 1mg'
+    description = ('Compare full body checkup, annual & preventive health checkup packages from ₹999 with free home collection, '
+                   'NABL-certified labs and digital reports.')
     schemas = [
         breadcrumb_schema([('Home', SITE + '/'), ('Health Packages', url)]),
         {
@@ -285,19 +302,25 @@ def hub_page(cards):
         faq_schema(HUB_FAQ),
     ]
 
+    def catalogue_card(p, g, card_id):
+        item = dict(p)
+        c = priced.get(p['name'])
+        if c:  # priced package: homepage price and its own page
+            item.update(price=c['price'], original=c['original'], discount=c['discount'],
+                        url=f'/health-packages/{c["slug"]}/')
+        elif p['name'] in DETAILS:  # its official detail page (build_detail_pages.py)
+            item['url'] = f'/health-packages/{slugify(p["name"])}/'
+        return card(item, card_id=card_id, group=g['id'], group_name=g['name'], icon_name=g['icon'], noun='package',
+                    search_extra=' '.join(g['keywords']))
+
+    annual = [catalogue_card(p, g, 'a-' + slugify(p['name']))
+              for g in catalogue for p in g['packages'] if p['name'] in ANNUAL]
+    if len(annual) != len(ANNUAL):
+        raise SystemExit('Annual health checkup packages not found in the catalogue')
+
     groups = ''
     for g in catalogue:
-        group_cards = []
-        for p in g['packages']:
-            item = dict(p)
-            c = priced.get(p['name'])
-            if c:  # priced package: homepage price and its own page
-                item.update(price=c['price'], original=c['original'], discount=c['discount'],
-                            url=f'/health-packages/{c["slug"]}/')
-            elif p['name'] in DETAILS:  # its official detail page (build_detail_pages.py)
-                item['url'] = f'/health-packages/{slugify(p["name"])}/'
-            group_cards.append(card(item, card_id='p-' + slugify(p['name']), group=g['id'], group_name=g['name'],
-                                    icon_name=g['icon'], noun='package', search_extra=' '.join(g['keywords'])))
+        group_cards = [catalogue_card(p, g, 'p-' + slugify(p['name'])) for p in g['packages']]
         groups += group_section(g['id'], g['name'], g['icon'], g['keywords'], group_cards, 'packages')
 
     return head(title, description, url, schemas) + f'''    <nav class="breadcrumb" aria-label="Breadcrumb">
@@ -316,6 +339,10 @@ def hub_page(cards):
             </div>
         </section>
 
+        <section class="cat-section page-intro">
+            <p>Health checkup packages bundle the tests doctors most often recommend into one home visit, so you get a complete picture of your health for less than booking each test separately. Choose a full body checkup for a detailed look at your heart, liver, kidney, thyroid, blood sugar and vitamin levels, an annual health checkup to track your health year after year, or a preventive health checkup to catch problems early. There are also packages made for women, men, senior citizens, diabetes and fever. Every package includes free home sample collection, testing at NABL, CAP and ISO certified partner labs, and digital reports on email and WhatsApp.</p>
+        </section>
+
         <section class="cat-section" id="all-packages" data-catalogue data-noun="packages">
             <div class="cat-featured" data-featured>
                 <div class="cat-subhead">
@@ -324,6 +351,15 @@ def hub_page(cards):
                 </div>
                 <div class="cat-grid">
 {''.join(package_card(c, 'f-' + c['slug']) for c in cards)}                </div>
+            </div>
+
+            <div class="cat-featured" data-featured>
+                <div class="cat-subhead cat-subhead--all">
+                    <h2>Annual Health Checkup Packages</h2>
+                </div>
+                <p class="cat-lead">Yearly checkups that track your health over time, including Tax Saver packages that may qualify for tax benefits under Section 80D for preventive health checkups.</p>
+                <div class="cat-grid">
+{''.join(annual)}                </div>
             </div>
 
             <div class="cat-subhead cat-subhead--all">

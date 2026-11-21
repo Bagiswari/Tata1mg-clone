@@ -44,6 +44,8 @@ FAQ = [
      'Routine tests such as CBC, thyroid profile and lipid profile are usually ready within 6–12 hours. Specialised tests can take a few days. The report time on each test is indicative and can vary by city. Reports are shared on email and WhatsApp.'),
     ('Do I need to fast before my test?',
      'Tests such as fasting blood sugar and lipid profile need 10–12 hours of fasting, while CBC, thyroid, HbA1c and Vitamin D do not. See our guide: <a href="/blog/which-blood-tests-need-fasting/">which blood tests need fasting</a>.'),
+    ('Can I get pathology tests done at home?',
+     'Yes. Pathology tests on a blood or urine sample, from routine blood tests such as CBC, thyroid, lipid, liver and kidney panels to many specialised tests, can be done at home. A trained phlebotomist collects your sample and it is tested at a certified lab.'),
     ('Where are the samples tested?',
      'All samples are processed at NABL, CAP and ISO certified partner labs.'),
     ('My test is not on this list. Can I still book it?',
@@ -101,9 +103,9 @@ def build():
                               card_id='pk-' + p['slug'], group='packages', group_name='Health package', icon_name='package', noun='package'))
 
     url = SITE + '/lab-tests/'
-    title = 'Tata 1mg Lab Tests List & Prices | Book Blood Tests at Home'
-    description = (f'Browse {total}+ Tata 1mg lab tests by category: blood, thyroid, diabetes, liver, kidney, vitamins and more. '
-                   'Book with free home sample collection at NABL-certified labs.')
+    title = 'Routine Blood Tests & Pathology Tests at Home | Tata 1mg'
+    description = (f'Book routine blood tests and pathology tests at home from {total}+ Tata 1mg lab tests. '
+                   'Free home sample collection, NABL-certified labs, digital reports.')
     schemas = [
         breadcrumb_schema([('Home', SITE + '/'), ('Lab Tests', url)]),
         faq_schema([(q, re.sub(r'<[^>]+>', '', a)) for q, a in FAQ]),
@@ -117,7 +119,7 @@ def build():
         <section class="hero cat-hero--banner">
             <div class="hero-content">
                 <h1>Book Lab Tests at Home</h1>
-                <p class="intro-copy">Search {total}+ Tata 1mg lab tests by name or health concern, see report times and book on call or WhatsApp.</p>
+                <p class="intro-copy">Search {total}+ routine blood tests and pathology tests at home by name or health concern, then book on call or WhatsApp.</p>
 {search_box('Search a test, e.g. thyroid, CBC, vitamin D, sugar', 'Search lab tests',
             ['Thyroid', 'CBC', 'Vitamin D', 'Sugar'])}            </div>
             <div class="hero-image">
@@ -128,7 +130,7 @@ def build():
         <section class="cat-section" id="all-tests" data-catalogue data-noun="tests">
             <div class="cat-featured" data-featured>
                 <div class="cat-subhead">
-                    <h2>Most Booked Lab Tests</h2>
+                    <h2>Most Booked Routine Blood Tests</h2>
                     <a href="#grp-{cats[0]['id']}" class="cat-subhead__link">Browse all tests &darr;</a>
                 </div>
                 <div class="cat-grid">
