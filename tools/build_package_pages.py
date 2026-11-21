@@ -357,7 +357,6 @@ def hub_page(cards):
                 <div class="cat-subhead cat-subhead--all">
                     <h2>Annual Health Checkup Packages</h2>
                 </div>
-                <p class="cat-lead">Yearly checkups that track your health over time, including Tax Saver packages that may qualify for tax benefits under Section 80D for preventive health checkups.</p>
                 <div class="cat-grid">
 {''.join(annual)}                </div>
             </div>
