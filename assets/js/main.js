@@ -8,6 +8,18 @@ var SITE = {
 // Blog posts the search can find. Keep in sync with /blog/.
 var BLOG_POSTS = [
     {
+        title: "Annual Health Checkup: Tests Included and How to Choose a Package",
+        url:   '/blog/annual-health-checkup-tests-included/'
+    },
+    {
+        title: "Routine Blood Tests List: Names, What They Check and When to Get Them",
+        url:   '/blog/routine-blood-tests-list/'
+    },
+    {
+        title: "Blood Test at Home: How It Works, How to Prepare and When You Get Reports",
+        url:   '/blog/blood-test-at-home-how-it-works/'
+    },
+    {
         title: "Full Body Checkup Test List with Names: What Each Test Checks",
         url:   '/blog/full-body-checkup-test-list-with-names/'
     },
